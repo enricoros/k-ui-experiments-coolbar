@@ -24,8 +24,8 @@ TestWindow::TestWindow(QWidget *parent) :
 
     // create and use Coolar Scene and View
     m_acs = new AmarokCoolarScene;
-    CoolarView * coolar = new CoolarView(m_acs);
-    ui->containerLayout->addWidget(coolar);
+    m_view = new CoolarView(m_acs);
+    ui->containerLayout->addWidget(m_view);
     ui->aEq->setChecked(m_acs->equalizerVisible());
     ui->aSplit->setChecked(m_acs->buttonMode() == AmarokCoolarScene::SplittedButtons);
 }
@@ -43,4 +43,28 @@ void TestWindow::on_aEq_triggered(bool checked)
 void TestWindow::on_aSplit_triggered(bool checked)
 {
     m_acs->setButtonMode(checked ? AmarokCoolarScene::SplittedButtons : AmarokCoolarScene::VerticalStack);
+}
+
+void TestWindow::on_actionDesktop_Size_triggered()
+{
+    for (int i = 0; i < 10; i++) {
+        resize(640, 100);
+        qApp->processEvents();
+    }
+}
+
+void TestWindow::on_actionNetbook_Size_triggered()
+{
+    for (int i = 0; i < 10; i++) {
+        resize(400, 100);
+        qApp->processEvents();
+    }
+}
+
+void TestWindow::on_actionIStuff_Size_triggered()
+{
+    for (int i = 0; i < 10; i++) {
+        resize(100, 100);
+        qApp->processEvents();
+    }
 }

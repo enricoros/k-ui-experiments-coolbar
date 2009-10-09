@@ -54,7 +54,7 @@ void EqualizerElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     qreal barWidth = width / (qreal)bars;
 
     QLinearGradient lg(0, 0, 0, height);
-    QColor col = QColor::fromHsvF(m_colorness, m_colorness, 1.0);
+    QColor col = QColor::fromHsvF(m_colorness, 1.0 - ((1.0 - m_colorness) * (1.0 - m_colorness)), 1.0);
     col.setAlpha(255); lg.setColorAt(0.0, col);
     col.setAlpha(200); lg.setColorAt(0.4, col);
     col.setAlpha(20);  lg.setColorAt(1.0, col);

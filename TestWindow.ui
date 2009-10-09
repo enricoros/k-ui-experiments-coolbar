@@ -60,6 +60,10 @@
     </property>
     <addaction name="aEq"/>
     <addaction name="aSplit"/>
+    <addaction name="separator"/>
+    <addaction name="actionDesktop_Size"/>
+    <addaction name="actionNetbook_Size"/>
+    <addaction name="actionIStuff_Size"/>
    </widget>
    <widget class="QMenu" name="menuFile">
     <property name="title">
@@ -67,8 +71,8 @@
     </property>
     <addaction name="actionQuit"/>
    </widget>
-   <addaction name="menuCoolar"/>
    <addaction name="menuFile"/>
+   <addaction name="menuCoolar"/>
   </widget>
   <action name="aEq">
    <property name="checkable">
@@ -89,6 +93,21 @@
    </property>
    <property name="text">
     <string>Split Buttons</string>
+   </property>
+  </action>
+  <action name="actionDesktop_Size">
+   <property name="text">
+    <string>Desktop Size</string>
+   </property>
+  </action>
+  <action name="actionNetbook_Size">
+   <property name="text">
+    <string>Netbook Size</string>
+   </property>
+  </action>
+  <action name="actionIStuff_Size">
+   <property name="text">
+    <string>iStuff Size</string>
    </property>
   </action>
  </widget>

@@ -101,12 +101,12 @@ void AmarokCoolarScene::updateElementsLayout(const QRectF & newBounds)
                 left = newBounds.width() - (s.width() + 10);
             ENRICO_ANIMATE_PARAM(m_equalizer, "size", 500, s);
             ENRICO_ANIMATE_PARAM(m_equalizer, "pos", 300, QPointF(left, top));
-            ENRICO_ANIMATE_PARAM(m_equalizer, "colorness", 1000, 0.0);
+            ENRICO_ANIMATE_PARAM(m_equalizer, "colorness", 2000, 0.0);
             break;
         case IDeviceSize:
             ENRICO_ANIMATE_PARAM(m_equalizer, "size", 500, newBounds.size());
             ENRICO_ANIMATE_PARAM(m_equalizer, "pos", 300, QPointF(0, 0));
-            ENRICO_ANIMATE_PARAM(m_equalizer, "colorness", 1000, 1.0);
+            ENRICO_ANIMATE_PARAM(m_equalizer, "colorness", 2000, 1.0);
             break;
     }
 

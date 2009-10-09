@@ -10,37 +10,31 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __AmarokCoolarScene_h__
-#define __AmarokCoolarScene_h__
+#ifndef __FlamesElement_h__
+#define __FlamesElement_h__
 
-#include "CoolarScene.h"
-class ButtonElement;
-class EqualizerElement;
-class FlamesElement;
+#include <QGraphicsWidget>
+#include <QPixmap>
+class QSvgRenderer;
 
-/// Amarok Specific Methods
-class AmarokCoolarScene : public CoolarScene
+class FlamesElement : public QGraphicsWidget
 {
     Q_OBJECT
+    Q_PROPERTY(qreal value READ value WRITE setValue)
     public:
-        AmarokCoolarScene(QObject * parent = 0);
+        FlamesElement(QGraphicsItem * parent = 0);
 
-        void setEqualizerVisible(bool visible);
-        bool equalizerVisible() const;
+        // ::QGraphicsItem
+        void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
-        enum ButtonMode { SplittedButtons = 0, VerticalStack = 1 };
-        void setButtonMode(ButtonMode mode);
-        ButtonMode buttonMode() const;
-
-    protected:
-        // ::CoolarScene
-        void updateElementsLayout(const QRectF & newBounds);
+    public Q_SLOTS:
+        void pulse();
 
     private:
-        ButtonMode m_buttonMode;
-        ButtonElement * m_buttons[4];
-        EqualizerElement * m_equalizer;
-        FlamesElement * m_flames;
+        qreal value() const;
+        void setValue(qreal);
+        QSvgRenderer * m_renderer;
+        qreal m_value;
 };
 
 #endif

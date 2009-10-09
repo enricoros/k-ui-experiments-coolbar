@@ -18,6 +18,7 @@
 ButtonElement::ButtonElement(const QPixmap & hiqPixmap, QGraphicsItem * parent)
   : QGraphicsWidget(parent)
   , m_pixmap(hiqPixmap)
+  , m_hovered(false)
 {
     setAcceptHoverEvents(true);
     resize(hiqPixmap.size());

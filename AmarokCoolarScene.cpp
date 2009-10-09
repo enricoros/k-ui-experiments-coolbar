@@ -14,6 +14,7 @@
 
 #include "ButtonElement.h"
 #include "EqualizerElement.h"
+#include "FlamesElement.h"
 
 #include <QDebug>
 #include <QGraphicsEllipseItem>
@@ -39,12 +40,17 @@
 
 AmarokCoolarScene::AmarokCoolarScene(QObject * parent)
   : CoolarScene(parent)
-  , m_equalizer(0)
   , m_buttonMode(SplittedButtons)
 {
     // create equalizer
     m_equalizer = new EqualizerElement;
+    m_equalizer->setZValue(-1);
     addItem(m_equalizer);
+
+    // create flames
+    m_flames = new FlamesElement;
+    m_flames->setZValue(-2);
+    addItem(m_flames);
 
     // create buttons
     const QString buttonPixmaps[4] = {
@@ -55,6 +61,8 @@ AmarokCoolarScene::AmarokCoolarScene(QObject * parent)
     };
     for (int b = 0; b < 4; b++) {
         m_buttons[b] = new ButtonElement(QPixmap(buttonPixmaps[b]));
+        m_buttons[b]->setZValue(0);
+        connect(m_buttons[b], SIGNAL(clicked()), m_flames, SLOT(pulse()));
         addItem(m_buttons[b]);
     }
 }
@@ -93,12 +101,14 @@ void AmarokCoolarScene::updateElementsLayout(const QRectF & newBounds)
     int left, top;
     switch (mode) {
         default:
-            s = QSizeF(newBounds.width() / 4, newBounds.height() / 2);
-            top = newBounds.center().y() - s.height() / 2;
-            if (mode == DesktopSize)
+            s = QSizeF(4 * newBounds.width() / 10, newBounds.height() / 2);
+            if (mode == DesktopSize) {
                 left = newBounds.center().x() - s.width() / 2;
-            else
+                top = newBounds.bottom() - s.height();
+            } else {
                 left = newBounds.width() - (s.width() + 10);
+                top = newBounds.center().y() - s.height() / 3;
+            }
             ENRICO_ANIMATE_PARAM(m_equalizer, "size", 500, s);
             ENRICO_ANIMATE_PARAM(m_equalizer, "pos", 300, QPointF(left, top));
             ENRICO_ANIMATE_PARAM(m_equalizer, "colorness", 2000, 0.0);
@@ -150,4 +160,14 @@ void AmarokCoolarScene::updateElementsLayout(const QRectF & newBounds)
             }
             break;
     }
+
+    // update flames
+    s = QSizeF(newBounds.width() / 2, 2 * newBounds.height() / 3);
+    if (mode == DesktopSize)
+        top = newBounds.height() - 2 * s.height() / 3;
+    else
+        top = (newBounds.height() - s.height()) / 2;
+    m_flames->setVisible(mode != IDeviceSize);
+    ENRICO_ANIMATE_PARAM(m_flames, "size", 500, s);
+    ENRICO_ANIMATE_PARAM(m_flames, "pos", 300, QPointF(0, top));
 }

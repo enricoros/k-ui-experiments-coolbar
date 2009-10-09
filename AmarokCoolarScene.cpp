@@ -22,6 +22,15 @@
 
 #ifdef ANIMATE_LAYOUTING
 #include <QPropertyAnimation>
+#define ENRICO_ANIMATE_PARAM(object, propName, duration, endValue) \
+    {QPropertyAnimation * ani = new QPropertyAnimation(object, propName, object); \
+    ani->setEasingCurve(QEasingCurve::OutCubic); \
+    ani->setDuration(duration); \
+    ani->setEndValue(endValue); \
+    ani->start(QPropertyAnimation::DeleteWhenStopped);}
+#else
+#define ENRICO_ANIMATE_PARAM(object, propName, duration, endValue) \
+    object->setProperty(propName, endValue);
 #endif
 
 AmarokCoolarScene::AmarokCoolarScene(QObject * parent)
@@ -52,12 +61,12 @@ void AmarokCoolarScene::updateElementsLayout(const QRectF & newBounds)
     // update equalizer
     switch (mode) {
         default:
-            m_equalizer->resize(newBounds.width() / 4, newBounds.height() / 2);
-            m_equalizer->setPos(newBounds.center() - m_equalizer->rect().center());
+            ENRICO_ANIMATE_PARAM(m_equalizer, "size", 500, QSizeF(newBounds.width() / 4, newBounds.height() / 2));
+            ENRICO_ANIMATE_PARAM(m_equalizer, "pos", 300, QPointF(newBounds.center() - m_equalizer->rect().center()));
             break;
         case IDeviceSize:
-            m_equalizer->resize(newBounds.size());
-            m_equalizer->setPos(0, 0);
+            ENRICO_ANIMATE_PARAM(m_equalizer, "size", 500, newBounds.size());
+            ENRICO_ANIMATE_PARAM(m_equalizer, "pos", 300, QPointF(0, 0));
             break;
     }
 }

@@ -13,11 +13,19 @@
 #include "TestWindow.h"
 #include "ui_TestWindow.h"
 
+#include "AmarokCoolarScene.h"
+#include "CoolarView.h"
+
 TestWindow::TestWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::TestWindow)
 {
     ui->setupUi(this);
+
+    // create and use Coolar Scene and View
+    AmarokCoolarScene * aScene = new AmarokCoolarScene;
+    CoolarView * coolar = new CoolarView(aScene);
+    ui->containerLayout->addWidget(coolar);
 }
 
 TestWindow::~TestWindow()

@@ -10,22 +10,30 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TESTWINDOW_H
-#define TESTWINDOW_H
+#include "AmarokCoolarScene.h"
 
-#include <QMainWindow>
+#include <QGraphicsEllipseItem>
 
-namespace Ui { class TestWindow; }
+// uncomment following to enable animations on relayouting
+#define ANIMATE_LAYOUTING
 
-class TestWindow : public QMainWindow
-{
-    Q_OBJECT
-    public:
-        TestWindow(QWidget *parent = 0);
-        ~TestWindow();
-
-    private:
-        Ui::TestWindow *ui;
-};
-
+#ifdef ANIMATE_LAYOUTING
+#include <QPropertyAnimation>
 #endif
+
+QGraphicsItem * item;
+
+AmarokCoolarScene::AmarokCoolarScene(QObject * parent)
+  : CoolarScene(parent)
+{
+    item = addEllipse(-10, -10, 20, 20);
+}
+
+void AmarokCoolarScene::updateElementsLayout(const QRectF & newBounds)
+{
+    // update base elements
+    CoolarScene::updateElementsLayout(newBounds);
+
+    // update our elements
+    item->setPos(newBounds.center());
+}

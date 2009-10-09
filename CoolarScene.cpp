@@ -18,10 +18,7 @@
 // uncomment following to enable the Dynamic Size changing animation
 //#define ANIMATE_DYNSIZE
 
-// uncomment following to enable animations on relayouting
-//#define ANIMATE_LAYOUTING
-
-#if ANIMATE_DYNSIZE || ANIMATE_LAYOUTING
+#ifdef ANIMATE_DYNSIZE
 #include <QPropertyAnimation>
 #endif
 
@@ -38,7 +35,6 @@ CoolarScene::CoolarScene(QObject * parent)
     updateDynamicSize(-1);
 }
 
-
 void CoolarScene::resize(const QSize & viewSize)
 {
     // apply the new size, if changed
@@ -53,10 +49,10 @@ void CoolarScene::resize(const QSize & viewSize)
         return;
 
     // udate the position of the elements
-    updateElementsLayout();
+    updateElementsLayout(m_sceneRect);
 }
 
-/// Dynamic Size
+/// Query
 CoolarScene::SizeMode CoolarScene::dynamicSizeMode() const
 {
     return m_dynamicSizeMode;
@@ -67,8 +63,15 @@ QSize CoolarScene::dynamicSizeHint() const
     return m_dynamicSizeHint;
 }
 
-
 /// Drawing
+QColor CoolarScene::paletteColor(QPalette::ColorRole role, int lightAdj)
+{
+    QColor col = palette().color(role);
+    if (!lightAdj)
+        return col;
+    return lightAdj > 0 ? col.lighter(100 + lightAdj) : col.darker(100 - lightAdj);
+}
+
 void CoolarScene::drawBackground(QPainter * painter, const QRectF & rect)
 {
     // setup gradient
@@ -82,14 +85,6 @@ void CoolarScene::drawBackground(QPainter * painter, const QRectF & rect)
     painter->fillRect(rect.toAlignedRect(), lg);
     painter->setRenderHint(QPainter::Antialiasing, true);
     painter->setCompositionMode(QPainter::CompositionMode_SourceOver);
-}
-
-QColor CoolarScene::paletteColor(QPalette::ColorRole role, int lightAdj)
-{
-    QColor col = palette().color(role);
-    if (!lightAdj)
-        return col;
-    return lightAdj > 0 ? col.lighter(100 + lightAdj) : col.darker(100 - lightAdj);
 }
 
 
@@ -136,10 +131,4 @@ bool CoolarScene::updateDynamicSize(int testWidth)
 
     // tell if changed
     return changed;
-}
-
-void CoolarScene::updateElementsLayout()
-{
-    // relayout everything
-
 }

@@ -16,11 +16,11 @@
 #include <QGraphicsView>
 class CoolarScene;
 
-class Coolar : public QGraphicsView
+class CoolarView : public QGraphicsView
 {
     Q_OBJECT
     public:
-        Coolar(QWidget * parent = 0);
+        CoolarView(CoolarScene *, QWidget * parent = 0);
 
     protected:
         // ::QWidget

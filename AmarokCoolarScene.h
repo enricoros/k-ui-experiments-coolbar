@@ -10,22 +10,23 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TESTWINDOW_H
-#define TESTWINDOW_H
+#ifndef AMAROKCOOLARSCENE_H
+#define AMAROKCOOLARSCENE_H
 
-#include <QMainWindow>
+#include "CoolarScene.h"
 
-namespace Ui { class TestWindow; }
-
-class TestWindow : public QMainWindow
+/// Amarok Specific Methods
+class AmarokCoolarScene : public CoolarScene
 {
     Q_OBJECT
     public:
-        TestWindow(QWidget *parent = 0);
-        ~TestWindow();
+        AmarokCoolarScene(QObject * parent = 0);
+
+    protected:
+        // ::CoolarScene
+        void updateElementsLayout(const QRectF & newBounds);
 
     private:
-        Ui::TestWindow *ui;
 };
 
 #endif

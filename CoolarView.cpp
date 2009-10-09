@@ -10,41 +10,45 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "Coolar.h"
+#include "CoolarView.h"
 
 #include "CoolarScene.h"
 
 #include <QResizeEvent>
 
-Coolar::Coolar(QWidget * parent)
+CoolarView::CoolarView(CoolarScene * coolarScene, QWidget * parent)
   : QGraphicsView(parent)
-  , m_coolarScene(new CoolarScene)
+  , m_coolarScene(coolarScene)
 {
     // link to the scene
     setScene(m_coolarScene);
     connect(m_coolarScene, SIGNAL(shouldResizeView()), this, SLOT(slotResizeView()));
 
-    // size policy:
+    // size policy: it needs to obey the vertical size hint
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
+
+    // customize appearance
+    setFrameStyle(QFrame::NoFrame);
+    setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 }
 
-void Coolar::resizeEvent(QResizeEvent * event)
+void CoolarView::resizeEvent(QResizeEvent * event)
 {
     m_coolarScene->resize(event->size());
 }
 
-QSize Coolar::sizeHint() const
+QSize CoolarView::sizeHint() const
 {
     return m_coolarScene->dynamicSizeHint();
 }
 
-QSize Coolar::minimumSizeHint() const
+QSize CoolarView::minimumSizeHint() const
 {
     // clear the minimum size hint of the graphicsview, to use the size policy
     return QSize();
 }
 
-void Coolar::slotResizeView()
+void CoolarView::slotResizeView()
 {
     updateGeometry();
 }

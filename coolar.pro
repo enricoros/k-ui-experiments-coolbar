@@ -7,9 +7,11 @@ TARGET = coolar
 TEMPLATE = app
 SOURCES += main.cpp \
     TestWindow.cpp \
-    Coolar.cpp \
-    CoolarScene.cpp
+    CoolarView.cpp \
+    CoolarScene.cpp \
+    AmarokCoolarScene.cpp
 HEADERS += TestWindow.h \
-    Coolar.h \
-    CoolarScene.h
+    CoolarView.h \
+    CoolarScene.h \
+    AmarokCoolarScene.h
 FORMS += TestWindow.ui

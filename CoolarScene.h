@@ -37,14 +37,20 @@ class CoolarScene : public QGraphicsScene
         void shouldResizeView();
 
     protected:
+        // to be inherited
+        virtual void updateElementsLayout(const QRectF & /*boundingRect*/) {}
+
+        // to be used
+        inline QSize sceneSize() const { return m_sceneSize; }
+        inline QRectF sceneRect() const { return m_sceneRect; }
+        QColor paletteColor(QPalette::ColorRole role, int lightAdj = 0);
+
         // ::QGraphicsScene
         void drawBackground(QPainter * painter, const QRectF & rect);
 
     private:
-        QColor paletteColor(QPalette::ColorRole role, int lightAdj = 0);
         void setDynamicSizeHint(const QSize & size);
         bool updateDynamicSize(int testWidth);
-        void updateElementsLayout();
 
         // scene geometry
         QSize m_sceneSize;

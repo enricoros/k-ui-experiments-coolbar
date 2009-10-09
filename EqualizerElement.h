@@ -19,9 +19,13 @@
 class EqualizerElement : public QGraphicsWidget
 {
     Q_OBJECT
+    Q_PROPERTY(qreal colorness READ colorness WRITE setColorness)
     public:
-        // THIS USES THE OPACITY PROPERTY (not anymore!?)
         EqualizerElement(QGraphicsItem * parent = 0);
+
+        // properties
+        qreal colorness() const;
+        void setColorness(qreal);
 
         // ::QGraphicsItem
         void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
@@ -32,6 +36,7 @@ class EqualizerElement : public QGraphicsWidget
     private:
         QVector<qreal> m_fakeData;
         QVector<qreal> m_fakeTargets;
+        qreal m_colorness;
 };
 
 #endif

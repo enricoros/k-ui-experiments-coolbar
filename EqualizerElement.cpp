@@ -20,12 +20,26 @@
 
 EqualizerElement::EqualizerElement(QGraphicsItem * parent)
   : QGraphicsWidget(parent)
+  , m_colorness(0.0)
 {
     // update periodically
     QTimer * timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(slotGenFakeValues()));
     timer->start(40);
     slotGenFakeValues();
+}
+
+qreal EqualizerElement::colorness() const
+{
+    return m_colorness;
+}
+
+void EqualizerElement::setColorness(qreal value)
+{
+    if (value != m_colorness) {
+        m_colorness = value;
+        update();
+    }
 }
 
 void EqualizerElement::paint(QPainter *painter, const QStyleOptionGraphicsItem */*option*/, QWidget */*widget*/)
@@ -40,9 +54,10 @@ void EqualizerElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     qreal barWidth = width / (qreal)bars;
 
     QLinearGradient lg(0, 0, 0, height);
-    lg.setColorAt(0.0, QColor(255, 255, 255, 255));
-    lg.setColorAt(0.4, QColor(200, 200, 200, 200));
-    lg.setColorAt(1.0, QColor(0, 0, 0, 20));
+    QColor col = QColor::fromHsvF(m_colorness, m_colorness, 1.0);
+    col.setAlpha(255); lg.setColorAt(0.0, col);
+    col.setAlpha(200); lg.setColorAt(0.4, col);
+    col.setAlpha(20);  lg.setColorAt(1.0, col);
 
     // draw bars
     for (int i = 0; i < bars; i++) {

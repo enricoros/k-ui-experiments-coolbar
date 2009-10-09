@@ -123,20 +123,21 @@ void AmarokCoolarScene::updateElementsLayout(const QRectF & newBounds)
     // update buttons
     switch (mode) {
         case DesktopSize:
-            top = 0;
             switch (m_buttonMode) {
                 case SplittedButtons:
+                    top = newBounds.center().y() - 64/2;
                     left = 10;
                     ENRICO_ANIMATE_PARAM(m_buttons[0], "pos", 300, QPointF(left, top));
                     left += 64 + 4;
-                    ENRICO_ANIMATE_PARAM(m_buttons[1], "pos", 300, QPointF(left, top));
-                    left = newBounds.right() - (64 + 4 + 64 + 10);
                     ENRICO_ANIMATE_PARAM(m_buttons[2], "pos", 300, QPointF(left, top));
+                    left = newBounds.right() - (64 + 4 + 64 + 10);
+                    ENRICO_ANIMATE_PARAM(m_buttons[1], "pos", 300, QPointF(left, top));
                     left += 64 + 4;
                     ENRICO_ANIMATE_PARAM(m_buttons[3], "pos", 300, QPointF(left, top));
                     break;
 
                 case VerticalStack:
+                    top = 0;
                     left = newBounds.center().x() - 2 * (64 + 4);
                     for (int b = 0; b < 4; b++) {
                         ENRICO_ANIMATE_PARAM(m_buttons[b], "pos", 300, QPointF(left, top));

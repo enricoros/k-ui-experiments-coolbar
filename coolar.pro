@@ -1,18 +1,15 @@
-#-------------------------------------------------
-#
+# -------------------------------------------------
 # Project created by QtCreator 2009-10-09T10:19:09
-#
-#-------------------------------------------------
-
-QT       += opengl svg
-
+# -------------------------------------------------
+QT += opengl \
+    svg
 TARGET = coolar
 TEMPLATE = app
-
-
-SOURCES += main.cpp\
-        TestWindow.cpp
-
-HEADERS  += TestWindow.h
-
-FORMS    += TestWindow.ui
+SOURCES += main.cpp \
+    TestWindow.cpp \
+    Coolar.cpp \
+    CoolarScene.cpp
+HEADERS += TestWindow.h \
+    Coolar.h \
+    CoolarScene.h
+FORMS += TestWindow.ui

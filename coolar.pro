@@ -10,11 +10,14 @@ SOURCES += main.cpp \
     CoolarView.cpp \
     CoolarScene.cpp \
     AmarokCoolarScene.cpp \
-    EqualizerElement.cpp
+    EqualizerElement.cpp \
+    ButtonElement.cpp
 HEADERS += TestWindow.h \
     CoolarView.h \
     CoolarScene.h \
     AmarokCoolarScene.h \
     Coolar.h \
-    EqualizerElement.h
+    EqualizerElement.h \
+    ButtonElement.h
 FORMS += TestWindow.ui
+RESOURCES += coolar.qrc

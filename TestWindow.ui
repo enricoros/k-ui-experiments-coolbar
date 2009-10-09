@@ -59,6 +59,7 @@
      <string>Coolar</string>
     </property>
     <addaction name="aEq"/>
+    <addaction name="aSplit"/>
    </widget>
    <widget class="QMenu" name="menuFile">
     <property name="title">
@@ -80,6 +81,14 @@
   <action name="actionQuit">
    <property name="text">
     <string>Quit</string>
+   </property>
+  </action>
+  <action name="aSplit">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Split Buttons</string>
    </property>
   </action>
  </widget>

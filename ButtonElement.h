@@ -10,35 +10,30 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __AmarokCoolarScene_h__
-#define __AmarokCoolarScene_h__
+#ifndef __ButtonElement_h__
+#define __ButtonElement_h__
 
-#include "CoolarScene.h"
-class EqualizerElement;
-class ButtonElement;
+#include <QGraphicsWidget>
+#include <QPixmap>
 
-/// Amarok Specific Methods
-class AmarokCoolarScene : public CoolarScene
+class ButtonElement : public QGraphicsWidget
 {
     Q_OBJECT
     public:
-        AmarokCoolarScene(QObject * parent = 0);
+        ButtonElement(const QPixmap & hiqPixmap, QGraphicsItem * parent = 0);
 
-        void setEqualizerVisible(bool visible);
-        bool equalizerVisible() const;
+        // ::QGraphicsItem
+        void hoverEnterEvent(QGraphicsSceneHoverEvent * event);
+        void hoverLeaveEvent(QGraphicsSceneHoverEvent * event);
+        void mousePressEvent(QGraphicsSceneMouseEvent * event);
+        void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
-        enum ButtonMode { SplittedButtons = 0, VerticalStack = 1 };
-        void setButtonMode(ButtonMode mode);
-        ButtonMode buttonMode() const;
-
-    protected:
-        // ::CoolarScene
-        void updateElementsLayout(const QRectF & newBounds);
+    Q_SIGNALS:
+        void clicked();
 
     private:
-        EqualizerElement * m_equalizer;
-        ButtonElement * m_buttons[4];
-        ButtonMode m_buttonMode;
+        QPixmap m_pixmap;
+        bool m_hovered;
 };
 
 #endif

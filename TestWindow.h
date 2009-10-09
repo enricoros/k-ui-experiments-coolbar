@@ -29,8 +29,9 @@ class TestWindow : public QMainWindow
         Ui::TestWindow *ui;
         AmarokCoolarScene * m_acs;
 
-private slots:
-    void on_aEq_triggered(bool checked);
+    private slots:
+        void on_aSplit_triggered(bool checked);
+        void on_aEq_triggered(bool checked);
 };
 
 #endif

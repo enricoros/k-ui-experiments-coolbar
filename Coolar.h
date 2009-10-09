@@ -10,31 +10,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "TestWindow.h"
-#include "ui_TestWindow.h"
+#ifndef __Coolar_h__
+#define __Coolar_h__
 
-#include "AmarokCoolarScene.h"
-#include "CoolarView.h"
+#include <QtGlobal>
 
-TestWindow::TestWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::TestWindow)
-{
-    ui->setupUi(this);
+namespace Coolar {
 
-    // create and use Coolar Scene and View
-    m_acs = new AmarokCoolarScene;
-    CoolarView * coolar = new CoolarView(m_acs);
-    ui->containerLayout->addWidget(coolar);
-    ui->aEq->setChecked(m_acs->equalizerVisible());
+    // different size modes for the bar and the elements
+    //enum SizeMode { DesktopSize, NetbookSize, IDeviceSize };
+
 }
 
-TestWindow::~TestWindow()
-{
-    delete ui;
-}
-
-void TestWindow::on_aEq_triggered(bool checked)
-{
-    m_acs->setEqualizerVisible(checked);
-}
+#endif

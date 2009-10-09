@@ -10,10 +10,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef AMAROKCOOLARSCENE_H
-#define AMAROKCOOLARSCENE_H
+#ifndef __AmarokCoolarScene_h__
+#define __AmarokCoolarScene_h__
 
 #include "CoolarScene.h"
+class EqualizerElement;
 
 /// Amarok Specific Methods
 class AmarokCoolarScene : public CoolarScene
@@ -22,11 +23,15 @@ class AmarokCoolarScene : public CoolarScene
     public:
         AmarokCoolarScene(QObject * parent = 0);
 
+        void setEqualizerVisible(bool visible);
+        bool equalizerVisible() const;
+
     protected:
         // ::CoolarScene
         void updateElementsLayout(const QRectF & newBounds);
 
     private:
+        EqualizerElement * m_equalizer;
 };
 
 #endif

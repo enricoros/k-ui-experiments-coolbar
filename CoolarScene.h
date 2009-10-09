@@ -10,8 +10,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef COOLARSCENE_H
-#define COOLARSCENE_H
+#ifndef __CoolarScene_h__
+#define __CoolarScene_h__
 
 #include <QGraphicsScene>
 #include <QPalette>

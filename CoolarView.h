@@ -10,8 +10,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef COOLAR_H
-#define COOLAR_H
+#ifndef __CoolarView_h__
+#define __CoolarView_h__
 
 #include <QGraphicsView>
 class CoolarScene;

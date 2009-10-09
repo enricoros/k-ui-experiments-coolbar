@@ -10,12 +10,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TESTWINDOW_H
-#define TESTWINDOW_H
+#ifndef __TestWindow_h__
+#define __TestWindow_h__
 
 #include <QMainWindow>
-
 namespace Ui { class TestWindow; }
+class AmarokCoolarScene;
+
 
 class TestWindow : public QMainWindow
 {
@@ -26,6 +27,10 @@ class TestWindow : public QMainWindow
 
     private:
         Ui::TestWindow *ui;
+        AmarokCoolarScene * m_acs;
+
+private slots:
+    void on_aEq_triggered(bool checked);
 };
 
 #endif

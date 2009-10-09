@@ -9,9 +9,12 @@ SOURCES += main.cpp \
     TestWindow.cpp \
     CoolarView.cpp \
     CoolarScene.cpp \
-    AmarokCoolarScene.cpp
+    AmarokCoolarScene.cpp \
+    EqualizerElement.cpp
 HEADERS += TestWindow.h \
     CoolarView.h \
     CoolarScene.h \
-    AmarokCoolarScene.h
+    AmarokCoolarScene.h \
+    Coolar.h \
+    EqualizerElement.h
 FORMS += TestWindow.ui

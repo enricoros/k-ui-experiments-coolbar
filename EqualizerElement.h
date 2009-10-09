@@ -10,31 +10,28 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "TestWindow.h"
-#include "ui_TestWindow.h"
+#ifndef __EqualizerElement_h__
+#define __EqualizerElement_h__
 
-#include "AmarokCoolarScene.h"
-#include "CoolarView.h"
+#include <QGraphicsWidget>
+#include <QVector>
 
-TestWindow::TestWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::TestWindow)
+class EqualizerElement : public QGraphicsWidget
 {
-    ui->setupUi(this);
+    Q_OBJECT
+    public:
+        // THIS USES THE OPACITY PROPERTY (not anymore!?)
+        EqualizerElement(QGraphicsItem * parent = 0);
 
-    // create and use Coolar Scene and View
-    m_acs = new AmarokCoolarScene;
-    CoolarView * coolar = new CoolarView(m_acs);
-    ui->containerLayout->addWidget(coolar);
-    ui->aEq->setChecked(m_acs->equalizerVisible());
-}
+        // ::QGraphicsItem
+        void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
-TestWindow::~TestWindow()
-{
-    delete ui;
-}
+    private Q_SLOTS:
+        void slotGenFakeValues();
 
-void TestWindow::on_aEq_triggered(bool checked)
-{
-    m_acs->setEqualizerVisible(checked);
-}
+    private:
+        QVector<qreal> m_fakeData;
+        QVector<qreal> m_fakeTargets;
+};
+
+#endif

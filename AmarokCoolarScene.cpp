@@ -59,10 +59,12 @@ void AmarokCoolarScene::updateElementsLayout(const QRectF & newBounds)
     SizeMode mode = dynamicSizeMode();
 
     // update equalizer
+    QSizeF s;
     switch (mode) {
         default:
-            ENRICO_ANIMATE_PARAM(m_equalizer, "size", 500, QSizeF(newBounds.width() / 4, newBounds.height() / 2));
-            ENRICO_ANIMATE_PARAM(m_equalizer, "pos", 300, QPointF(newBounds.center() - m_equalizer->rect().center()));
+            s = QSizeF(newBounds.width() / 4, newBounds.height() / 2);
+            ENRICO_ANIMATE_PARAM(m_equalizer, "size", 500, s);
+            ENRICO_ANIMATE_PARAM(m_equalizer, "pos", 300, newBounds.center() - QPointF(s.width() / 2, s.height() / 2));
             break;
         case IDeviceSize:
             ENRICO_ANIMATE_PARAM(m_equalizer, "size", 500, newBounds.size());

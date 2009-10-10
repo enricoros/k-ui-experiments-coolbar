@@ -36,8 +36,12 @@ class AmarokScene : public CoolbarScene
 
     private:
         ButtonElement * m_buttons[4];
-        VisualizationElement * m_visualization;
         FlameElement * m_flame;
+        VisualizationElement * m_visualization;
+        int m_visualizationIndex;
+
+    private Q_SLOTS:
+        void slotNextVisualization();
 };
 
 #endif

@@ -23,10 +23,9 @@
 
 AmarokScene::AmarokScene(QObject * parent)
   : CoolbarScene(parent)
+  , m_visualization(0)
+  , m_visualizationIndex(-1)
 {
-    // create Analyzer
-    m_visualization = new DotAnalyzerElement(this);
-
     // create flames
     m_flame = new FlameElement(this);
 
@@ -36,6 +35,9 @@ AmarokScene::AmarokScene(QObject * parent)
     connect(m_buttons[1], SIGNAL(clicked()), m_flame, SLOT(pulse()));
     m_buttons[2] = new ButtonElement(ButtonElement::StopButton, this);
     m_buttons[3] = new ButtonElement(ButtonElement::NextButton, this);
+
+    // create the Visualization
+    slotNextVisualization();
 }
 
 void AmarokScene::setAnalyzerVisible(bool visible)
@@ -112,4 +114,36 @@ void AmarokScene::updateElementsLayout(const QRectF & newBounds)
     m_flame->setVisible(mode != IDeviceSize);
     Coolbar::animateObjectProperty(m_flame, "size", 500, s);
     Coolbar::animateObjectProperty(m_flame, "pos", 300, QPointF(0, top));
+}
+
+void AmarokScene::slotNextVisualization()
+{
+    // backup params and delete previous visualization
+    QPointF prevPos;
+    QSizeF prevSize;
+    if (m_visualization) {
+        prevPos = m_visualization->pos();
+        prevSize = m_visualization->size();
+        delete m_visualization;
+    }
+
+    // change visualization
+    if (++m_visualizationIndex >= 2)
+        m_visualizationIndex = 0;
+    switch (m_visualizationIndex) {
+        case 0:
+            m_visualization = new DotAnalyzerElement(this);
+            break;
+        case 1:
+            m_visualization = new BarAnalyzerElement(this);
+            break;
+    }
+    connect(m_visualization, SIGNAL(clicked()), this, SLOT(slotNextVisualization()), Qt::QueuedConnection);
+
+    // restore params
+    if (!prevSize.isNull()) {
+        m_visualization->setPos(prevPos);
+        m_visualization->resize(prevSize);
+    }
+    updateElementsLayout(sceneRect());
 }

@@ -15,7 +15,7 @@
 #ifndef __ButtonElement_h__
 #define __ButtonElement_h__
 
-#include "coolbar/CoolbarElement.h"
+#include "Coolbar/CoolbarElement.h"
 #include <QPixmap>
 class AmarokScene;
 

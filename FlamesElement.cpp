@@ -13,7 +13,7 @@
  ***************************************************************************/
 
 #include "FlamesElement.h"
-#include "coolbar/CoolbarAnimation.h"
+#include "Coolbar/CoolbarAnimation.h"
 #include <QPainter>
 #include <QSvgRenderer>
 

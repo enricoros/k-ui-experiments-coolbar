@@ -16,8 +16,8 @@
 #include "ButtonElement.h"
 #include "EqualizerElement.h"
 #include "FlamesElement.h"
-#include "coolbar/CoolbarAnimation.h"
-#include "coolbar/CoolbarTheme.h"
+#include "Coolbar/CoolbarAnimation.h"
+#include "Coolbar/CoolbarTheme.h"
 
 
 AmarokScene::AmarokScene(QObject * parent)

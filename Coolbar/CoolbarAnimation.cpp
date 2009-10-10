@@ -29,6 +29,7 @@ void Coolbar::animateObjectProperty(QObject * object, const char * propName, int
     ani->setEndValue(endValue);
     ani->start(QPropertyAnimation::DeleteWhenStopped);
 #else
+    Q_UNUSED(duration);
     Q_UNUSED(startValue);
     object->setProperty(propName, endValue);
 #endif

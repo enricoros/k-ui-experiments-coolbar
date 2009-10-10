@@ -15,7 +15,7 @@
 #ifndef __AmarokCoolbarScene_h__
 #define __AmarokCoolbarScene_h__
 
-#include "coolbar/CoolbarScene.h"
+#include "Coolbar/CoolbarScene.h"
 class ButtonElement;
 class EqualizerElement;
 class FlamesElement;

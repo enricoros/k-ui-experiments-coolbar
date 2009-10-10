@@ -12,7 +12,7 @@ contains(QT_CONFIG, opengl)|contains(QT_CONFIG, opengles1)|contains(QT_CONFIG, o
 }
 
 # Coolbar
-include(coolbar/coolbar.pri)
+include(Coolbar/Coolbar.pri)
 
 # Amarok input files
 HEADERS += \

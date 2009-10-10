@@ -15,8 +15,8 @@
 #include "TestWindow.h"
 #include "ui_TestWindow.h"
 
-#include "coolbar/CoolbarTheme.h"
-#include "coolbar/CoolbarView.h"
+#include "Coolbar/CoolbarTheme.h"
+#include "Coolbar/CoolbarView.h"
 #include "AmarokScene.h"
 
 TestWindow::TestWindow(QWidget *parent) :

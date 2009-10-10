@@ -13,7 +13,7 @@
  ***************************************************************************/
 
 #include "ButtonElement.h"
-#include "coolbar/CoolbarTheme.h"
+#include "Coolbar/CoolbarTheme.h"
 #include "AmarokScene.h"
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>

@@ -20,6 +20,7 @@
 namespace Coolbar {
 
     void animateObjectProperty(QObject * object, const char * propName, int duration, const QVariant & endValue, const QVariant & startValue = QVariant());
+    bool canAnimate();
 
 };
 

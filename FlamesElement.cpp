@@ -13,10 +13,10 @@
  ***************************************************************************/
 
 #include "FlamesElement.h"
-
+#include "coolbar/CoolbarAnimation.h"
 #include <QPainter>
 #include <QSvgRenderer>
-#include <QPropertyAnimation>
+
 
 FlamesElement::FlamesElement(QGraphicsItem * parent)
   : QGraphicsWidget(parent)
@@ -28,12 +28,7 @@ FlamesElement::FlamesElement(QGraphicsItem * parent)
 
 void FlamesElement::pulse()
 {
-    QPropertyAnimation * ani = new QPropertyAnimation(this, "value", this);
-    ani->setEasingCurve(QEasingCurve::OutQuad);
-    ani->setDuration(300);
-    ani->setStartValue(1.0);
-    ani->setEndValue(0.0);
-    ani->start(QPropertyAnimation::DeleteWhenStopped);
+    Coolbar::animateObjectProperty(this, "value", 300, 0.0, 1.0);
 }
 
 void FlamesElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)

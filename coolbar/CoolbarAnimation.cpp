@@ -33,3 +33,12 @@ void Coolbar::animateObjectProperty(QObject * object, const char * propName, int
     object->setProperty(propName, endValue);
 #endif
 }
+
+bool Coolbar::canAnimate()
+{
+#if QT_VERSION >= 0x040600
+    return true;
+#else
+    return false;
+#endif
+}

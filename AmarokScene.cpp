@@ -13,31 +13,10 @@
  ***************************************************************************/
 
 #include "AmarokScene.h"
-
 #include "ButtonElement.h"
 #include "EqualizerElement.h"
 #include "FlamesElement.h"
-
-#include <QDebug>
-#include <QGraphicsEllipseItem>
-#include <QPixmap>
-
-// uncomment following to enable animations on relayouting
-#define ANIMATE_LAYOUTING
-
-
-#ifdef ANIMATE_LAYOUTING
-#include <QPropertyAnimation>
-#define ENRICO_ANIMATE_PARAM(object, propName, duration, endValue) \
-    {QPropertyAnimation * ani = new QPropertyAnimation(object, propName, object); \
-    ani->setEasingCurve(QEasingCurve::OutCubic); \
-    ani->setDuration(duration); \
-    ani->setEndValue(endValue); \
-    ani->start(QPropertyAnimation::DeleteWhenStopped);}
-#else
-#define ENRICO_ANIMATE_PARAM(object, propName, duration, endValue) \
-    object->setProperty(propName, endValue);
-#endif
+#include "coolbar/CoolbarAnimation.h"
 
 
 AmarokCoolbarScene::AmarokCoolbarScene(QObject * parent)
@@ -111,14 +90,14 @@ void AmarokCoolbarScene::updateElementsLayout(const QRectF & newBounds)
                 left = newBounds.width() - (s.width() + 10);
                 top = newBounds.center().y() - s.height() / 3;
             }
-            ENRICO_ANIMATE_PARAM(m_equalizer, "size", 500, s);
-            ENRICO_ANIMATE_PARAM(m_equalizer, "pos", 300, QPointF(left, top));
-            ENRICO_ANIMATE_PARAM(m_equalizer, "colorness", 2000, 0.0);
+            Coolbar::animateObjectProperty(m_equalizer, "size", 500, s);
+            Coolbar::animateObjectProperty(m_equalizer, "pos", 300, QPointF(left, top));
+            Coolbar::animateObjectProperty(m_equalizer, "colorness", 2000, 0.0);
             break;
         case IDeviceSize:
-            ENRICO_ANIMATE_PARAM(m_equalizer, "size", 500, newBounds.size());
-            ENRICO_ANIMATE_PARAM(m_equalizer, "pos", 300, QPointF(0, 0));
-            ENRICO_ANIMATE_PARAM(m_equalizer, "colorness", 2000, 1.0);
+            Coolbar::animateObjectProperty(m_equalizer, "size", 500, newBounds.size());
+            Coolbar::animateObjectProperty(m_equalizer, "pos", 300, QPointF(0, 0));
+            Coolbar::animateObjectProperty(m_equalizer, "colorness", 2000, 1.0);
             break;
     }
 
@@ -129,26 +108,26 @@ void AmarokCoolbarScene::updateElementsLayout(const QRectF & newBounds)
                 case SplittedButtons:
                     top = newBounds.center().y() - 64/2;
                     left = 10;
-                    ENRICO_ANIMATE_PARAM(m_buttons[0], "pos", 300, QPointF(left, top));
+                    Coolbar::animateObjectProperty(m_buttons[0], "pos", 300, QPointF(left, top));
                     left += 64 + 4;
-                    ENRICO_ANIMATE_PARAM(m_buttons[2], "pos", 300, QPointF(left, top));
+                    Coolbar::animateObjectProperty(m_buttons[2], "pos", 400, QPointF(left, top));
                     left = newBounds.right() - (64 + 4 + 64 + 10);
-                    ENRICO_ANIMATE_PARAM(m_buttons[1], "pos", 300, QPointF(left, top));
+                    Coolbar::animateObjectProperty(m_buttons[1], "pos", 500, QPointF(left, top));
                     left += 64 + 4;
-                    ENRICO_ANIMATE_PARAM(m_buttons[3], "pos", 300, QPointF(left, top));
+                    Coolbar::animateObjectProperty(m_buttons[3], "pos", 600, QPointF(left, top));
                     break;
 
                 case VerticalStack:
                     top = 0;
                     left = newBounds.center().x() - 2 * (64 + 4);
                     for (int b = 0; b < 4; b++) {
-                        ENRICO_ANIMATE_PARAM(m_buttons[b], "pos", 300, QPointF(left, top));
+                        Coolbar::animateObjectProperty(m_buttons[b], "pos", 300 + b * 100, QPointF(left, top));
                         left += 64 + 4;
                     }
                     break;
             }
             for (int b = 0; b < 4; b++)
-                ENRICO_ANIMATE_PARAM(m_buttons[b], "size", 500, QSizeF(64, 64));
+                Coolbar::animateObjectProperty(m_buttons[b], "size", 500, QSizeF(64, 64));
             break;
 
         default:
@@ -157,8 +136,8 @@ void AmarokCoolbarScene::updateElementsLayout(const QRectF & newBounds)
                 left = 10;
             top = newBounds.center().y() - 32 / 2;
             for (int b = 0; b < 4; b++) {
-                ENRICO_ANIMATE_PARAM(m_buttons[b], "size", 500, QSizeF(32, 32));
-                ENRICO_ANIMATE_PARAM(m_buttons[b], "pos", 300, QPointF(left, top));
+                Coolbar::animateObjectProperty(m_buttons[b], "size", 500, QSizeF(32, 32));
+                Coolbar::animateObjectProperty(m_buttons[b], "pos", 300, QPointF(left, top));
                 left += 32 + 4;
             }
             break;
@@ -171,6 +150,6 @@ void AmarokCoolbarScene::updateElementsLayout(const QRectF & newBounds)
     else
         top = (newBounds.height() - s.height()) / 2;
     m_flames->setVisible(mode != IDeviceSize);
-    ENRICO_ANIMATE_PARAM(m_flames, "size", 500, s);
-    ENRICO_ANIMATE_PARAM(m_flames, "pos", 300, QPointF(0, top));
+    Coolbar::animateObjectProperty(m_flames, "size", 500, s);
+    Coolbar::animateObjectProperty(m_flames, "pos", 300, QPointF(0, top));
 }

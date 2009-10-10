@@ -16,10 +16,13 @@
 #include "CoolbarScene.h"
 #include "CoolbarTheme.h"
 #include <QPainter>
+#include <QGraphicsSceneMouseEvent>
+
 
 CoolbarElement::CoolbarElement(CoolbarScene * coolbarScene, QGraphicsItem * parent)
   : QGraphicsWidget(parent)
   , m_scene(coolbarScene)
+  , m_hovered(false)
 {
     // add to the scene and listen for changes
     m_scene->addItem(this);
@@ -39,6 +42,24 @@ void CoolbarElement::paint(QPainter * painter, const QStyleOptionGraphicsItem *,
 {
     // default filling for unpainted subclasses
     painter->fillRect(rect(), Qt::red);
+}
+
+void CoolbarElement::hoverEnterEvent(QGraphicsSceneHoverEvent *)
+{
+    m_hovered = true;
+    update();
+}
+
+void CoolbarElement::hoverLeaveEvent(QGraphicsSceneHoverEvent *)
+{
+    m_hovered = false;
+    update();
+}
+
+void CoolbarElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
+{
+    if (event->button() == Qt::LeftButton)
+        emit clicked();
 }
 
 CoolbarScene * CoolbarElement::scene() const

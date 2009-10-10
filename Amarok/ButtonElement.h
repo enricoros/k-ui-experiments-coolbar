@@ -28,23 +28,16 @@ class ButtonElement : public CoolbarElement
         };
         ButtonElement(ButtonType, CoolbarScene *, QGraphicsItem * parent = 0);
 
-    Q_SIGNALS:
-        void clicked();
-
     protected:
         // ::CoolbarElement
         void themeChanged();
 
         // ::QGraphicsItem
-        void hoverEnterEvent(QGraphicsSceneHoverEvent * event);
-        void hoverLeaveEvent(QGraphicsSceneHoverEvent * event);
-        void mousePressEvent(QGraphicsSceneMouseEvent * event);
         void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
     private:
         ButtonType m_buttonType;
         QPixmap m_pixmap;
-        bool m_hovered;
 };
 
 #endif

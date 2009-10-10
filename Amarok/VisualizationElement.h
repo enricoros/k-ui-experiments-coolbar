@@ -28,13 +28,6 @@ class VisualizationElement : public CoolbarElement
         void setData(const Data &);
         Data data() const;
 
-    Q_SIGNALS:
-        void clicked();
-
-    protected:
-        // ::QGraphicsItem
-        void mousePressEvent(QGraphicsSceneMouseEvent * event);
-
     protected:
         Data m_data;
 

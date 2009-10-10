@@ -21,7 +21,6 @@
 ButtonElement::ButtonElement(ButtonType type, CoolbarScene * scene, QGraphicsItem * parent)
   : CoolbarElement(scene, parent)
   , m_buttonType(type)
-  , m_hovered(false)
 {
     // customize item
     setZValue(0.0);
@@ -45,28 +44,10 @@ void ButtonElement::themeChanged()
     }
 }
 
-void ButtonElement::hoverEnterEvent(QGraphicsSceneHoverEvent *)
-{
-    m_hovered = true;
-    update();
-}
-
-void ButtonElement::hoverLeaveEvent(QGraphicsSceneHoverEvent *)
-{
-    m_hovered = false;
-    update();
-}
-
-void ButtonElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
-{
-    if (event->button() == Qt::LeftButton)
-        emit clicked();
-}
-
 void ButtonElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
     painter->setRenderHint(QPainter::SmoothPixmapTransform, true);
-    painter->setOpacity(m_hovered ? 1.0 : 0.4);
+    painter->setOpacity(isHovered() ? 1.0 : 0.4);
     painter->drawPixmap(rect().toAlignedRect(), m_pixmap);
     painter->setRenderHint(QPainter::SmoothPixmapTransform, false);
 }

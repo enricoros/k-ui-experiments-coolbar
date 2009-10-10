@@ -26,19 +26,29 @@ class CoolbarElement : public QGraphicsWidget
         CoolbarElement(CoolbarScene *, QGraphicsItem * parent = 0);
         virtual ~CoolbarElement();
 
+    Q_SIGNALS:
+        void clicked();
+
+    protected:
         // ::QGraphicsWidget
-        void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
+        virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
+        virtual void hoverEnterEvent(QGraphicsSceneHoverEvent * event);
+        virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent * event);
+        virtual void mousePressEvent(QGraphicsSceneMouseEvent * event);
 
     protected Q_SLOTS:
+        // can be reimplemented by subclasses
         virtual void themeChanged() {}
 
     protected:
         CoolbarScene * scene() const;
         CoolbarTheme * theme() const;
+        inline bool isHovered() const { return m_hovered; }
 
     private:
         CoolbarElement();
         CoolbarScene * m_scene;
+        bool m_hovered;
 };
 
 #endif

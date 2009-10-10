@@ -13,12 +13,10 @@
  ***************************************************************************/
 
 #include "VisualizationElement.h"
-
-#include <QGraphicsSceneMouseEvent>
-#include <QPainter>
 #include <QTimer>
 
 #define FAKE_SIZE 20
+
 
 VisualizationElement::VisualizationElement(CoolbarScene * scene, QGraphicsItem * parent)
   : CoolbarElement(scene, parent)
@@ -42,12 +40,6 @@ void VisualizationElement::setData(const Data & data)
 VisualizationElement::Data VisualizationElement::data() const
 {
     return m_data;
-}
-
-void VisualizationElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
-{
-    if (event->button() == Qt::LeftButton)
-        emit clicked();
 }
 
 void VisualizationElement::slotGenFakeValues()

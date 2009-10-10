@@ -1,7 +1,9 @@
 /***************************************************************************
  *                                                                         *
- *   Copyright (C) 2009-2009 by Enrico Ros <enrico.ros@gmail.com>        *
- *   Started on 9 Oct 2009 by root.
+ *   This file is part of the Coolbar project,                             *
+ *       http://www.gitorious.org/qt4-gadgets/coolbar                      *
+ *                                                                         *
+ *   Copyright (C) 2009 by Enrico Ros <enrico.ros@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -10,16 +12,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __Coolar_h__
-#define __Coolar_h__
+#ifndef __CoolbarAnimation_h__
+#define __CoolbarAnimation_h__
 
-#include <QtGlobal>
+#include <QVariant>
 
-namespace Coolar {
+namespace Coolbar {
 
-    // different size modes for the bar and the elements
-    //enum SizeMode { DesktopSize, NetbookSize, IDeviceSize };
+    void animateObjectProperty(QObject * object, const char * propName, int duration, const QVariant & endValue, const QVariant & startValue = QVariant());
 
-}
+};
 
 #endif

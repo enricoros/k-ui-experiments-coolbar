@@ -1,7 +1,9 @@
 /***************************************************************************
  *                                                                         *
- *   Copyright (C) 2009-2009 by Enrico Ros <enrico.ros@gmail.com>        *
- *   Started on 9 Oct 2009 by root.
+ *   This file is part of the Coolbar project,                             *
+ *       http://www.gitorious.org/qt4-gadgets/coolbar                      *
+ *                                                                         *
+ *   Copyright (C) 2009 by Enrico Ros <enrico.ros@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -10,20 +12,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __AmarokCoolarScene_h__
-#define __AmarokCoolarScene_h__
+#ifndef __AmarokCoolbarScene_h__
+#define __AmarokCoolbarScene_h__
 
-#include "CoolarScene.h"
+#include "coolbar/CoolbarScene.h"
 class ButtonElement;
 class EqualizerElement;
 class FlamesElement;
 
 /// Amarok Specific Methods
-class AmarokCoolarScene : public CoolarScene
+class AmarokCoolbarScene : public CoolbarScene
 {
     Q_OBJECT
     public:
-        AmarokCoolarScene(QObject * parent = 0);
+        AmarokCoolbarScene(QObject * parent = 0);
 
         void setEqualizerVisible(bool visible);
         bool equalizerVisible() const;
@@ -33,7 +35,7 @@ class AmarokCoolarScene : public CoolarScene
         ButtonMode buttonMode() const;
 
     protected:
-        // ::CoolarScene
+        // ::CoolbarScene
         void updateElementsLayout(const QRectF & newBounds);
 
     private:

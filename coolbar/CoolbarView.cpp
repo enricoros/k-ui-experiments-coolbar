@@ -1,7 +1,9 @@
 /***************************************************************************
  *                                                                         *
- *   Copyright (C) 2009-2009 by Enrico Ros <enrico.ros@gmail.com>        *
- *   Started on 9 Oct 2009 by root.
+ *   This file is part of the Coolbar project,                             *
+ *       http://www.gitorious.org/qt4-gadgets/coolbar                      *
+ *                                                                         *
+ *   Copyright (C) 2009 by Enrico Ros <enrico.ros@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -10,19 +12,19 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "CoolarView.h"
+#include "CoolbarView.h"
 
-#include "CoolarScene.h"
+#include "CoolbarScene.h"
 
 #include <QResizeEvent>
 
-CoolarView::CoolarView(CoolarScene * coolarScene, QWidget * parent)
+CoolbarView::CoolbarView(CoolbarScene * coolbarScene, QWidget * parent)
   : QGraphicsView(parent)
-  , m_coolarScene(coolarScene)
+  , m_coolbarScene(coolbarScene)
 {
     // link to the scene
-    setScene(m_coolarScene);
-    connect(m_coolarScene, SIGNAL(shouldResizeView()), this, SLOT(slotResizeView()));
+    setScene(m_coolbarScene);
+    connect(m_coolbarScene, SIGNAL(shouldResizeView()), this, SLOT(slotResizeView()));
 
     // size policy: it needs to obey the vertical size hint
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
@@ -32,23 +34,23 @@ CoolarView::CoolarView(CoolarScene * coolarScene, QWidget * parent)
     setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 }
 
-void CoolarView::resizeEvent(QResizeEvent * event)
+void CoolbarView::resizeEvent(QResizeEvent * event)
 {
-    m_coolarScene->resize(event->size());
+    m_coolbarScene->resize(event->size());
 }
 
-QSize CoolarView::sizeHint() const
+QSize CoolbarView::sizeHint() const
 {
-    return m_coolarScene->dynamicSizeHint();
+    return m_coolbarScene->dynamicSizeHint();
 }
 
-QSize CoolarView::minimumSizeHint() const
+QSize CoolbarView::minimumSizeHint() const
 {
     // clear the minimum size hint of the graphicsview, to use the size policy
     return QSize();
 }
 
-void CoolarView::slotResizeView()
+void CoolbarView::slotResizeView()
 {
     updateGeometry();
 }

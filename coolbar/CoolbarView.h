@@ -1,7 +1,9 @@
 /***************************************************************************
  *                                                                         *
- *   Copyright (C) 2009-2009 by Enrico Ros <enrico.ros@gmail.com>        *
- *   Started on 9 Oct 2009 by root.
+ *   This file is part of the Coolbar project,                             *
+ *       http://www.gitorious.org/qt4-gadgets/coolbar                      *
+ *                                                                         *
+ *   Copyright (C) 2009 by Enrico Ros <enrico.ros@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -10,17 +12,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __CoolarView_h__
-#define __CoolarView_h__
+#ifndef __CoolbarView_h__
+#define __CoolbarView_h__
 
 #include <QGraphicsView>
-class CoolarScene;
+class CoolbarScene;
 
-class CoolarView : public QGraphicsView
+class CoolbarView : public QGraphicsView
 {
     Q_OBJECT
     public:
-        CoolarView(CoolarScene *, QWidget * parent = 0);
+        CoolbarView(CoolbarScene *, QWidget * parent = 0);
 
     protected:
         // ::QWidget
@@ -29,7 +31,7 @@ class CoolarView : public QGraphicsView
         QSize minimumSizeHint() const;
 
     private:
-        CoolarScene * m_coolarScene;
+        CoolbarScene * m_coolbarScene;
 
     private Q_SLOTS:
         void slotResizeView();

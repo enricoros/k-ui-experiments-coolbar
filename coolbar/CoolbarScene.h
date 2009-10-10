@@ -1,7 +1,9 @@
 /***************************************************************************
  *                                                                         *
- *   Copyright (C) 2009-2009 by Enrico Ros <enrico.ros@gmail.com>        *
- *   Started on 9 Oct 2009 by root.
+ *   This file is part of the Coolbar project,                             *
+ *       http://www.gitorious.org/qt4-gadgets/coolbar                      *
+ *                                                                         *
+ *   Copyright (C) 2009 by Enrico Ros <enrico.ros@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -10,24 +12,24 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __CoolarScene_h__
-#define __CoolarScene_h__
+#ifndef __CoolbarScene_h__
+#define __CoolbarScene_h__
 
 #include <QGraphicsScene>
 #include <QPalette>
 #include <QSize>
 
-class CoolarScene : public QGraphicsScene
+class CoolbarScene : public QGraphicsScene
 {
     Q_OBJECT
     Q_PROPERTY(QSize dynamicSizeHint READ dynamicSizeHint WRITE setDynamicSizeHint)
     public:
-        CoolarScene(QObject * parent = 0);
+        CoolbarScene(QObject * parent = 0);
 
         // sets the geometry of the contents (could change dynamic size too)
         void resize(const QSize & viewSize);
 
-        // dynamic size change, used by the Coolar view
+        // dynamic size change, used by the Coolbar view
         enum SizeMode { DesktopSize, NetbookSize, IDeviceSize };
         SizeMode dynamicSizeMode() const;
         QSize dynamicSizeHint() const;

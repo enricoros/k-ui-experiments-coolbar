@@ -1,7 +1,9 @@
 /***************************************************************************
  *                                                                         *
- *   Copyright (C) 2009-2009 by Enrico Ros <enrico.ros@gmail.com>        *
- *   Started on 9 Oct 2009 by root.
+ *   This file is part of the Coolbar project,                             *
+ *       http://www.gitorious.org/qt4-gadgets/coolbar                      *
+ *                                                                         *
+ *   Copyright (C) 2009 by Enrico Ros <enrico.ros@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -15,8 +17,8 @@
 
 #include <QMainWindow>
 namespace Ui { class TestWindow; }
-class AmarokCoolarScene;
-class CoolarView;
+class AmarokCoolbarScene;
+class CoolbarView;
 
 
 class TestWindow : public QMainWindow
@@ -28,8 +30,8 @@ class TestWindow : public QMainWindow
 
     private:
         Ui::TestWindow *ui;
-        CoolarView * m_view;
-        AmarokCoolarScene * m_acs;
+        CoolbarView * m_view;
+        AmarokCoolbarScene * m_acs;
 
     private slots:
         void on_aSplit_triggered(bool checked);

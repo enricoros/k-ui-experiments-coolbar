@@ -12,30 +12,24 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __ButtonElement_h__
-#define __ButtonElement_h__
+#include "CoolbarAnimation.h"
 
-#include <QGraphicsWidget>
-#include <QPixmap>
-
-class ButtonElement : public QGraphicsWidget
-{
-    Q_OBJECT
-    public:
-        ButtonElement(const QPixmap & hiqPixmap, QGraphicsItem * parent = 0);
-
-        // ::QGraphicsItem
-        void hoverEnterEvent(QGraphicsSceneHoverEvent * event);
-        void hoverLeaveEvent(QGraphicsSceneHoverEvent * event);
-        void mousePressEvent(QGraphicsSceneMouseEvent * event);
-        void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
-
-    Q_SIGNALS:
-        void clicked();
-
-    private:
-        QPixmap m_pixmap;
-        bool m_hovered;
-};
-
+#if QT_VERSION >= 0x040600
+#include <QPropertyAnimation>
 #endif
+
+void Coolbar::animateObjectProperty(QObject * object, const char * propName, int duration, const QVariant & endValue, const QVariant & startValue)
+{
+#if QT_VERSION >= 0x040600
+    QPropertyAnimation * ani = new QPropertyAnimation(object, propName, object);
+    ani->setEasingCurve(QEasingCurve::OutCubic);
+    ani->setDuration(duration);
+    if (startValue.isValid())
+        ani->setStartValue(startValue);
+    ani->setEndValue(endValue);
+    ani->start(QPropertyAnimation::DeleteWhenStopped);
+#else
+    Q_UNUSED(startValue);
+    object->setProperty(propName, endValue);
+#endif
+}

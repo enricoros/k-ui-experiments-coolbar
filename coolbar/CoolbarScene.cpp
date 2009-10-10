@@ -1,7 +1,9 @@
 /***************************************************************************
  *                                                                         *
- *   Copyright (C) 2009-2009 by Enrico Ros <enrico.ros@gmail.com>        *
- *   Started on 9 Oct 2009 by root.
+ *   This file is part of the Coolbar project,                             *
+ *       http://www.gitorious.org/qt4-gadgets/coolbar                      *
+ *                                                                         *
+ *   Copyright (C) 2009 by Enrico Ros <enrico.ros@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -10,7 +12,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "CoolarScene.h"
+#include "CoolbarScene.h"
 
 #include <QDebug>
 #include <QPainter>
@@ -22,7 +24,7 @@
 #include <QPropertyAnimation>
 #endif
 
-CoolarScene::CoolarScene(QObject * parent)
+CoolbarScene::CoolbarScene(QObject * parent)
   : QGraphicsScene(parent)
   , m_dynamicSizeMode(DesktopSize)
 {
@@ -35,7 +37,7 @@ CoolarScene::CoolarScene(QObject * parent)
     updateDynamicSize(-1);
 }
 
-void CoolarScene::resize(const QSize & viewSize)
+void CoolbarScene::resize(const QSize & viewSize)
 {
     // apply the new size, if changed
     if (viewSize == m_sceneSize)
@@ -53,18 +55,18 @@ void CoolarScene::resize(const QSize & viewSize)
 }
 
 /// Query
-CoolarScene::SizeMode CoolarScene::dynamicSizeMode() const
+CoolbarScene::SizeMode CoolbarScene::dynamicSizeMode() const
 {
     return m_dynamicSizeMode;
 }
 
-QSize CoolarScene::dynamicSizeHint() const
+QSize CoolbarScene::dynamicSizeHint() const
 {
     return m_dynamicSizeHint;
 }
 
 /// Drawing
-QColor CoolarScene::paletteColor(QPalette::ColorRole role, int lightAdj)
+QColor CoolbarScene::paletteColor(QPalette::ColorRole role, int lightAdj)
 {
     QColor col = palette().color(role);
     if (!lightAdj)
@@ -72,7 +74,7 @@ QColor CoolarScene::paletteColor(QPalette::ColorRole role, int lightAdj)
     return lightAdj > 0 ? col.lighter(100 + lightAdj) : col.darker(100 - lightAdj);
 }
 
-void CoolarScene::drawBackground(QPainter * painter, const QRectF & rect)
+void CoolbarScene::drawBackground(QPainter * painter, const QRectF & rect)
 {
     // setup gradient
     QLinearGradient lg(0, 0, 0, m_sceneSize.height());
@@ -89,7 +91,7 @@ void CoolarScene::drawBackground(QPainter * painter, const QRectF & rect)
 
 
 /// Dynamic Size Logic
-void CoolarScene::setDynamicSizeHint(const QSize & size)
+void CoolbarScene::setDynamicSizeHint(const QSize & size)
 {
     if (size != m_dynamicSizeHint) {
         m_dynamicSizeHint = size;
@@ -97,7 +99,7 @@ void CoolarScene::setDynamicSizeHint(const QSize & size)
     }
 }
 
-bool CoolarScene::updateDynamicSize(int testWidth)
+bool CoolbarScene::updateDynamicSize(int testWidth)
 {
     // recalc size mode and hint
     SizeMode prevMode = m_dynamicSizeMode;

@@ -58,9 +58,9 @@
      <height>25</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuCoolar">
+   <widget class="QMenu" name="menuCoolbar">
     <property name="title">
-     <string>Coolar</string>
+     <string>Coolbar</string>
     </property>
     <addaction name="aEq"/>
     <addaction name="aSplit"/>
@@ -76,7 +76,7 @@
     <addaction name="actionQuit"/>
    </widget>
    <addaction name="menuFile"/>
-   <addaction name="menuCoolar"/>
+   <addaction name="menuCoolbar"/>
   </widget>
   <action name="aEq">
    <property name="checkable">

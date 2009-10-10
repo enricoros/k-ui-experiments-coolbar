@@ -1,7 +1,9 @@
 /***************************************************************************
  *                                                                         *
- *   Copyright (C) 2009-2009 by Enrico Ros <enrico.ros@gmail.com>        *
- *   Started on 9 Oct 2009 by root.
+ *   This file is part of the Coolbar project,                             *
+ *       http://www.gitorious.org/qt4-gadgets/coolbar                      *
+ *                                                                         *
+ *   Copyright (C) 2009 by Enrico Ros <enrico.ros@gmail.com>               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -10,7 +12,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "AmarokCoolarScene.h"
+#include "AmarokScene.h"
 
 #include "ButtonElement.h"
 #include "EqualizerElement.h"
@@ -38,8 +40,8 @@
 #endif
 
 
-AmarokCoolarScene::AmarokCoolarScene(QObject * parent)
-  : CoolarScene(parent)
+AmarokCoolbarScene::AmarokCoolbarScene(QObject * parent)
+  : CoolbarScene(parent)
   , m_buttonMode(SplittedButtons)
 {
     // create equalizer
@@ -67,17 +69,17 @@ AmarokCoolarScene::AmarokCoolarScene(QObject * parent)
     }
 }
 
-void AmarokCoolarScene::setEqualizerVisible(bool visible)
+void AmarokCoolbarScene::setEqualizerVisible(bool visible)
 {
     m_equalizer->setVisible(visible);
 }
 
-bool AmarokCoolarScene::equalizerVisible() const
+bool AmarokCoolbarScene::equalizerVisible() const
 {
     return m_equalizer;
 }
 
-void AmarokCoolarScene::setButtonMode(ButtonMode mode)
+void AmarokCoolbarScene::setButtonMode(ButtonMode mode)
 {
     if (m_buttonMode != mode) {
         m_buttonMode = mode;
@@ -85,15 +87,15 @@ void AmarokCoolarScene::setButtonMode(ButtonMode mode)
     }
 }
 
-AmarokCoolarScene::ButtonMode AmarokCoolarScene::buttonMode() const
+AmarokCoolbarScene::ButtonMode AmarokCoolbarScene::buttonMode() const
 {
     return m_buttonMode;
 }
 
-void AmarokCoolarScene::updateElementsLayout(const QRectF & newBounds)
+void AmarokCoolbarScene::updateElementsLayout(const QRectF & newBounds)
 {
     // update base elements
-    CoolarScene::updateElementsLayout(newBounds);
+    CoolbarScene::updateElementsLayout(newBounds);
     SizeMode mode = dynamicSizeMode();
 
     // update equalizer

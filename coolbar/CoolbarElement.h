@@ -11,3 +11,24 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+
+#ifndef __CoolbarElement_h__
+#define __CoolbarElement_h__
+
+#include <QGraphicsWidget>
+class CoolbarScene;
+class CoolbarTheme;
+
+class CoolbarElement : public QGraphicsWidget
+{
+    Q_OBJECT
+    public:
+        CoolbarElement(QGraphicsItem * parent = 0);
+        virtual ~CoolbarElement();
+
+    protected:
+        CoolbarScene * scene() const;
+        CoolbarTheme * theme() const;
+};
+
+#endif

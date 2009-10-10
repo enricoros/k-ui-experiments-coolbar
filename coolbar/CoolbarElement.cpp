@@ -11,3 +11,29 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+
+#include "CoolbarElement.h"
+#include "CoolbarScene.h"
+#include "CoolbarTheme.h"
+
+CoolbarElement::CoolbarElement(QGraphicsItem * parent)
+  : QGraphicsWidget(parent)
+{
+    // nothing to do here...
+}
+
+CoolbarElement::~CoolbarElement()
+{
+    // nothing to do here...
+}
+
+CoolbarScene * CoolbarElement::scene() const
+{
+    return dynamic_cast<CoolbarScene *>(QGraphicsWidget::scene());
+}
+
+CoolbarTheme * CoolbarElement::theme() const
+{
+    CoolbarScene * scene = dynamic_cast<CoolbarScene *>(QGraphicsWidget::scene());
+    return scene ? scene->theme() : 0;
+}

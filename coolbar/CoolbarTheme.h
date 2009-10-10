@@ -11,3 +11,28 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+
+#ifndef __CoolbarTheme_h__
+#define __CoolbarTheme_h__
+
+#include <QDir>
+
+// SUBJECT TO BIG CHANGES
+// SUBJECT TO BIG CHANGES
+// SUBJECT TO BIG CHANGES
+
+class CoolbarTheme
+{
+    public:
+        CoolbarTheme();
+        ~CoolbarTheme();
+
+        void loadFromDir(const QDir & themeDir);
+        //void loadFromXml(const QString & themeFileName);
+        //void loadFromData(const QByteArray & themeData);
+
+    private:
+        // ...
+};
+
+#endif

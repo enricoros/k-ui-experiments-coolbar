@@ -11,3 +11,15 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+
+#include "CoolbarLayouter.h"
+
+CoolbarLayouter::CoolbarLayouter()
+{
+    qWarning("CL");
+}
+
+CoolbarLayouter::~CoolbarLayouter()
+{
+    qWarning("/CL");
+}

@@ -13,19 +13,18 @@
  ***************************************************************************/
 
 #include "CoolbarScene.h"
-
-#include <QDebug>
+#include "CoolbarAnimation.h"
+#include "CoolbarLayouter.h"
+#include "CoolbarTheme.h"
 #include <QPainter>
 
-// uncomment following to enable the Dynamic Size changing animation
-//#define ANIMATE_DYNSIZE
-
-#ifdef ANIMATE_DYNSIZE
-#include <QPropertyAnimation>
-#endif
 
 CoolbarScene::CoolbarScene(QObject * parent)
   : QGraphicsScene(parent)
+  , m_theme(0)
+  , m_layouter(0)
+  , m_animateResize(false)
+  , m_animateLayouting(true)
   , m_dynamicSizeMode(DesktopSize)
 {
     // sets the palette
@@ -37,6 +36,69 @@ CoolbarScene::CoolbarScene(QObject * parent)
     updateDynamicSize(-1);
 }
 
+CoolbarScene::~CoolbarScene()
+{
+    delete m_theme;
+    delete m_layouter;
+}
+
+void CoolbarScene::setTheme(CoolbarTheme * theme)
+{
+    if (theme != m_theme) {
+        // notify about the change
+        CoolbarTheme * oldTheme = m_theme;
+        m_theme = theme;
+        emit themeChanged();
+
+        // update screen
+        updateElementsLayout(m_sceneRect);
+        update();
+
+        // delete old
+        delete oldTheme;
+    }
+}
+
+CoolbarTheme * CoolbarScene::theme() const
+{
+    return m_theme;
+}
+
+void CoolbarScene::setLayouter(CoolbarLayouter * layouter)
+{
+    if (layouter != m_layouter) {
+        // notify about the change
+        CoolbarLayouter * oldLayouter = m_layouter;
+        m_layouter = layouter;
+        emit layouterChanged();
+
+        // update screen
+        updateElementsLayout(m_sceneRect);
+        update();
+
+        // delete old
+        oldLayouter->deleteLater();
+    }
+}
+
+CoolbarLayouter * CoolbarScene::layouter() const
+{
+    return m_layouter;
+}
+
+void CoolbarScene::setResizeAnimationEnabled(bool on)
+{
+    if (on != m_animateResize)
+        m_animateResize = on;
+}
+
+void CoolbarScene::setLayoutAnimationEnabled(bool on)
+{
+    if (on != m_animateLayouting)
+        m_animateLayouting = on;
+}
+
+/// evaluate SizeMode change, reposition elements, change scene rect
 void CoolbarScene::resize(const QSize & viewSize)
 {
     // apply the new size, if changed
@@ -120,15 +182,10 @@ bool CoolbarScene::updateDynamicSize(int testWidth)
     if (testWidth == -1) {
         setDynamicSizeHint(targetSizeHint);
     } else if (changed) {
-#ifdef ANIMATE_DYNSIZE
-        QPropertyAnimation * ani = new QPropertyAnimation(this, "dynamicSizeHint", this);
-        ani->setEasingCurve(QEasingCurve::InOutCubic);
-        ani->setDuration(500);
-        ani->setEndValue(targetSizeHint);
-        ani->start(QAbstractAnimation::DeleteWhenStopped);
-#else
-        setDynamicSizeHint(targetSizeHint);
-#endif
+        if (m_animateResize)
+            Coolbar::animateObjectProperty(this, "dynamicSizeHint", 500, targetSizeHint); // InOutCubic
+        else
+            setDynamicSizeHint(targetSizeHint);
     }
 
     // tell if changed

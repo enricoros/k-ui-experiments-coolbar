@@ -18,6 +18,8 @@
 #include <QGraphicsScene>
 #include <QPalette>
 #include <QSize>
+class CoolbarLayouter;
+class CoolbarTheme;
 
 class CoolbarScene : public QGraphicsScene
 {
@@ -25,6 +27,23 @@ class CoolbarScene : public QGraphicsScene
     Q_PROPERTY(QSize dynamicSizeHint READ dynamicSizeHint WRITE setDynamicSizeHint)
     public:
         CoolbarScene(QObject * parent = 0);
+        virtual ~CoolbarScene();
+
+        // Theme (Look) support
+        void setTheme(CoolbarTheme * theme);
+        CoolbarTheme * theme() const;
+
+        // Layouters (Feel) support
+        void setLayouter(CoolbarLayouter * layouter);
+        CoolbarLayouter * layouter() const;
+
+        // animation when changing SizeMode (ex: DesktopSize -> IDeviceSize)
+        void setResizeAnimationEnabled(bool);
+        inline bool resizeAnimationEnabled() const { return m_animateResize; }
+
+        // animate
+        void setLayoutAnimationEnabled(bool);
+        inline bool layoutAnimationEnabled() const { return m_animateLayouting; }
 
         // sets the geometry of the contents (could change dynamic size too)
         void resize(const QSize & viewSize);
@@ -37,6 +56,8 @@ class CoolbarScene : public QGraphicsScene
     Q_SIGNALS:
         // emitted when the size hint changes
         void shouldResizeView();
+        void themeChanged();
+        void layouterChanged();
 
     protected:
         // to be inherited
@@ -53,6 +74,14 @@ class CoolbarScene : public QGraphicsScene
     private:
         void setDynamicSizeHint(const QSize & size);
         bool updateDynamicSize(int testWidth);
+
+        // internal objects
+        CoolbarTheme * m_theme;
+        CoolbarLayouter * m_layouter;
+
+        // parameters
+        bool m_animateResize;
+        bool m_animateLayouting;
 
         // scene geometry
         QSize m_sceneSize;

@@ -11,3 +11,20 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+
+#include "CoolbarTheme.h"
+
+CoolbarTheme::CoolbarTheme()
+{
+    // nothing to do here...
+}
+
+CoolbarTheme::~CoolbarTheme()
+{
+    // nothing to do here...
+}
+
+void CoolbarTheme::loadFromDir(const QDir & themeDir)
+{
+
+}

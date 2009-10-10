@@ -11,3 +11,25 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+
+#ifndef __CoolbarLayouter_h__
+#define __CoolbarLayouter_h__
+
+#include <QObject>
+
+// SUBJECT TO BIG CHANGES
+// SUBJECT TO BIG CHANGES
+// SUBJECT TO BIG CHANGES
+
+class CoolbarLayouter : public QObject
+{
+    Q_OBJECT
+    public:
+        CoolbarLayouter();
+        virtual ~CoolbarLayouter();
+
+    private:
+        // ...
+};
+
+#endif

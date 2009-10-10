@@ -15,6 +15,7 @@
 #include "AmarokScene.h"
 #include "ButtonElement.h"
 #include "BarAnalyzerElement.h"
+#include "DotAnalyzerElement.h"
 #include "FlameElement.h"
 #include "Coolbar/CoolbarAnimation.h"
 #include "Coolbar/CoolbarTheme.h"
@@ -24,7 +25,7 @@ AmarokScene::AmarokScene(QObject * parent)
   : CoolbarScene(parent)
 {
     // create Analyzer
-    m_barAnalyzer = new BarAnalyzerElement(this);
+    m_visualization = new DotAnalyzerElement(this);
 
     // create flames
     m_flame = new FlameElement(this);
@@ -39,12 +40,12 @@ AmarokScene::AmarokScene(QObject * parent)
 
 void AmarokScene::setAnalyzerVisible(bool visible)
 {
-    m_barAnalyzer->setVisible(visible);
+    m_visualization->setVisible(visible);
 }
 
 bool AmarokScene::analyzerVisible() const
 {
-    return m_barAnalyzer;
+    return m_visualization;
 }
 
 void AmarokScene::updateElementsLayout(const QRectF & newBounds)
@@ -66,14 +67,14 @@ void AmarokScene::updateElementsLayout(const QRectF & newBounds)
                 left = newBounds.width() - (s.width() + 10);
                 top = newBounds.center().y() - s.height() / 3;
             }
-            Coolbar::animateObjectProperty(m_barAnalyzer, "size", 500, s);
-            Coolbar::animateObjectProperty(m_barAnalyzer, "pos", 300, QPointF(left, top));
-            Coolbar::animateObjectProperty(m_barAnalyzer, "colorness", 2000, 0.0);
+            Coolbar::animateObjectProperty(m_visualization, "size", 500, s);
+            Coolbar::animateObjectProperty(m_visualization, "pos", 300, QPointF(left, top));
+            Coolbar::animateObjectProperty(m_visualization, "colorness", 2000, 0.0);
             break;
         case IDeviceSize:
-            Coolbar::animateObjectProperty(m_barAnalyzer, "size", 500, newBounds.size());
-            Coolbar::animateObjectProperty(m_barAnalyzer, "pos", 300, QPointF(0, 0));
-            Coolbar::animateObjectProperty(m_barAnalyzer, "colorness", 2000, 1.0);
+            Coolbar::animateObjectProperty(m_visualization, "size", 500, newBounds.size());
+            Coolbar::animateObjectProperty(m_visualization, "pos", 300, QPointF(0, 0));
+            Coolbar::animateObjectProperty(m_visualization, "colorness", 2000, 1.0);
             break;
     }
 

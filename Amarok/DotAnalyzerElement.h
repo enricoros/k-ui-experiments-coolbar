@@ -12,32 +12,27 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __AmarokCoolbarScene_h__
-#define __AmarokCoolbarScene_h__
+#ifndef __DotAnalyzerElement_h__
+#define __DotAnalyzerElement_h__
 
-#include "Coolbar/CoolbarScene.h"
-class ButtonElement;
-class VisualizationElement;
-class FlameElement;
+#include "Amarok/VisualizationElement.h"
 
-/// Amarok Specific Methods
-class AmarokScene : public CoolbarScene
+class DotAnalyzerElement : public VisualizationElement
 {
     Q_OBJECT
+    Q_PROPERTY(qreal colorness READ colorness WRITE setColorness)
     public:
-        AmarokScene(QObject * parent = 0);
+        DotAnalyzerElement(CoolbarScene *, QGraphicsItem * parent = 0);
 
-        void setAnalyzerVisible(bool visible);
-        bool analyzerVisible() const;
+        // properties
+        qreal colorness() const;
+        void setColorness(qreal);
 
-    protected:
-        // ::CoolbarScene
-        void updateElementsLayout(const QRectF & newBounds);
+        // ::QGraphicsItem
+        void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
     private:
-        ButtonElement * m_buttons[4];
-        VisualizationElement * m_visualization;
-        FlameElement * m_flame;
+        qreal m_colorness;
 };
 
 #endif

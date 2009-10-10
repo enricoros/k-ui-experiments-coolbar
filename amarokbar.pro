@@ -29,9 +29,6 @@ SOURCES += \
     ButtonElement.cpp \
     FlamesElement.cpp
 
-RESOURCES += \
-    amarokbar.qrc
-
 # Test app input files
 HEADERS += \
     TestWindow.h

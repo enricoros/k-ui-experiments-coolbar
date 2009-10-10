@@ -35,11 +35,11 @@ TestWindow::TestWindow(QWidget *parent)
     ui->aAnalyzer->setChecked(scene->analyzerVisible());
     ui->aAnimateLayouting->setChecked(scene->layoutAnimationEnabled());
     ui->aAnimateResize->setChecked(scene->resizeAnimationEnabled());
-    //ui->aSplit->setChecked(scene->buttonMode() == AmarokScene::SplittedButtons);
 }
 
 TestWindow::~TestWindow()
 {
+    delete m_coolBar;
     delete ui;
 }
 
@@ -60,13 +60,11 @@ void TestWindow::on_aAnimateResize_triggered(bool checked)
 
 void TestWindow::on_themeCombo_currentIndexChanged(int index)
 {
-    qWarning("A");
     m_coolBar->setTheme(index);
 }
 
 void TestWindow::on_layoutCombo_currentIndexChanged(int index)
 {
-    qWarning("B");
     m_coolBar->setLayout(index);
 }
 

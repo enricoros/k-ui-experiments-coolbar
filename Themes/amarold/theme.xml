@@ -1,3 +1,12 @@
+<?xml version="1.0" ?>
 <theme>
     <name>Amarok 2.2</name>
+
+    <element name="nextButton" pixmap="amarok_next.png" />
+    <element name="pauseButton" pixmap="amarok_pause.png" />
+    <element name="playButton" pixmap="amarok_play.png" />
+    <element name="prevButton" pixmap="amarok_prev.png" />
+    <element name="stopButton" pixmap="amarok_stop.png" />
+
+    <palette />
 </theme>

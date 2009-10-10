@@ -15,13 +15,24 @@
 #ifndef __CoolbarTheme_h__
 #define __CoolbarTheme_h__
 
+#include <QDir>
+#include <QPalette>
 #include <QPixmap>
 #include <QString>
 
 class CoolbarTheme
 {
     public:
-        virtual QPixmap elementPixmap(const QString & epId) = 0;
+        struct Description {
+            QString name;
+            QDir themeDir;
+            int provider;
+        };
+
+        virtual QString themeName() const = 0;
+        virtual QPixmap elementPixmap(const QString & epId) const = 0;
+        virtual QPalette palette() const = 0;
+        virtual QBrush brush(QPalette::ColorRole) const = 0;
 };
 
 #endif

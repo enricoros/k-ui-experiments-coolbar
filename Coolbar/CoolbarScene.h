@@ -66,7 +66,6 @@ class CoolbarScene : public QGraphicsScene
         // to be used
         inline QSize sceneSize() const { return m_sceneSize; }
         inline QRectF sceneRect() const { return m_sceneRect; }
-        QColor paletteColor(QPalette::ColorRole role, int lightAdj = 0);
 
         // ::QGraphicsScene
         void drawBackground(QPainter * painter, const QRectF & rect);

@@ -16,7 +16,7 @@
 #define __AmarokCoolbar_h__
 
 #include <QList>
-#include "Coolbar/CoolbarThemeV1.h"
+#include "Coolbar/CoolbarTheme.h"
 #include "Coolbar/CoolbarView.h"
 #include "AmarokScene.h"
 
@@ -37,7 +37,7 @@ class AmarokCoolbar
         QList<QString> layoutNames() const;
 
     private:
-        QList<ThemeDescription> m_themes;
+        QList<CoolbarTheme::Description> m_themes;
         AmarokScene * m_scene;
         CoolbarView * m_view;
         int m_currentTheme;

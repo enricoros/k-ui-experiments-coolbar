@@ -13,6 +13,7 @@
  ***************************************************************************/
 
 #include "AmarokCoolbar.h"
+#include "Coolbar/CoolbarThemeV1.h"
 
 AmarokCoolbar::AmarokCoolbar(const QString & baseDir)
   : m_scene(0)
@@ -21,7 +22,7 @@ AmarokCoolbar::AmarokCoolbar(const QString & baseDir)
 {
     m_scene = new AmarokScene;
     m_view = new CoolbarView(m_scene);
-    m_themes = CoolbarThemeV1::scanForThemes(baseDir);
+    m_themes = CoolbarThemeV1::scanForV1Themes(baseDir);
 }
 
 AmarokCoolbar::~AmarokCoolbar()
@@ -54,7 +55,7 @@ void AmarokCoolbar::setTheme(int index)
 QList<QString> AmarokCoolbar::themeNames() const
 {
     QList<QString> names;
-    foreach (const ThemeDescription & desc, m_themes)
+    foreach (const CoolbarTheme::Description & desc, m_themes)
         names.append(desc.name);
     return names;
 }

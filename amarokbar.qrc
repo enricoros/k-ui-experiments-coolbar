@@ -1,9 +1,0 @@
-<RCC>
-    <qresource prefix="/" >
-        <file>data/button-next-64.png</file>
-        <file>data/button-play-64.png</file>
-        <file>data/button-prev-64.png</file>
-        <file>data/button-stop-64.png</file>
-        <file>data/flames.svg</file>
-    </qresource>
-</RCC>

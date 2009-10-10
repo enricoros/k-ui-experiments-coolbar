@@ -18,25 +18,26 @@
 #include "CoolbarTheme.h"
 #include <QDir>
 #include <QMap>
-#include <QPixmap>
-
-struct ThemeDescription {
-    QString name;
-    QDir themeDir;
-};
 
 class CoolbarThemeV1 : public CoolbarTheme
 {
     public:
-        static QList<ThemeDescription> scanForThemes(const QString & baseDir);
-
+        enum { ProviderCode = 0x001 };
         CoolbarThemeV1(const QDir & themeDir);
 
         // ::CoolbarTheme
-        QPixmap elementPixmap(const QString & epId);
+        QString themeName() const;
+        QPixmap elementPixmap(const QString &) const;
+        QPalette palette() const;
+        QBrush brush(QPalette::ColorRole) const;
+
+        static QList<CoolbarTheme::Description> scanForV1Themes(const QString & baseDir);
 
     private:
+        bool loadThemeFromDir(const QDir & themeDir);
+        QString m_name;
         QMap<QString, QPixmap> m_elementPixmaps;
+        QPalette m_palette;
 };
 
 #endif

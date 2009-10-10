@@ -128,25 +128,15 @@ QSize CoolbarScene::dynamicSizeHint() const
 }
 
 /// Drawing
-QColor CoolbarScene::paletteColor(QPalette::ColorRole role, int lightAdj)
-{
-    QColor col = palette().color(role);
-    if (!lightAdj)
-        return col;
-    return lightAdj > 0 ? col.lighter(100 + lightAdj) : col.darker(100 - lightAdj);
-}
-
 void CoolbarScene::drawBackground(QPainter * painter, const QRectF & rect)
 {
-    // setup gradient
-    QLinearGradient lg(0, 0, 0, m_sceneSize.height());
-    lg.setColorAt(0.0, paletteColor(QPalette::Window, 50));
-    lg.setColorAt(1.0, paletteColor(QPalette::Window, -60));
+    if (!m_theme)
+        return;
 
     // paint with good performance
     painter->setCompositionMode(QPainter::CompositionMode_Source);
     painter->setRenderHint(QPainter::Antialiasing, false);
-    painter->fillRect(rect.toAlignedRect(), lg);
+    painter->fillRect(rect.toAlignedRect(), m_theme->brush(QPalette::Window));
     painter->setRenderHint(QPainter::Antialiasing, true);
     painter->setCompositionMode(QPainter::CompositionMode_SourceOver);
 }

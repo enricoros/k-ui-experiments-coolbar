@@ -13,6 +13,7 @@
  ***************************************************************************/
 
 #include "ButtonElement.h"
+#include "Coolbar/CoolbarAnimation.h"
 #include "Coolbar/CoolbarTheme.h"
 #include "AmarokScene.h"
 #include <QGraphicsSceneMouseEvent>
@@ -42,6 +43,24 @@ void ButtonElement::themeChanged()
         if (size().isEmpty() && !m_pixmap.isNull())
             resize(m_pixmap.size());
     }
+}
+
+void ButtonElement::hoverEnterEvent(QGraphicsSceneHoverEvent *)
+{
+#if QT_VERSION >= 0x040600
+    setTransformOriginPoint(rect().center());
+    Coolbar::animateObjectProperty(this, "scale", 200, 1.1);
+    Coolbar::animateObjectProperty(this, "rotation", 1000, 360);
+#endif
+}
+
+void ButtonElement::hoverLeaveEvent(QGraphicsSceneHoverEvent *)
+{
+#if QT_VERSION >= 0x040600
+    setTransformOriginPoint(rect().center());
+    Coolbar::animateObjectProperty(this, "scale", 200, 1.0);
+    Coolbar::animateObjectProperty(this, "rotation", 1000, 0);
+#endif
 }
 
 void ButtonElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)

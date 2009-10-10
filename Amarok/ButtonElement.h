@@ -33,6 +33,8 @@ class ButtonElement : public CoolbarElement
         void themeChanged();
 
         // ::QGraphicsItem
+        void hoverEnterEvent(QGraphicsSceneHoverEvent * event);
+        void hoverLeaveEvent(QGraphicsSceneHoverEvent * event);
         void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
     private:

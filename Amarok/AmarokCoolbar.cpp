@@ -13,6 +13,8 @@
  ***************************************************************************/
 
 #include "AmarokCoolbar.h"
+#include "Amarok22Layouter.h"
+#include "ProposedLayouter.h"
 #include "Coolbar/CoolbarThemeV1.h"
 
 AmarokCoolbar::AmarokCoolbar(const QString & baseDir)
@@ -46,9 +48,10 @@ void AmarokCoolbar::setTheme(int index)
     // skip bad index
     if (index < 0 || index >= m_themes.size() || index == m_currentTheme)
         return;
+    m_currentTheme = index;
 
     // load theme
-    CoolbarTheme * theme = new CoolbarThemeV1(m_themes[index].themeDir);
+    CoolbarTheme * theme = new CoolbarThemeV1(m_themes[m_currentTheme].themeDir);
     m_scene->setTheme(theme);
 }
 
@@ -60,14 +63,23 @@ QList<QString> AmarokCoolbar::themeNames() const
     return names;
 }
 
-void AmarokCoolbar::setLayout(int /*index*/)
+void AmarokCoolbar::setLayout(int index)
 {
-    // not implemented
+    // skip bad indexes
+    if (index < 0 || index >= m_themes.size())
+        return;
+
+    // create and apply a new layouter
+    switch (index) {
+        case 0: m_scene->setLayouter(new ProposedLayouter); break;
+        case 1: m_scene->setLayouter(new Amarok22Layouter); break;
+    }
 }
 
 QList<QString> AmarokCoolbar::layoutNames() const
 {
     QList<QString> names;
-    // not implemented
+    names.append("Proposal");
+    names.append("Amarok 2.2");
     return names;
 }

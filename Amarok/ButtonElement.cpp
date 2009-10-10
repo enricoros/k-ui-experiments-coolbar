@@ -47,7 +47,7 @@ void ButtonElement::themeChanged()
 void ButtonElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
     painter->setRenderHint(QPainter::SmoothPixmapTransform, true);
-    painter->setOpacity(isHovered() ? 1.0 : 0.4);
+    //painter->setOpacity(isHovered() ? 1.0 : 0.4);
     painter->drawPixmap(rect().toAlignedRect(), m_pixmap);
     painter->setRenderHint(QPainter::SmoothPixmapTransform, false);
 }

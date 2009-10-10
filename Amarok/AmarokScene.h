@@ -20,25 +20,55 @@ class ButtonElement;
 class VisualizationElement;
 class FlameElement;
 
+/// Mandates behavior of a layouter
+class Layouter
+{
+    public:
+        virtual void layout(const QRectF & bounds,
+                            CoolbarScene::SizeMode mode,
+                            ButtonElement * buttons[4],
+                            FlameElement *,
+                            VisualizationElement *) = 0;
+        virtual QString layoutName() const = 0;
+};
+
 /// Amarok Specific Methods
 class AmarokScene : public CoolbarScene
 {
     Q_OBJECT
     public:
         AmarokScene(QObject * parent = 0);
+        ~AmarokScene();
 
+        // Layouters (Feel) support
+        void setLayouter(Layouter * layouter);
+        Layouter * layouter() const;
+
+        // animate
+        void setLayoutAnimationEnabled(bool);
+        bool layoutAnimationEnabled() const;
+
+        // TEMP show analyzers
         void setAnalyzerVisible(bool visible);
         bool analyzerVisible() const;
+
+    Q_SIGNALS:
+        void layouterChanged();
 
     protected:
         // ::CoolbarScene
         void updateElementsLayout(const QRectF & newBounds);
 
     private:
+        // internal
+        Layouter * m_layouter;
+        bool m_animateLayouting;
+        int m_visualizationIndex;
+
+        // elements
         ButtonElement * m_buttons[4];
         FlameElement * m_flame;
         VisualizationElement * m_visualization;
-        int m_visualizationIndex;
 
     private Q_SLOTS:
         void slotNextVisualization();

@@ -12,24 +12,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __CoolbarLayouter_h__
-#define __CoolbarLayouter_h__
+#ifndef __Amarok22Layouter_h__
+#define __Amarok22Layouter_h__
 
-#include <QObject>
+#include "AmarokScene.h"
 
-// SUBJECT TO BIG CHANGES
-// SUBJECT TO BIG CHANGES
-// SUBJECT TO BIG CHANGES
-
-class CoolbarLayouter : public QObject
+class Amarok22Layouter : public Layouter
 {
-    Q_OBJECT
     public:
-        CoolbarLayouter();
-        virtual ~CoolbarLayouter();
-
-    private:
-        // ...
+        // ::Layouter
+        QString layoutName() const { return "Amarok 2.2"; }
+        void layout(const QRectF & bounds, CoolbarScene::SizeMode mode, ButtonElement * buttons[4], FlameElement *, VisualizationElement *);
 };
 
 #endif

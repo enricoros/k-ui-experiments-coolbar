@@ -12,14 +12,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "CoolbarLayouter.h"
+#ifndef __ProposedLayouter_h__
+#define __ProposedLayouter_h__
 
-CoolbarLayouter::CoolbarLayouter()
-{
-    qWarning("CL");
-}
+#include "AmarokScene.h"
 
-CoolbarLayouter::~CoolbarLayouter()
+class ProposedLayouter : public Layouter
 {
-    qWarning("/CL");
-}
+    public:
+        // ::Layouter
+        QString layoutName() const { return "Proposed"; }
+        void layout(const QRectF & bounds, CoolbarScene::SizeMode mode, ButtonElement * buttons[4], FlameElement *, VisualizationElement *);
+};
+
+#endif

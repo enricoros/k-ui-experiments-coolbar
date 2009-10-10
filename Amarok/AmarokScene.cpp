@@ -23,21 +23,65 @@
 
 AmarokScene::AmarokScene(QObject * parent)
   : CoolbarScene(parent)
-  , m_visualization(0)
+  , m_layouter(0)
+  , m_animateLayouting(true)
   , m_visualizationIndex(-1)
+  , m_visualization(0)
 {
     // create flames
     m_flame = new FlameElement(this);
 
     // create buttons
     m_buttons[0] = new ButtonElement(ButtonElement::PrevButton, this);
+    m_buttons[0]->setZValue(0.2);
     m_buttons[1] = new ButtonElement(ButtonElement::PlayButton, this);
+    m_buttons[1]->setZValue(0.3);
     connect(m_buttons[1], SIGNAL(clicked()), m_flame, SLOT(pulse()));
     m_buttons[2] = new ButtonElement(ButtonElement::StopButton, this);
+    m_buttons[2]->setZValue(0.2);
     m_buttons[3] = new ButtonElement(ButtonElement::NextButton, this);
+    m_buttons[3]->setZValue(0.1);
 
     // create the Visualization
     slotNextVisualization();
+}
+
+AmarokScene::~AmarokScene()
+{
+    delete m_layouter;
+}
+
+void AmarokScene::setLayouter(Layouter * layouter)
+{
+    if (layouter != m_layouter) {
+        // notify about the change
+        Layouter * oldLayouter = m_layouter;
+        m_layouter = layouter;
+        emit layouterChanged();
+
+        // update screen
+        updateElementsLayout(sceneRect());
+        update();
+
+        // delete old
+        delete oldLayouter;
+    }
+}
+
+Layouter * AmarokScene::layouter() const
+{
+    return m_layouter;
+}
+
+void AmarokScene::setLayoutAnimationEnabled(bool on)
+{
+    if (on != m_animateLayouting)
+        m_animateLayouting = on;
+}
+
+bool AmarokScene::layoutAnimationEnabled() const
+{
+    return m_animateLayouting;
 }
 
 void AmarokScene::setAnalyzerVisible(bool visible)
@@ -50,70 +94,19 @@ bool AmarokScene::analyzerVisible() const
     return m_visualization;
 }
 
-void AmarokScene::updateElementsLayout(const QRectF & newBounds)
+void AmarokScene::updateElementsLayout(const QRectF & bounds)
 {
     // update base elements
-    CoolbarScene::updateElementsLayout(newBounds);
-    SizeMode mode = dynamicSizeMode();
+    CoolbarScene::updateElementsLayout(bounds);
 
-    // update Analyzer
-    QSizeF s;
-    int left, top;
-    switch (mode) {
-        default:
-            s = QSizeF(4 * newBounds.width() / 10, newBounds.height() / 2);
-            if (mode == DesktopSize) {
-                left = newBounds.center().x() - s.width() / 2;
-                top = newBounds.bottom() - s.height();
-            } else {
-                left = newBounds.width() - (s.width() + 10);
-                top = newBounds.center().y() - s.height() / 3;
-            }
-            Coolbar::animateObjectProperty(m_visualization, "size", 500, s);
-            Coolbar::animateObjectProperty(m_visualization, "pos", 300, QPointF(left, top));
-            Coolbar::animateObjectProperty(m_visualization, "colorness", 2000, 0.0);
-            break;
-        case IDeviceSize:
-            Coolbar::animateObjectProperty(m_visualization, "size", 500, newBounds.size());
-            Coolbar::animateObjectProperty(m_visualization, "pos", 300, QPointF(0, 0));
-            Coolbar::animateObjectProperty(m_visualization, "colorness", 2000, 1.0);
-            break;
+    // layout elements
+    if (m_layouter) {
+        m_layouter->layout(bounds,
+                           dynamicSizeMode(),
+                           m_buttons,
+                           m_flame,
+                           m_visualization);
     }
-
-    // update buttons
-    switch (mode) {
-        case DesktopSize:
-            top = 0;
-            left = newBounds.center().x() - 2 * (64 + 4);
-            for (int b = 0; b < 4; b++) {
-                Coolbar::animateObjectProperty(m_buttons[b], "pos", 300, QPointF(left, top));
-                Coolbar::animateObjectProperty(m_buttons[b], "size", 500, QSizeF(64, 64));
-                left += 64 + 4;
-            }
-            break;
-
-        default:
-            left = newBounds.center().x() - 2 * (32 + 4);
-            if (mode == NetbookSize)
-                left = 10;
-            top = newBounds.center().y() - 32 / 2;
-            for (int b = 0; b < 4; b++) {
-                Coolbar::animateObjectProperty(m_buttons[b], "size", 500, QSizeF(32, 32));
-                Coolbar::animateObjectProperty(m_buttons[b], "pos", 300, QPointF(left, top));
-                left += 32 + 4;
-            }
-            break;
-    }
-
-    // update flames
-    s = QSizeF(newBounds.width() / 2, 2 * newBounds.height() / 3);
-    if (mode == DesktopSize)
-        top = newBounds.height() - 2 * s.height() / 3;
-    else
-        top = (newBounds.height() - s.height()) / 2;
-    m_flame->setVisible(mode != IDeviceSize);
-    Coolbar::animateObjectProperty(m_flame, "size", 500, s);
-    Coolbar::animateObjectProperty(m_flame, "pos", 300, QPointF(0, top));
 }
 
 void AmarokScene::slotNextVisualization()

@@ -14,7 +14,6 @@
 
 #include "CoolbarScene.h"
 #include "CoolbarAnimation.h"
-#include "CoolbarLayouter.h"
 #include "CoolbarTheme.h"
 #include <QPainter>
 
@@ -22,9 +21,7 @@
 CoolbarScene::CoolbarScene(QObject * parent)
   : QGraphicsScene(parent)
   , m_theme(0)
-  , m_layouter(0)
   , m_animateResize(false)
-  , m_animateLayouting(true)
   , m_dynamicSizeMode(DesktopSize)
 {
     // sets initial sizes
@@ -34,7 +31,6 @@ CoolbarScene::CoolbarScene(QObject * parent)
 CoolbarScene::~CoolbarScene()
 {
     delete m_theme;
-    delete m_layouter;
 }
 
 void CoolbarScene::setTheme(CoolbarTheme * theme)
@@ -59,38 +55,10 @@ CoolbarTheme * CoolbarScene::theme() const
     return m_theme;
 }
 
-void CoolbarScene::setLayouter(CoolbarLayouter * layouter)
-{
-    if (layouter != m_layouter) {
-        // notify about the change
-        CoolbarLayouter * oldLayouter = m_layouter;
-        m_layouter = layouter;
-        emit layouterChanged();
-
-        // update screen
-        updateElementsLayout(m_sceneRect);
-        update();
-
-        // delete old
-        oldLayouter->deleteLater();
-    }
-}
-
-CoolbarLayouter * CoolbarScene::layouter() const
-{
-    return m_layouter;
-}
-
 void CoolbarScene::setResizeAnimationEnabled(bool on)
 {
     if (on != m_animateResize)
         m_animateResize = on;
-}
-
-void CoolbarScene::setLayoutAnimationEnabled(bool on)
-{
-    if (on != m_animateLayouting)
-        m_animateLayouting = on;
 }
 
 /// evaluate SizeMode change, reposition elements, change scene rect

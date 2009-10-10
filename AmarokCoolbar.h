@@ -12,36 +12,35 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __TestWindow_h__
-#define __TestWindow_h__
+#ifndef __AmarokCoolbar_h__
+#define __AmarokCoolbar_h__
 
-#include <QMainWindow>
-namespace Ui { class TestWindow; }
-class AmarokCoolbar;
+#include <QList>
+#include "Coolbar/CoolbarThemeV1.h"
+#include "Coolbar/CoolbarView.h"
+#include "AmarokScene.h"
 
-
-class TestWindow : public QMainWindow
+// easy access to all the classes
+class AmarokCoolbar
 {
-    Q_OBJECT
     public:
-        TestWindow(QWidget *parent = 0);
-        ~TestWindow();
+        AmarokCoolbar(const QString & baseDir);
+        ~AmarokCoolbar();
+
+        AmarokScene * scene() const;
+        CoolbarView * view() const;
+
+        void setTheme(int index);
+        QList<QString> themeNames() const;
+
+        void setLayout(int index);
+        QList<QString> layoutNames() const;
 
     private:
-        Ui::TestWindow * ui;
-        AmarokCoolbar * m_coolBar;
-
-    private Q_SLOTS:
-        void on_aAnalyzer_triggered(bool checked);
-        void on_aAnimateLayouting_triggered(bool checked);
-        void on_aAnimateResize_triggered(bool checked);
-
-        void on_themeCombo_currentIndexChanged(int index);
-        void on_layoutCombo_currentIndexChanged(int index);
-
-        void on_actionDesktop_Size_triggered();
-        void on_actionNetbook_Size_triggered();
-        void on_actionIStuff_Size_triggered();
+        QList<ThemeDescription> m_themes;
+        AmarokScene * m_scene;
+        CoolbarView * m_view;
+        int m_currentTheme;
 };
 
 #endif

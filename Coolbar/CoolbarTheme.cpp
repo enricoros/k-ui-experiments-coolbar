@@ -14,23 +14,4 @@
 
 #include "CoolbarTheme.h"
 
-CoolbarTheme::CoolbarTheme()
-{
-    // nothing to do here...
-    // HACK
-    loadFromDir(QDir());
-}
-
-CoolbarTheme::~CoolbarTheme()
-{
-    // nothing to do here...
-}
-
-void CoolbarTheme::loadFromDir(const QDir & themeDir)
-{
-    pixPlay = QPixmap(":/data/button-play-64.png");
-    pixPause = QPixmap(":/data/button-pause-64.png");
-    pixStop = QPixmap(":/data/button-stop-64.png");
-    pixPrev = QPixmap(":/data/button-prev-64.png");
-    pixNext = QPixmap(":/data/button-next-64.png");
-}
+#warning DELETE ME

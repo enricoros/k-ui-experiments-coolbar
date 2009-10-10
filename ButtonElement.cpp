@@ -34,11 +34,11 @@ void ButtonElement::themeChanged()
 {
     if (CoolbarTheme * t = theme()) {
         switch (m_buttonType) {
-            case PlayButton:    m_pixmap = t->pixPlay;  break;
+            /*case PlayButton:    m_pixmap = t->pixPlay;  break;
             case PauseButton:   m_pixmap = t->pixPause;  break;
             case StopButton:    m_pixmap = t->pixStop;  break;
             case PrevButton:    m_pixmap = t->pixPrev;  break;
-            case NextButton:    m_pixmap = t->pixNext;  break;
+            case NextButton:    m_pixmap = t->pixNext;  break;*/
         }
         if (size().isEmpty() && !m_pixmap.isNull())
             resize(m_pixmap.size());

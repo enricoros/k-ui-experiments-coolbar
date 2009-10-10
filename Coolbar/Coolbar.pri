@@ -4,6 +4,7 @@ HEADERS += \
     Coolbar/CoolbarLayouter.h \
     Coolbar/CoolbarScene.h \
     Coolbar/CoolbarTheme.h \
+    Coolbar/CoolbarThemeV1.h \
     Coolbar/CoolbarView.h
 
 SOURCES += \
@@ -12,4 +13,5 @@ SOURCES += \
     Coolbar/CoolbarLayouter.cpp \
     Coolbar/CoolbarScene.cpp \
     Coolbar/CoolbarTheme.cpp \
+    Coolbar/CoolbarThemeV1.cpp \
     Coolbar/CoolbarView.cpp

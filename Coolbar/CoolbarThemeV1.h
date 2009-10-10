@@ -12,36 +12,31 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __TestWindow_h__
-#define __TestWindow_h__
+#ifndef __CoolbarThemeV1_h__
+#define __CoolbarThemeV1_h__
 
-#include <QMainWindow>
-namespace Ui { class TestWindow; }
-class AmarokCoolbar;
+#include "CoolbarTheme.h"
+#include <QDir>
+#include <QMap>
+#include <QPixmap>
 
+struct ThemeDescription {
+    QString name;
+    QDir themeDir;
+};
 
-class TestWindow : public QMainWindow
+class CoolbarThemeV1 : public CoolbarTheme
 {
-    Q_OBJECT
     public:
-        TestWindow(QWidget *parent = 0);
-        ~TestWindow();
+        static QList<ThemeDescription> scanForThemes(const QString & baseDir);
+
+        CoolbarThemeV1(const QDir & themeDir);
+
+        // ::CoolbarTheme
+        QPixmap elementPixmap(const QString & epId);
 
     private:
-        Ui::TestWindow * ui;
-        AmarokCoolbar * m_coolBar;
-
-    private Q_SLOTS:
-        void on_aAnalyzer_triggered(bool checked);
-        void on_aAnimateLayouting_triggered(bool checked);
-        void on_aAnimateResize_triggered(bool checked);
-
-        void on_themeCombo_currentIndexChanged(int index);
-        void on_layoutCombo_currentIndexChanged(int index);
-
-        void on_actionDesktop_Size_triggered();
-        void on_actionNetbook_Size_triggered();
-        void on_actionIStuff_Size_triggered();
+        QMap<QString, QPixmap> m_elementPixmaps;
 };
 
 #endif

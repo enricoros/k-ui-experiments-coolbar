@@ -27,19 +27,14 @@ class AmarokScene : public CoolbarScene
     public:
         AmarokScene(QObject * parent = 0);
 
-        void setEqualizerVisible(bool visible);
-        bool equalizerVisible() const;
-
-        enum ButtonMode { SplittedButtons = 0, VerticalStack = 1 };
-        void setButtonMode(ButtonMode mode);
-        ButtonMode buttonMode() const;
+        void setAnalyzerVisible(bool visible);
+        bool analyzerVisible() const;
 
     protected:
         // ::CoolbarScene
         void updateElementsLayout(const QRectF & newBounds);
 
     private:
-        ButtonMode m_buttonMode;
         ButtonElement * m_buttons[4];
         EqualizerElement * m_equalizer;
         FlamesElement * m_flames;

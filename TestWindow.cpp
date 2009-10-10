@@ -13,24 +13,29 @@
  ***************************************************************************/
 
 #include "TestWindow.h"
+#include "AmarokCoolbar.h"
 #include "ui_TestWindow.h"
+#include <QCoreApplication>
 
-#include "Coolbar/CoolbarTheme.h"
-#include "Coolbar/CoolbarView.h"
-#include "AmarokScene.h"
-
-TestWindow::TestWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::TestWindow)
+TestWindow::TestWindow(QWidget *parent)
+  : QMainWindow(parent)
+  , ui(new Ui::TestWindow)
+  , m_coolBar(new AmarokCoolbar(QApplication::applicationDirPath()))
 {
+    // setup GUI
     ui->setupUi(this);
+    ui->containerLayout->addWidget(m_coolBar->view());
+    foreach (const QString & name, m_coolBar->themeNames())
+        ui->themeCombo->addItem(name);
+    foreach (const QString & name, m_coolBar->layoutNames())
+        ui->layoutCombo->addItem(name);
 
-    // create and use Coolbar Scene and View
-    m_amarokScene = new AmarokScene;
-    m_view = new CoolbarView(m_amarokScene);
-    ui->containerLayout->addWidget(m_view);
-    ui->aEq->setChecked(m_amarokScene->equalizerVisible());
-    ui->aSplit->setChecked(m_amarokScene->buttonMode() == AmarokScene::SplittedButtons);
+    // check actions
+    AmarokScene * scene = m_coolBar->scene();
+    ui->aAnalyzer->setChecked(scene->analyzerVisible());
+    ui->aAnimateLayouting->setChecked(scene->layoutAnimationEnabled());
+    ui->aAnimateResize->setChecked(scene->resizeAnimationEnabled());
+    //ui->aSplit->setChecked(scene->buttonMode() == AmarokScene::SplittedButtons);
 }
 
 TestWindow::~TestWindow()
@@ -38,14 +43,31 @@ TestWindow::~TestWindow()
     delete ui;
 }
 
-void TestWindow::on_aEq_triggered(bool checked)
+void TestWindow::on_aAnalyzer_triggered(bool checked)
 {
-    m_amarokScene->setEqualizerVisible(checked);
+    m_coolBar->scene()->setAnalyzerVisible(checked);
 }
 
-void TestWindow::on_aSplit_triggered(bool checked)
+void TestWindow::on_aAnimateLayouting_triggered(bool checked)
 {
-    m_amarokScene->setButtonMode(checked ? AmarokScene::SplittedButtons : AmarokScene::VerticalStack);
+    m_coolBar->scene()->setLayoutAnimationEnabled(checked);
+}
+
+void TestWindow::on_aAnimateResize_triggered(bool checked)
+{
+    m_coolBar->scene()->setResizeAnimationEnabled(checked);
+}
+
+void TestWindow::on_themeCombo_currentIndexChanged(int index)
+{
+    qWarning("A");
+    m_coolBar->setTheme(index);
+}
+
+void TestWindow::on_layoutCombo_currentIndexChanged(int index)
+{
+    qWarning("B");
+    m_coolBar->setLayout(index);
 }
 
 void TestWindow::on_actionDesktop_Size_triggered()
@@ -70,9 +92,4 @@ void TestWindow::on_actionIStuff_Size_triggered()
         resize(100, 100);
         qApp->processEvents();
     }
-}
-
-void TestWindow::on_actionCool_Theme_triggered()
-{
-    m_amarokScene->setTheme(new CoolbarTheme);
 }

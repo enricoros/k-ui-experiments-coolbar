@@ -22,7 +22,6 @@
 
 AmarokScene::AmarokScene(QObject * parent)
   : CoolbarScene(parent)
-  , m_buttonMode(SplittedButtons)
 {
     // create equalizer
     m_equalizer = new EqualizerElement;
@@ -42,27 +41,14 @@ AmarokScene::AmarokScene(QObject * parent)
     m_buttons[3] = new ButtonElement(ButtonElement::NextButton, this);
 }
 
-void AmarokScene::setEqualizerVisible(bool visible)
+void AmarokScene::setAnalyzerVisible(bool visible)
 {
     m_equalizer->setVisible(visible);
 }
 
-bool AmarokScene::equalizerVisible() const
+bool AmarokScene::analyzerVisible() const
 {
     return m_equalizer;
-}
-
-void AmarokScene::setButtonMode(ButtonMode mode)
-{
-    if (m_buttonMode != mode) {
-        m_buttonMode = mode;
-        updateElementsLayout(sceneRect());
-    }
-}
-
-AmarokScene::ButtonMode AmarokScene::buttonMode() const
-{
-    return m_buttonMode;
 }
 
 void AmarokScene::updateElementsLayout(const QRectF & newBounds)
@@ -98,30 +84,13 @@ void AmarokScene::updateElementsLayout(const QRectF & newBounds)
     // update buttons
     switch (mode) {
         case DesktopSize:
-            switch (m_buttonMode) {
-                case SplittedButtons:
-                    top = newBounds.center().y() - 64/2;
-                    left = 10;
-                    Coolbar::animateObjectProperty(m_buttons[0], "pos", 300, QPointF(left, top));
-                    left += 64 + 4;
-                    Coolbar::animateObjectProperty(m_buttons[2], "pos", 300, QPointF(left, top));
-                    left = newBounds.right() - (64 + 4 + 64 + 10);
-                    Coolbar::animateObjectProperty(m_buttons[1], "pos", 300, QPointF(left, top));
-                    left += 64 + 4;
-                    Coolbar::animateObjectProperty(m_buttons[3], "pos", 300, QPointF(left, top));
-                    break;
-
-                case VerticalStack:
-                    top = 0;
-                    left = newBounds.center().x() - 2 * (64 + 4);
-                    for (int b = 0; b < 4; b++) {
-                        Coolbar::animateObjectProperty(m_buttons[b], "pos", 300, QPointF(left, top));
-                        left += 64 + 4;
-                    }
-                    break;
-            }
-            for (int b = 0; b < 4; b++)
+            top = 0;
+            left = newBounds.center().x() - 2 * (64 + 4);
+            for (int b = 0; b < 4; b++) {
+                Coolbar::animateObjectProperty(m_buttons[b], "pos", 300, QPointF(left, top));
                 Coolbar::animateObjectProperty(m_buttons[b], "size", 500, QSizeF(64, 64));
+                left += 64 + 4;
+            }
             break;
 
         default:

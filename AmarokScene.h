@@ -21,11 +21,11 @@ class EqualizerElement;
 class FlamesElement;
 
 /// Amarok Specific Methods
-class AmarokCoolbarScene : public CoolbarScene
+class AmarokScene : public CoolbarScene
 {
     Q_OBJECT
     public:
-        AmarokCoolbarScene(QObject * parent = 0);
+        AmarokScene(QObject * parent = 0);
 
         void setEqualizerVisible(bool visible);
         bool equalizerVisible() const;

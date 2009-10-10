@@ -15,11 +15,19 @@
 #include "CoolbarElement.h"
 #include "CoolbarScene.h"
 #include "CoolbarTheme.h"
+#include <QPainter>
 
-CoolbarElement::CoolbarElement(QGraphicsItem * parent)
+CoolbarElement::CoolbarElement(CoolbarScene * coolbarScene, QGraphicsItem * parent)
   : QGraphicsWidget(parent)
+  , m_scene(coolbarScene)
 {
-    // nothing to do here...
+    // add to the scene and listen for changes
+    m_scene->addItem(this);
+    connect(m_scene, SIGNAL(themeChanged()), this, SLOT(themeChanged()));
+
+    // customize item
+    setAcceptHoverEvents(true);
+    resize(10, 10);
 }
 
 CoolbarElement::~CoolbarElement()
@@ -27,13 +35,18 @@ CoolbarElement::~CoolbarElement()
     // nothing to do here...
 }
 
+void CoolbarElement::paint(QPainter * painter, const QStyleOptionGraphicsItem *, QWidget *)
+{
+    // default filling for unpainted subclasses
+    painter->fillRect(rect(), Qt::red);
+}
+
 CoolbarScene * CoolbarElement::scene() const
 {
-    return dynamic_cast<CoolbarScene *>(QGraphicsWidget::scene());
+    return m_scene;
 }
 
 CoolbarTheme * CoolbarElement::theme() const
 {
-    CoolbarScene * scene = dynamic_cast<CoolbarScene *>(QGraphicsWidget::scene());
-    return scene ? scene->theme() : 0;
+    return m_scene->theme();
 }

@@ -23,12 +23,22 @@ class CoolbarElement : public QGraphicsWidget
 {
     Q_OBJECT
     public:
-        CoolbarElement(QGraphicsItem * parent = 0);
+        CoolbarElement(CoolbarScene *, QGraphicsItem * parent = 0);
         virtual ~CoolbarElement();
+
+        // ::QGraphicsWidget
+        void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
+
+    protected Q_SLOTS:
+        virtual void themeChanged() {}
 
     protected:
         CoolbarScene * scene() const;
         CoolbarTheme * theme() const;
+
+    private:
+        CoolbarElement();
+        CoolbarScene * m_scene;
 };
 
 #endif

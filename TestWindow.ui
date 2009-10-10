@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>626</width>
-    <height>163</height>
+    <height>177</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -55,7 +55,7 @@
      <x>0</x>
      <y>0</y>
      <width>626</width>
-     <height>25</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuCoolbar">
@@ -68,6 +68,8 @@
     <addaction name="actionDesktop_Size"/>
     <addaction name="actionNetbook_Size"/>
     <addaction name="actionIStuff_Size"/>
+    <addaction name="separator"/>
+    <addaction name="actionCool_Theme"/>
    </widget>
    <widget class="QMenu" name="menuFile">
     <property name="title">
@@ -112,6 +114,11 @@
   <action name="actionIStuff_Size">
    <property name="text">
     <string>iStuff Size</string>
+   </property>
+  </action>
+  <action name="actionCool_Theme">
+   <property name="text">
+    <string>Cool Theme</string>
    </property>
   </action>
  </widget>

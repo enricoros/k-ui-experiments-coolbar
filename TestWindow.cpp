@@ -15,6 +15,7 @@
 #include "TestWindow.h"
 #include "ui_TestWindow.h"
 
+#include "coolbar/CoolbarTheme.h"
 #include "coolbar/CoolbarView.h"
 #include "AmarokScene.h"
 
@@ -25,11 +26,11 @@ TestWindow::TestWindow(QWidget *parent) :
     ui->setupUi(this);
 
     // create and use Coolbar Scene and View
-    m_acs = new AmarokCoolbarScene;
-    m_view = new CoolbarView(m_acs);
+    m_amarokScene = new AmarokScene;
+    m_view = new CoolbarView(m_amarokScene);
     ui->containerLayout->addWidget(m_view);
-    ui->aEq->setChecked(m_acs->equalizerVisible());
-    ui->aSplit->setChecked(m_acs->buttonMode() == AmarokCoolbarScene::SplittedButtons);
+    ui->aEq->setChecked(m_amarokScene->equalizerVisible());
+    ui->aSplit->setChecked(m_amarokScene->buttonMode() == AmarokScene::SplittedButtons);
 }
 
 TestWindow::~TestWindow()
@@ -39,12 +40,12 @@ TestWindow::~TestWindow()
 
 void TestWindow::on_aEq_triggered(bool checked)
 {
-    m_acs->setEqualizerVisible(checked);
+    m_amarokScene->setEqualizerVisible(checked);
 }
 
 void TestWindow::on_aSplit_triggered(bool checked)
 {
-    m_acs->setButtonMode(checked ? AmarokCoolbarScene::SplittedButtons : AmarokCoolbarScene::VerticalStack);
+    m_amarokScene->setButtonMode(checked ? AmarokScene::SplittedButtons : AmarokScene::VerticalStack);
 }
 
 void TestWindow::on_actionDesktop_Size_triggered()
@@ -69,4 +70,9 @@ void TestWindow::on_actionIStuff_Size_triggered()
         resize(100, 100);
         qApp->processEvents();
     }
+}
+
+void TestWindow::on_actionCool_Theme_triggered()
+{
+    m_amarokScene->setTheme(new CoolbarTheme);
 }

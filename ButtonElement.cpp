@@ -13,17 +13,36 @@
  ***************************************************************************/
 
 #include "ButtonElement.h"
-
+#include "coolbar/CoolbarTheme.h"
+#include "AmarokScene.h"
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
 
-ButtonElement::ButtonElement(const QPixmap & hiqPixmap, QGraphicsItem * parent)
-  : QGraphicsWidget(parent)
-  , m_pixmap(hiqPixmap)
+ButtonElement::ButtonElement(ButtonType type, AmarokScene * scene, QGraphicsItem * parent)
+  : CoolbarElement(scene, parent)
+  , m_buttonType(type)
   , m_hovered(false)
 {
-    setAcceptHoverEvents(true);
-    resize(hiqPixmap.size());
+    // customize item
+    setZValue(0.0);
+
+    // load initial pixmap
+    themeChanged();
+}
+
+void ButtonElement::themeChanged()
+{
+    if (CoolbarTheme * t = theme()) {
+        switch (m_buttonType) {
+            case PlayButton:    m_pixmap = t->pixPlay;  break;
+            case PauseButton:   m_pixmap = t->pixPause;  break;
+            case StopButton:    m_pixmap = t->pixStop;  break;
+            case PrevButton:    m_pixmap = t->pixPrev;  break;
+            case NextButton:    m_pixmap = t->pixNext;  break;
+        }
+        if (size().isEmpty() && !m_pixmap.isNull())
+            resize(m_pixmap.size());
+    }
 }
 
 void ButtonElement::hoverEnterEvent(QGraphicsSceneHoverEvent *)

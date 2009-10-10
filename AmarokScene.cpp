@@ -17,9 +17,10 @@
 #include "EqualizerElement.h"
 #include "FlamesElement.h"
 #include "coolbar/CoolbarAnimation.h"
+#include "coolbar/CoolbarTheme.h"
 
 
-AmarokCoolbarScene::AmarokCoolbarScene(QObject * parent)
+AmarokScene::AmarokScene(QObject * parent)
   : CoolbarScene(parent)
   , m_buttonMode(SplittedButtons)
 {
@@ -34,31 +35,24 @@ AmarokCoolbarScene::AmarokCoolbarScene(QObject * parent)
     addItem(m_flames);
 
     // create buttons
-    const QString buttonPixmaps[4] = {
-        ":/data/button-prev-64.png",
-        ":/data/button-play-64.png",
-        ":/data/button-stop-64.png",
-        ":/data/button-next-64.png"
-    };
-    for (int b = 0; b < 4; b++) {
-        m_buttons[b] = new ButtonElement(QPixmap(buttonPixmaps[b]));
-        m_buttons[b]->setZValue(0);
-        connect(m_buttons[b], SIGNAL(clicked()), m_flames, SLOT(pulse()));
-        addItem(m_buttons[b]);
-    }
+    m_buttons[0] = new ButtonElement(ButtonElement::PrevButton, this);
+    m_buttons[1] = new ButtonElement(ButtonElement::PlayButton, this);
+    connect(m_buttons[1], SIGNAL(clicked()), m_flames, SLOT(pulse()));
+    m_buttons[2] = new ButtonElement(ButtonElement::StopButton, this);
+    m_buttons[3] = new ButtonElement(ButtonElement::NextButton, this);
 }
 
-void AmarokCoolbarScene::setEqualizerVisible(bool visible)
+void AmarokScene::setEqualizerVisible(bool visible)
 {
     m_equalizer->setVisible(visible);
 }
 
-bool AmarokCoolbarScene::equalizerVisible() const
+bool AmarokScene::equalizerVisible() const
 {
     return m_equalizer;
 }
 
-void AmarokCoolbarScene::setButtonMode(ButtonMode mode)
+void AmarokScene::setButtonMode(ButtonMode mode)
 {
     if (m_buttonMode != mode) {
         m_buttonMode = mode;
@@ -66,12 +60,12 @@ void AmarokCoolbarScene::setButtonMode(ButtonMode mode)
     }
 }
 
-AmarokCoolbarScene::ButtonMode AmarokCoolbarScene::buttonMode() const
+AmarokScene::ButtonMode AmarokScene::buttonMode() const
 {
     return m_buttonMode;
 }
 
-void AmarokCoolbarScene::updateElementsLayout(const QRectF & newBounds)
+void AmarokScene::updateElementsLayout(const QRectF & newBounds)
 {
     // update base elements
     CoolbarScene::updateElementsLayout(newBounds);
@@ -110,18 +104,18 @@ void AmarokCoolbarScene::updateElementsLayout(const QRectF & newBounds)
                     left = 10;
                     Coolbar::animateObjectProperty(m_buttons[0], "pos", 300, QPointF(left, top));
                     left += 64 + 4;
-                    Coolbar::animateObjectProperty(m_buttons[2], "pos", 400, QPointF(left, top));
+                    Coolbar::animateObjectProperty(m_buttons[2], "pos", 300, QPointF(left, top));
                     left = newBounds.right() - (64 + 4 + 64 + 10);
-                    Coolbar::animateObjectProperty(m_buttons[1], "pos", 500, QPointF(left, top));
+                    Coolbar::animateObjectProperty(m_buttons[1], "pos", 300, QPointF(left, top));
                     left += 64 + 4;
-                    Coolbar::animateObjectProperty(m_buttons[3], "pos", 600, QPointF(left, top));
+                    Coolbar::animateObjectProperty(m_buttons[3], "pos", 300, QPointF(left, top));
                     break;
 
                 case VerticalStack:
                     top = 0;
                     left = newBounds.center().x() - 2 * (64 + 4);
                     for (int b = 0; b < 4; b++) {
-                        Coolbar::animateObjectProperty(m_buttons[b], "pos", 300 + b * 100, QPointF(left, top));
+                        Coolbar::animateObjectProperty(m_buttons[b], "pos", 300, QPointF(left, top));
                         left += 64 + 4;
                     }
                     break;

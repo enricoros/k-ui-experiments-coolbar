@@ -15,14 +15,26 @@
 #ifndef __ButtonElement_h__
 #define __ButtonElement_h__
 
-#include <QGraphicsWidget>
+#include "coolbar/CoolbarElement.h"
 #include <QPixmap>
+class AmarokScene;
 
-class ButtonElement : public QGraphicsWidget
+class ButtonElement : public CoolbarElement
 {
     Q_OBJECT
     public:
-        ButtonElement(const QPixmap & hiqPixmap, QGraphicsItem * parent = 0);
+        enum ButtonType {
+            PlayButton,     PauseButton,    StopButton,
+            NextButton,     PrevButton,     //TextButton, // ...
+        };
+        ButtonElement(ButtonType, AmarokScene *, QGraphicsItem * parent = 0);
+
+    Q_SIGNALS:
+        void clicked();
+
+    protected:
+        // ::CoolbarElement
+        void themeChanged();
 
         // ::QGraphicsItem
         void hoverEnterEvent(QGraphicsSceneHoverEvent * event);
@@ -30,10 +42,8 @@ class ButtonElement : public QGraphicsWidget
         void mousePressEvent(QGraphicsSceneMouseEvent * event);
         void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
-    Q_SIGNALS:
-        void clicked();
-
     private:
+        ButtonType m_buttonType;
         QPixmap m_pixmap;
         bool m_hovered;
 };

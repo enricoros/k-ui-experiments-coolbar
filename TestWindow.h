@@ -17,7 +17,7 @@
 
 #include <QMainWindow>
 namespace Ui { class TestWindow; }
-class AmarokCoolbarScene;
+class AmarokScene;
 class CoolbarView;
 
 
@@ -31,9 +31,10 @@ class TestWindow : public QMainWindow
     private:
         Ui::TestWindow *ui;
         CoolbarView * m_view;
-        AmarokCoolbarScene * m_acs;
+        AmarokScene * m_amarokScene;
 
     private slots:
+        void on_actionCool_Theme_triggered();
         void on_aSplit_triggered(bool checked);
         void on_aEq_triggered(bool checked);
         void on_actionDesktop_Size_triggered();

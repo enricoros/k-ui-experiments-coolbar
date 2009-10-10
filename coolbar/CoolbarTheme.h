@@ -16,6 +16,7 @@
 #define __CoolbarTheme_h__
 
 #include <QDir>
+#include <QPixmap>
 
 // SUBJECT TO BIG CHANGES
 // SUBJECT TO BIG CHANGES
@@ -25,14 +26,18 @@ class CoolbarTheme
 {
     public:
         CoolbarTheme();
-        ~CoolbarTheme();
+        virtual ~CoolbarTheme();
 
         void loadFromDir(const QDir & themeDir);
         //void loadFromXml(const QString & themeFileName);
         //void loadFromData(const QByteArray & themeData);
 
-    private:
-        // ...
+        //virtual QPixmap elementPixmap(const QString & epId) = 0;
+
+        // ### TEMP : public pixmaps
+        QPixmap pixPlay, pixPause, pixStop, pixNext, pixPrev;
+
+    //private:
 };
 
 #endif

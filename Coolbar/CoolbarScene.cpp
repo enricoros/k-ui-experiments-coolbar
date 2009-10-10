@@ -27,11 +27,6 @@ CoolbarScene::CoolbarScene(QObject * parent)
   , m_animateLayouting(true)
   , m_dynamicSizeMode(DesktopSize)
 {
-    // sets the palette
-    QPalette pal;
-    pal.setColor(QPalette::Window, QColor(62, 62, 62));
-    setPalette(pal);
-
     // sets initial sizes
     updateDynamicSize(-1);
 }

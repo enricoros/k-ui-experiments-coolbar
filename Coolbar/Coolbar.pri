@@ -12,6 +12,5 @@ SOURCES += \
     Coolbar/CoolbarElement.cpp \
     Coolbar/CoolbarLayouter.cpp \
     Coolbar/CoolbarScene.cpp \
-    Coolbar/CoolbarTheme.cpp \
     Coolbar/CoolbarThemeV1.cpp \
     Coolbar/CoolbarView.cpp

@@ -30,6 +30,7 @@ class CoolbarTheme
         };
 
         virtual QString themeName() const = 0;
+        virtual QString elementFile(const QString & efId) const = 0;
         virtual QPixmap elementPixmap(const QString & epId) const = 0;
         virtual QPalette palette() const = 0;
         virtual QBrush brush(QPalette::ColorRole) const = 0;

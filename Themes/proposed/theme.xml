@@ -8,6 +8,8 @@
     <element name="prevButton" pixmap="prev.png" />
     <element name="stopButton" pixmap="stop.png" />
 
+    <resource name="flameFile" file="flames.svg" />
+
     <palette>
       <background-brush>
         <gradient from="0,0" to="0,1">

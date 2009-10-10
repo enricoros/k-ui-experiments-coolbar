@@ -34,6 +34,15 @@ QString CoolbarThemeV1::themeName() const
     return m_name;
 }
 
+QString CoolbarThemeV1::elementFile(const QString & efId) const
+{
+    if (!m_elementFiles.contains(efId)) {
+        qWarning("CoolbarThemeV1::elementFile: element '%s' not found", qPrintable(efId));
+        return QString();
+    }
+    return m_elementFiles[efId];
+}
+
 QPixmap CoolbarThemeV1::elementPixmap(const QString & epId) const
 {
     if (!m_elementPixmaps.contains(epId)) {
@@ -146,13 +155,24 @@ bool CoolbarThemeV1::loadThemeFromDir(const QDir & themeDir)
     QDomElement rootElement = doc.firstChildElement("theme");
     m_name = rootElement.firstChildElement("name").text();
 
+    // read all files
+    m_elementFiles.clear();
+    for (QDomElement eElement = rootElement.firstChildElement("resource"); !eElement.isNull(); eElement = eElement.nextSiblingElement("resource")) {
+        QString name = eElement.attribute("name");
+        QString fileName = eElement.attribute("file");
+        m_elementFiles[name] = themeDir.filePath(fileName);
+    }
+
     // read all pixmaps
     m_elementPixmaps.clear();
     for (QDomElement eElement = rootElement.firstChildElement("element"); !eElement.isNull(); eElement = eElement.nextSiblingElement("element")) {
         QString name = eElement.attribute("name");
         QString pixmapName = eElement.attribute("pixmap");
         QPixmap pixmap(themeDir.filePath(pixmapName));
-        m_elementPixmaps[name] = pixmap;
+        if (pixmap.isNull())
+            qWarning("CoolbarThemeV1::loadThemeFromDir: error loading pixmap '%s'", qPrintable(themeDir.filePath(pixmapName)));
+        else
+            m_elementPixmaps[name] = pixmap;
     }
 
     // read palette

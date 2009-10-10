@@ -12,31 +12,24 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "EqualizerElement.h"
+#include "BarAnalyzerElement.h"
 
 #include <QDebug>
 #include <QPainter>
 #include <QTimer>
 
-#define FAKE_SIZE 20
-
-EqualizerElement::EqualizerElement(QGraphicsItem * parent)
-  : QGraphicsWidget(parent)
+BarAnalyzerElement::BarAnalyzerElement(CoolbarScene * scene, QGraphicsItem * parent)
+  : VisualizationElement(scene, parent)
   , m_colorness(0.0)
 {
-    // update periodically
-    QTimer * timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(slotGenFakeValues()));
-    timer->start(40);
-    slotGenFakeValues();
 }
 
-qreal EqualizerElement::colorness() const
+qreal BarAnalyzerElement::colorness() const
 {
     return m_colorness;
 }
 
-void EqualizerElement::setColorness(qreal value)
+void BarAnalyzerElement::setColorness(qreal value)
 {
     if (value != m_colorness) {
         m_colorness = value;
@@ -44,15 +37,15 @@ void EqualizerElement::setColorness(qreal value)
     }
 }
 
-void EqualizerElement::paint(QPainter *painter, const QStyleOptionGraphicsItem */*option*/, QWidget */*widget*/)
+void BarAnalyzerElement::paint(QPainter *painter, const QStyleOptionGraphicsItem */*option*/, QWidget */*widget*/)
 {
     // compute constraints
     QSizeF size = this->size();
-    if (m_fakeData.isEmpty() || !size.isValid())
+    if (m_data.isEmpty() || !size.isValid())
         return;
     qreal width = size.width();
     qreal height = size.height();
-    int bars = m_fakeData.size();
+    int bars = m_data.size();
     qreal barWidth = width / (qreal)bars;
 
     QLinearGradient lg(0, 0, 0, height);
@@ -64,19 +57,7 @@ void EqualizerElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     // draw bars
     for (int i = 0; i < bars; i++) {
         qreal left = width * (qreal)i / (qreal)bars;
-        qreal barHeight = m_fakeData[i] * height;
+        qreal barHeight = m_data[i] * height;
         painter->fillRect(QRectF(left, height - barHeight, barWidth, barHeight), lg);
     }
-}
-
-void EqualizerElement::slotGenFakeValues()
-{
-    if (m_fakeData.size() != FAKE_SIZE)
-        m_fakeData.resize(FAKE_SIZE);
-    for (int i = 0; i < FAKE_SIZE; i++) {
-        qreal newTarget = (((qreal)(qrand() % 1000) / 990.0) + ((qreal)(qrand() % 1000) / 990.0)) / 2.0;
-        m_fakeData[i] += (newTarget - m_fakeData[i]) * 0.2;
-        m_fakeData[i] *= (qreal)(FAKE_SIZE - i) / (qreal)(FAKE_SIZE);
-    }
-    update();
 }

@@ -17,8 +17,8 @@
 
 #include "Coolbar/CoolbarScene.h"
 class ButtonElement;
-class EqualizerElement;
-class FlamesElement;
+class BarAnalyzerElement;
+class FlameElement;
 
 /// Amarok Specific Methods
 class AmarokScene : public CoolbarScene
@@ -36,8 +36,8 @@ class AmarokScene : public CoolbarScene
 
     private:
         ButtonElement * m_buttons[4];
-        EqualizerElement * m_equalizer;
-        FlamesElement * m_flames;
+        BarAnalyzerElement * m_barAnalyzer;
+        FlameElement * m_flame;
 };
 
 #endif

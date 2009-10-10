@@ -12,18 +12,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __EqualizerElement_h__
-#define __EqualizerElement_h__
+#ifndef __BarAnalyzerElement_h__
+#define __BarAnalyzerElement_h__
 
-#include <QGraphicsWidget>
-#include <QVector>
+#include "Amarok/VisualizationElement.h"
 
-class EqualizerElement : public QGraphicsWidget
+class BarAnalyzerElement : public VisualizationElement
 {
     Q_OBJECT
     Q_PROPERTY(qreal colorness READ colorness WRITE setColorness)
     public:
-        EqualizerElement(QGraphicsItem * parent = 0);
+        BarAnalyzerElement(CoolbarScene *, QGraphicsItem * parent = 0);
 
         // properties
         qreal colorness() const;
@@ -32,12 +31,7 @@ class EqualizerElement : public QGraphicsWidget
         // ::QGraphicsItem
         void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
-    private Q_SLOTS:
-        void slotGenFakeValues();
-
     private:
-        QVector<qreal> m_fakeData;
-        QVector<qreal> m_fakeTargets;
         qreal m_colorness;
 };
 

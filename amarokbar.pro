@@ -14,28 +14,10 @@ contains(QT_CONFIG, opengl)|contains(QT_CONFIG, opengles1)|contains(QT_CONFIG, o
 # Coolbar
 include(Coolbar/Coolbar.pri)
 
-# Amarok input files
-HEADERS += \
-    AmarokCoolbar.h \
-    AmarokScene.h \
-    EqualizerElement.h \
-    ButtonElement.h \
-    FlamesElement.h
-
-SOURCES += \
-    AmarokCoolbar.cpp \
-    AmarokScene.cpp \
-    EqualizerElement.cpp \
-    ButtonElement.cpp \
-    FlamesElement.cpp
+# Amarok extension
+include(Amarok/Amarok.pri)
 
 # Test app input files
-HEADERS += \
-    TestWindow.h
-
-SOURCES += \
-    TestWindow.cpp \
-    main.cpp
-
-FORMS += \
-    TestWindow.ui
+HEADERS += Window.h
+SOURCES += Window.cpp main.cpp
+FORMS += Window.ui

@@ -12,14 +12,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "TestWindow.h"
-#include "AmarokCoolbar.h"
-#include "ui_TestWindow.h"
+#include "Window.h"
+#include "Amarok/AmarokCoolbar.h"
+#include "ui_Window.h"
 #include <QCoreApplication>
 
-TestWindow::TestWindow(QWidget *parent)
+Window::Window(QWidget *parent)
   : QMainWindow(parent)
-  , ui(new Ui::TestWindow)
+  , ui(new Ui::Window)
   , m_coolBar(new AmarokCoolbar(QApplication::applicationDirPath()))
 {
     // setup GUI
@@ -37,38 +37,38 @@ TestWindow::TestWindow(QWidget *parent)
     ui->aAnimateResize->setChecked(scene->resizeAnimationEnabled());
 }
 
-TestWindow::~TestWindow()
+Window::~Window()
 {
     delete m_coolBar;
     delete ui;
 }
 
-void TestWindow::on_aAnalyzer_triggered(bool checked)
+void Window::on_aAnalyzer_triggered(bool checked)
 {
     m_coolBar->scene()->setAnalyzerVisible(checked);
 }
 
-void TestWindow::on_aAnimateLayouting_triggered(bool checked)
+void Window::on_aAnimateLayouting_triggered(bool checked)
 {
     m_coolBar->scene()->setLayoutAnimationEnabled(checked);
 }
 
-void TestWindow::on_aAnimateResize_triggered(bool checked)
+void Window::on_aAnimateResize_triggered(bool checked)
 {
     m_coolBar->scene()->setResizeAnimationEnabled(checked);
 }
 
-void TestWindow::on_themeCombo_currentIndexChanged(int index)
+void Window::on_themeCombo_currentIndexChanged(int index)
 {
     m_coolBar->setTheme(index);
 }
 
-void TestWindow::on_layoutCombo_currentIndexChanged(int index)
+void Window::on_layoutCombo_currentIndexChanged(int index)
 {
     m_coolBar->setLayout(index);
 }
 
-void TestWindow::on_actionDesktop_Size_triggered()
+void Window::on_actionDesktop_Size_triggered()
 {
     for (int i = 0; i < 10; i++) {
         resize(640, 100);
@@ -76,7 +76,7 @@ void TestWindow::on_actionDesktop_Size_triggered()
     }
 }
 
-void TestWindow::on_actionNetbook_Size_triggered()
+void Window::on_actionNetbook_Size_triggered()
 {
     for (int i = 0; i < 10; i++) {
         resize(400, 100);
@@ -84,7 +84,7 @@ void TestWindow::on_actionNetbook_Size_triggered()
     }
 }
 
-void TestWindow::on_actionIStuff_Size_triggered()
+void Window::on_actionIStuff_Size_triggered()
 {
     for (int i = 0; i < 10; i++) {
         resize(100, 100);

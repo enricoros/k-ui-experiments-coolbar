@@ -12,40 +12,65 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "FlamesElement.h"
+#include "FlameElement.h"
 #include "Coolbar/CoolbarAnimation.h"
+#include "Coolbar/CoolbarTheme.h"
 #include <QPainter>
 #include <QSvgRenderer>
 
 
-FlamesElement::FlamesElement(QGraphicsItem * parent)
-  : QGraphicsWidget(parent)
-  , m_renderer(new QSvgRenderer)
+FlameElement::FlameElement(CoolbarScene * scene, QGraphicsItem * parent)
+  : CoolbarElement(scene, parent)
+  , m_renderer(0)
   , m_value(0.0)
 {
-    m_renderer->load(QString(":/data/flames.svg"));
+    // customize item
+    setZValue(-2);
 }
 
-void FlamesElement::pulse()
+FlameElement::~FlameElement()
 {
-    Coolbar::animateObjectProperty(this, "value", 300, 0.0, 1.0);
+    delete m_renderer;
 }
 
-void FlamesElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
+void FlameElement::pulse()
 {
-    if (m_value <= 0.0)
+    Coolbar::animateObjectProperty(this, "pulseValue", 300, 0.0, 1.0);
+}
+
+void FlameElement::themeChanged()
+{
+    if (CoolbarTheme * t = theme()) {
+        QString flameFile = t->elementFile("flameFile");
+        delete m_renderer;
+        m_renderer = 0;
+        if (!flameFile.isEmpty()) {
+            m_renderer = new QSvgRenderer(flameFile);
+            if (!m_renderer->isValid()) {
+                qWarning("FlameElement::themeChanged: broken Flame file in this Theme");
+                delete m_renderer;
+                m_renderer = 0;
+            }
+        } else
+            qWarning("FlameElement::themeChanged: no Flame file in this Theme");
+    }
+}
+
+void FlameElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
+{
+    if (!m_renderer || m_value <= 0.0)
         return;
     if (m_value < 1.0)
         painter->setOpacity(m_value);
     m_renderer->render(painter, rect());
 }
 
-qreal FlamesElement::value() const
+qreal FlameElement::pulseValue() const
 {
     return m_value;
 }
 
-void FlamesElement::setValue(qreal value)
+void FlameElement::setPulseValue(qreal value)
 {
     if (value != m_value) {
         m_value = value;

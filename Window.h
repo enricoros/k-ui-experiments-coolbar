@@ -12,40 +12,36 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __ButtonElement_h__
-#define __ButtonElement_h__
+#ifndef __Window_h__
+#define __Window_h__
 
-#include "Coolbar/CoolbarElement.h"
-#include <QPixmap>
-class AmarokScene;
+#include <QMainWindow>
+namespace Ui { class Window; }
+class AmarokCoolbar;
 
-class ButtonElement : public CoolbarElement
+
+class Window : public QMainWindow
 {
     Q_OBJECT
     public:
-        enum ButtonType {
-            PlayButton,     PauseButton,    StopButton,
-            NextButton,     PrevButton,     //TextButton, // ...
-        };
-        ButtonElement(ButtonType, AmarokScene *, QGraphicsItem * parent = 0);
-
-    Q_SIGNALS:
-        void clicked();
-
-    protected:
-        // ::CoolbarElement
-        void themeChanged();
-
-        // ::QGraphicsItem
-        void hoverEnterEvent(QGraphicsSceneHoverEvent * event);
-        void hoverLeaveEvent(QGraphicsSceneHoverEvent * event);
-        void mousePressEvent(QGraphicsSceneMouseEvent * event);
-        void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+        Window(QWidget *parent = 0);
+        ~Window();
 
     private:
-        ButtonType m_buttonType;
-        QPixmap m_pixmap;
-        bool m_hovered;
+        Ui::Window * ui;
+        AmarokCoolbar * m_coolBar;
+
+    private Q_SLOTS:
+        void on_aAnalyzer_triggered(bool checked);
+        void on_aAnimateLayouting_triggered(bool checked);
+        void on_aAnimateResize_triggered(bool checked);
+
+        void on_themeCombo_currentIndexChanged(int index);
+        void on_layoutCombo_currentIndexChanged(int index);
+
+        void on_actionDesktop_Size_triggered();
+        void on_actionNetbook_Size_triggered();
+        void on_actionIStuff_Size_triggered();
 };
 
 #endif

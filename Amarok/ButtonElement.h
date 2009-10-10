@@ -12,31 +12,39 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __FlamesElement_h__
-#define __FlamesElement_h__
+#ifndef __ButtonElement_h__
+#define __ButtonElement_h__
 
-#include <QGraphicsWidget>
+#include "Coolbar/CoolbarElement.h"
 #include <QPixmap>
-class QSvgRenderer;
 
-class FlamesElement : public QGraphicsWidget
+class ButtonElement : public CoolbarElement
 {
     Q_OBJECT
-    Q_PROPERTY(qreal value READ value WRITE setValue)
     public:
-        FlamesElement(QGraphicsItem * parent = 0);
+        enum ButtonType {
+            PlayButton,     PauseButton,    StopButton,
+            NextButton,     PrevButton,     //TextButton, // ...
+        };
+        ButtonElement(ButtonType, CoolbarScene *, QGraphicsItem * parent = 0);
+
+    Q_SIGNALS:
+        void clicked();
+
+    protected:
+        // ::CoolbarElement
+        void themeChanged();
 
         // ::QGraphicsItem
+        void hoverEnterEvent(QGraphicsSceneHoverEvent * event);
+        void hoverLeaveEvent(QGraphicsSceneHoverEvent * event);
+        void mousePressEvent(QGraphicsSceneMouseEvent * event);
         void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
-    public Q_SLOTS:
-        void pulse();
-
     private:
-        qreal value() const;
-        void setValue(qreal);
-        QSvgRenderer * m_renderer;
-        qreal m_value;
+        ButtonType m_buttonType;
+        QPixmap m_pixmap;
+        bool m_hovered;
 };
 
 #endif

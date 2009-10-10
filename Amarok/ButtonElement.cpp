@@ -18,7 +18,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
 
-ButtonElement::ButtonElement(ButtonType type, AmarokScene * scene, QGraphicsItem * parent)
+ButtonElement::ButtonElement(ButtonType type, CoolbarScene * scene, QGraphicsItem * parent)
   : CoolbarElement(scene, parent)
   , m_buttonType(type)
   , m_hovered(false)

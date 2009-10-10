@@ -14,8 +14,8 @@
 
 #include "AmarokScene.h"
 #include "ButtonElement.h"
-#include "EqualizerElement.h"
-#include "FlamesElement.h"
+#include "BarAnalyzerElement.h"
+#include "FlameElement.h"
 #include "Coolbar/CoolbarAnimation.h"
 #include "Coolbar/CoolbarTheme.h"
 
@@ -23,32 +23,28 @@
 AmarokScene::AmarokScene(QObject * parent)
   : CoolbarScene(parent)
 {
-    // create equalizer
-    m_equalizer = new EqualizerElement;
-    m_equalizer->setZValue(-1);
-    addItem(m_equalizer);
+    // create Analyzer
+    m_barAnalyzer = new BarAnalyzerElement(this);
 
     // create flames
-    m_flames = new FlamesElement;
-    m_flames->setZValue(-2);
-    addItem(m_flames);
+    m_flame = new FlameElement(this);
 
     // create buttons
     m_buttons[0] = new ButtonElement(ButtonElement::PrevButton, this);
     m_buttons[1] = new ButtonElement(ButtonElement::PlayButton, this);
-    connect(m_buttons[1], SIGNAL(clicked()), m_flames, SLOT(pulse()));
+    connect(m_buttons[1], SIGNAL(clicked()), m_flame, SLOT(pulse()));
     m_buttons[2] = new ButtonElement(ButtonElement::StopButton, this);
     m_buttons[3] = new ButtonElement(ButtonElement::NextButton, this);
 }
 
 void AmarokScene::setAnalyzerVisible(bool visible)
 {
-    m_equalizer->setVisible(visible);
+    m_barAnalyzer->setVisible(visible);
 }
 
 bool AmarokScene::analyzerVisible() const
 {
-    return m_equalizer;
+    return m_barAnalyzer;
 }
 
 void AmarokScene::updateElementsLayout(const QRectF & newBounds)
@@ -57,7 +53,7 @@ void AmarokScene::updateElementsLayout(const QRectF & newBounds)
     CoolbarScene::updateElementsLayout(newBounds);
     SizeMode mode = dynamicSizeMode();
 
-    // update equalizer
+    // update Analyzer
     QSizeF s;
     int left, top;
     switch (mode) {
@@ -70,14 +66,14 @@ void AmarokScene::updateElementsLayout(const QRectF & newBounds)
                 left = newBounds.width() - (s.width() + 10);
                 top = newBounds.center().y() - s.height() / 3;
             }
-            Coolbar::animateObjectProperty(m_equalizer, "size", 500, s);
-            Coolbar::animateObjectProperty(m_equalizer, "pos", 300, QPointF(left, top));
-            Coolbar::animateObjectProperty(m_equalizer, "colorness", 2000, 0.0);
+            Coolbar::animateObjectProperty(m_barAnalyzer, "size", 500, s);
+            Coolbar::animateObjectProperty(m_barAnalyzer, "pos", 300, QPointF(left, top));
+            Coolbar::animateObjectProperty(m_barAnalyzer, "colorness", 2000, 0.0);
             break;
         case IDeviceSize:
-            Coolbar::animateObjectProperty(m_equalizer, "size", 500, newBounds.size());
-            Coolbar::animateObjectProperty(m_equalizer, "pos", 300, QPointF(0, 0));
-            Coolbar::animateObjectProperty(m_equalizer, "colorness", 2000, 1.0);
+            Coolbar::animateObjectProperty(m_barAnalyzer, "size", 500, newBounds.size());
+            Coolbar::animateObjectProperty(m_barAnalyzer, "pos", 300, QPointF(0, 0));
+            Coolbar::animateObjectProperty(m_barAnalyzer, "colorness", 2000, 1.0);
             break;
     }
 
@@ -112,7 +108,7 @@ void AmarokScene::updateElementsLayout(const QRectF & newBounds)
         top = newBounds.height() - 2 * s.height() / 3;
     else
         top = (newBounds.height() - s.height()) / 2;
-    m_flames->setVisible(mode != IDeviceSize);
-    Coolbar::animateObjectProperty(m_flames, "size", 500, s);
-    Coolbar::animateObjectProperty(m_flames, "pos", 300, QPointF(0, top));
+    m_flame->setVisible(mode != IDeviceSize);
+    Coolbar::animateObjectProperty(m_flame, "size", 500, s);
+    Coolbar::animateObjectProperty(m_flame, "pos", 300, QPointF(0, top));
 }

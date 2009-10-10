@@ -27,6 +27,7 @@ class CoolbarThemeV1 : public CoolbarTheme
 
         // ::CoolbarTheme
         QString themeName() const;
+        QString elementFile(const QString & efId) const;
         QPixmap elementPixmap(const QString &) const;
         QPalette palette() const;
         QBrush brush(QPalette::ColorRole) const;
@@ -36,6 +37,7 @@ class CoolbarThemeV1 : public CoolbarTheme
     private:
         bool loadThemeFromDir(const QDir & themeDir);
         QString m_name;
+        QMap<QString, QString> m_elementFiles;
         QMap<QString, QPixmap> m_elementPixmaps;
         QPalette m_palette;
 };

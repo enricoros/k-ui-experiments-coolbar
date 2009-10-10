@@ -12,6 +12,36 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "CoolbarTheme.h"
+#ifndef __FlameElement_h__
+#define __FlameElement_h__
 
-#warning DELETE ME
+#include "Coolbar/CoolbarElement.h"
+#include <QPixmap>
+class QSvgRenderer;
+
+class FlameElement : public CoolbarElement
+{
+    Q_OBJECT
+    Q_PROPERTY(qreal pulseValue READ pulseValue WRITE setPulseValue)
+    public:
+        FlameElement(CoolbarScene *, QGraphicsItem * parent = 0);
+        ~FlameElement();
+
+    public Q_SLOTS:
+        void pulse();
+
+    protected:
+        // ::CoolbarElement
+        void themeChanged();
+
+        // ::QGraphicsItem
+        void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+
+    private:
+        qreal pulseValue() const;
+        void setPulseValue(qreal);
+        QSvgRenderer * m_renderer;
+        qreal m_value;
+};
+
+#endif

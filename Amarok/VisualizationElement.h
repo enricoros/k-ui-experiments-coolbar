@@ -12,36 +12,34 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __TestWindow_h__
-#define __TestWindow_h__
+#ifndef __VisualizationElement_h__
+#define __VisualizationElement_h__
 
-#include <QMainWindow>
-namespace Ui { class TestWindow; }
-class AmarokCoolbar;
+#include "Coolbar/CoolbarElement.h"
 
-
-class TestWindow : public QMainWindow
+class VisualizationElement : public CoolbarElement
 {
     Q_OBJECT
     public:
-        TestWindow(QWidget *parent = 0);
-        ~TestWindow();
+        VisualizationElement(CoolbarScene *, QGraphicsItem * parent = 0);
 
-    private:
-        Ui::TestWindow * ui;
-        AmarokCoolbar * m_coolBar;
+        // temporary API
+        typedef QVector<qreal> Data;
+        void setData(const Data &);
+        Data data() const;
+
+    Q_SIGNALS:
+        void clicked();
+
+    protected:
+        // ::QGraphicsItem
+        void mousePressEvent(QGraphicsSceneMouseEvent * event);
+
+    protected:
+        Data m_data;
 
     private Q_SLOTS:
-        void on_aAnalyzer_triggered(bool checked);
-        void on_aAnimateLayouting_triggered(bool checked);
-        void on_aAnimateResize_triggered(bool checked);
-
-        void on_themeCombo_currentIndexChanged(int index);
-        void on_layoutCombo_currentIndexChanged(int index);
-
-        void on_actionDesktop_Size_triggered();
-        void on_actionNetbook_Size_triggered();
-        void on_actionIStuff_Size_triggered();
+        void slotGenFakeValues();
 };
 
 #endif

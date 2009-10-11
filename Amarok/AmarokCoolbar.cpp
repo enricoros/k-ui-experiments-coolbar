@@ -79,7 +79,7 @@ void AmarokCoolbar::setLayout(int index)
 QList<QString> AmarokCoolbar::layoutNames() const
 {
     QList<QString> names;
-    names.append("Proposal");
+    names.append("Proposed");
     names.append("Amarok 2.2");
     return names;
 }

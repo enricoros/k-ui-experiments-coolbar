@@ -8,5 +8,9 @@
     <element name="prevButton" pixmap="amarok_prev.png" />
     <element name="stopButton" pixmap="amarok_stop.png" />
 
-    <palette />
+    <palette>
+     <background-brush>
+      <color>#e0e0e0</color>
+     </background-brush>
+    </palette>
 </theme>

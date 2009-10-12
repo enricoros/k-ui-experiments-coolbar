@@ -33,6 +33,10 @@ class SliderElement : public CoolbarElement
 
         void mouseMoveEvent(QGraphicsSceneMouseEvent *);
         void mousePressEvent(QGraphicsSceneMouseEvent *);
+        void wheelEvent(QGraphicsSceneWheelEvent *);
+
+    signals:
+        void dragged();
 
     private:
         qreal m_value;

@@ -17,6 +17,7 @@
 #include "ButtonElement.h"
 #include "FlameElement.h"
 #include "VisualizationElement.h"
+#include "SliderElement.h"
 
 
 void ivDLayouter::layout(const AmarokScene &scene, CoolbarScene::SizeMode mode)
@@ -25,30 +26,42 @@ void ivDLayouter::layout(const AmarokScene &scene, CoolbarScene::SizeMode mode)
     qreal left;
     qreal top = (mode == CoolbarScene::IDeviceSize) ? 4 : 6;
     qreal h = (mode == CoolbarScene::DesktopSize) ? 10.0*rect.height()/16.0 : rect.height() - 2 * top;
-    qreal w;
+    qreal aw, sw;
 
     // update Visualization
+    ///NOTICE 512/768 shall be dependent on screen width as well
     scene.visualization()->show();
+    scene.slider()->show();
     if (rect.width() < 512)
-        w = rect.width();
-    else if (rect.width() < 1024)
-        w = 0.618*rect.width();
+        sw = aw = rect.width();
+    else if (rect.width() < 768)
+        sw = aw = 0.618*rect.width();
     else
-        w = 0.382*rect.width();
+    {
+        aw = 0.382*rect.width();
+        sw = 0.618*rect.width();
+    }
 
-    left = rect.center().x() - w / 2;
+    left = rect.center().x() - aw / 2;
     
-    Coolbar::animateObjectProperty(scene.visualization(), "size", 500, QSizeF(w,h));
+    Coolbar::animateObjectProperty(scene.visualization(), "size", 500, QSizeF(aw,h));
     Coolbar::animateObjectProperty(scene.visualization(), "pos", 300, QPointF(left, top));
 //     Coolbar::animateObjectProperty(visualization, "colorness", 2000, 0.0);
 
     // update buttons
     left = rect.center().x() - 2 * (h + top);
     for (int b = 0; b < ButtonElement::ButtonCount; b++) {
-        Coolbar::animateObjectProperty(scene.button(b), "pos", 300, QPointF(left, top));
         Coolbar::animateObjectProperty(scene.button(b), "size", 500, QSizeF(h, h));
+        Coolbar::animateObjectProperty(scene.button(b), "pos", 300, QPointF(left, top));
         left += h + top;
     }
+
+    // update slider
+    left = rect.center().x() - sw / 2;
+    h = rect.bottom() - (4*top + h);
+    top = rect.bottom() - (top + h);
+    Coolbar::animateObjectProperty(scene.slider(), "size", 500, QSizeF(sw,h));
+    Coolbar::animateObjectProperty(scene.slider(), "pos", 300, QPointF(left, top));
 
 //     // update flames
 //     flame->show();

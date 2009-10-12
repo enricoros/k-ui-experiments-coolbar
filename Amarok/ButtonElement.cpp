@@ -66,14 +66,16 @@ void ButtonElement::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 #endif
 }
 
-void ButtonElement::mousePressEvent(QGraphicsSceneMouseEvent *)
+void ButtonElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    setScale(0.9);
+    if (event->button() == Qt::LeftButton)
+        setScale(0.95);
 }
 
-void ButtonElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *)
+void ButtonElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    Coolbar::animateObjectProperty(this, "scale", 150, isHovered() ? 1.12 : 1.0);
+    if (event->button() == Qt::LeftButton)
+        Coolbar::animateObjectProperty(this, "scale", 150, isHovered() ? 1.12 : 1.0);
 }
 
 void ButtonElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)

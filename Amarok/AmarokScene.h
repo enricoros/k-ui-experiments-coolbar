@@ -19,6 +19,7 @@
 class ButtonElement;
 class VisualizationElement;
 class FlameElement;
+class SliderElement;
 class AmarokScene;
 
 /// Mandates behavior of a layouter
@@ -53,6 +54,7 @@ class AmarokScene : public CoolbarScene
         inline ButtonElement * button(int i) const { return m_buttons[i]; }
         inline FlameElement * flame() const { return m_flame; }
         inline VisualizationElement * visualization() const { return m_visualization; }
+        inline SliderElement * slider() const { return m_slider; }
 
         inline bool isUnderMouse() const { return m_underMouse; }
 
@@ -76,6 +78,7 @@ class AmarokScene : public CoolbarScene
         ButtonElement * m_buttons[4];
         FlameElement * m_flame;
         VisualizationElement * m_visualization;
+        SliderElement * m_slider;
 
         bool m_underMouse;
 

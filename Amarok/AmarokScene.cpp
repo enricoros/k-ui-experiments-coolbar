@@ -17,6 +17,7 @@
 #include "BarAnalyzerElement.h"
 #include "DotAnalyzerElement.h"
 #include "FlameElement.h"
+#include "SliderElement.h"
 #include "Coolbar/CoolbarAnimation.h"
 #include "Coolbar/CoolbarTheme.h"
 
@@ -27,6 +28,7 @@ AmarokScene::AmarokScene(QObject * parent)
   , m_animateLayouting(true)
   , m_visualizationIndex(-1)
   , m_visualization(0)
+  , m_slider(0)
   , m_underMouse(false)
 {
     // create flames
@@ -45,6 +47,8 @@ AmarokScene::AmarokScene(QObject * parent)
 
     // create the Visualization
     slotNextVisualization();
+
+    m_slider = new SliderElement(this);
 }
 
 AmarokScene::~AmarokScene()

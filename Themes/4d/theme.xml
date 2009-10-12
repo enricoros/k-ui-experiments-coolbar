@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<theme>
+    <name>Proposed</name>
+
+    <element name="nextButton" pixmap="next.png" />
+    <element name="pauseButton" pixmap="pause.png" />
+    <element name="playButton" pixmap="play.png" />
+    <element name="prevButton" pixmap="prev.png" />
+    <element name="stopButton" pixmap="stop.png" />
+
+    <resource name="flameFile" file="flames.svg" />
+
+    <palette>
+      <background-brush>
+        <gradient from="0,0" to="0,1">
+          <color at="0.0">#5F5F5F</color>
+          <color at="1.0">#1E1E1E</color>
+        </gradient>
+      </background-brush>
+    </palette>
+</theme>

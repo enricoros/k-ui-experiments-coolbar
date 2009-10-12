@@ -18,7 +18,7 @@
 #include <QPropertyAnimation>
 #endif
 
-void Coolbar::animateObjectProperty(QObject * object, const char * propName, int duration, const QVariant & endValue, const QVariant & startValue)
+QAbstractAnimation * Coolbar::animateObjectProperty(QObject * object, const char * propName, int duration, const QVariant & endValue, const QVariant & startValue)
 {
 #if QT_VERSION >= 0x040600
     QPropertyAnimation * ani = new QPropertyAnimation(object, propName, object);
@@ -33,6 +33,7 @@ void Coolbar::animateObjectProperty(QObject * object, const char * propName, int
     Q_UNUSED(startValue);
     object->setProperty(propName, endValue);
 #endif
+    return ani;
 }
 
 bool Coolbar::canAnimate()

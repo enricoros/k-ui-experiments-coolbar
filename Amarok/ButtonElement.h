@@ -36,6 +36,8 @@ class ButtonElement : public CoolbarElement
         // ::QGraphicsItem
         void hoverEnterEvent(QGraphicsSceneHoverEvent * event);
         void hoverLeaveEvent(QGraphicsSceneHoverEvent * event);
+        void mousePressEvent(QGraphicsSceneMouseEvent * event);
+        void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
         void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
     private:

@@ -46,22 +46,34 @@ void ButtonElement::themeChanged()
     }
 }
 
-void ButtonElement::hoverEnterEvent(QGraphicsSceneHoverEvent *)
+void ButtonElement::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
+    CoolbarElement::hoverEnterEvent(event);
 #if QT_VERSION >= 0x040600
     setTransformOriginPoint(rect().center());
-    Coolbar::animateObjectProperty(this, "scale", 200, 1.1);
-    Coolbar::animateObjectProperty(this, "rotation", 1000, 360);
+    Coolbar::animateObjectProperty(this, "scale", 150, 1.12);
+//     Coolbar::animateObjectProperty(this, "rotation", 1000, 360);
 #endif
 }
 
-void ButtonElement::hoverLeaveEvent(QGraphicsSceneHoverEvent *)
+void ButtonElement::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
+    CoolbarElement::hoverLeaveEvent(event);
 #if QT_VERSION >= 0x040600
     setTransformOriginPoint(rect().center());
-    Coolbar::animateObjectProperty(this, "scale", 200, 1.0);
-    Coolbar::animateObjectProperty(this, "rotation", 1000, 0);
+    Coolbar::animateObjectProperty(this, "scale", 300, 1.0);
+//     Coolbar::animateObjectProperty(this, "rotation", 1000, 0);
 #endif
+}
+
+void ButtonElement::mousePressEvent(QGraphicsSceneMouseEvent *)
+{
+    setScale(0.9);
+}
+
+void ButtonElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *)
+{
+    Coolbar::animateObjectProperty(this, "scale", 150, isHovered() ? 1.12 : 1.0);
 }
 
 void ButtonElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)

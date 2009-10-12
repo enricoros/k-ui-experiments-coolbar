@@ -39,6 +39,7 @@ void ButtonElement::themeChanged()
             case StopButton:    m_pixmap = t->elementPixmap("stopButton");  break;
             case PrevButton:    m_pixmap = t->elementPixmap("prevButton");  break;
             case NextButton:    m_pixmap = t->elementPixmap("nextButton");  break;
+            case ButtonCount:   break;
         }
         if (size().isEmpty() && !m_pixmap.isNull())
             resize(m_pixmap.size());

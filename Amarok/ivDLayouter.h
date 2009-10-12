@@ -21,10 +21,9 @@ class ivDLayouter : public Layouter
 {
     public:
         // ::Layouter
-        void enterEvent(ButtonElement *[4], VisualizationElement *);
-        QString layoutName() const { return "4D"; }
-        void layout(const QRectF & bounds, CoolbarScene::SizeMode mode, ButtonElement * buttons[4], FlameElement *, VisualizationElement *);
-        void leaveEvent(ButtonElement *[4], VisualizationElement *);
+        void updateUnderMouse(const AmarokScene &, CoolbarScene::SizeMode);
+        inline QString layoutName() const { return "4D"; }
+        void layout(const AmarokScene &, CoolbarScene::SizeMode);
 };
 
 #endif

@@ -23,8 +23,9 @@ class ButtonElement : public CoolbarElement
     Q_OBJECT
     public:
         enum ButtonType {
-            PlayButton,     PauseButton,    StopButton,
+            PlayButton = 0,     PauseButton,    StopButton,
             NextButton,     PrevButton,     //TextButton, // ...
+            ButtonCount
         };
         ButtonElement(ButtonType, CoolbarScene *, QGraphicsItem * parent = 0);
 

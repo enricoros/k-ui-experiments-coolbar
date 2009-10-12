@@ -27,6 +27,7 @@ AmarokScene::AmarokScene(QObject * parent)
   , m_animateLayouting(true)
   , m_visualizationIndex(-1)
   , m_visualization(0)
+  , m_underMouse(false)
 {
     // create flames
     m_flame = new FlameElement(this);
@@ -61,6 +62,7 @@ void AmarokScene::setLayouter(Layouter * layouter)
 
         // update screen
         updateElementsLayout(sceneRect());
+        m_layouter->updateUnderMouse(*this, dynamicSizeMode());
         update();
 
         // delete old
@@ -101,11 +103,7 @@ void AmarokScene::updateElementsLayout(const QRectF & bounds)
 
     // layout elements
     if (m_layouter) {
-        m_layouter->layout(bounds,
-                           dynamicSizeMode(),
-                           m_buttons,
-                           m_flame,
-                           m_visualization);
+        m_layouter->layout(*this, dynamicSizeMode());
     }
 }
 
@@ -139,4 +137,17 @@ void AmarokScene::slotNextVisualization()
         m_visualization->resize(prevSize);
     }
     updateElementsLayout(sceneRect());
+    if (m_layouter)
+        m_layouter->updateUnderMouse(*this, dynamicSizeMode());
+}
+
+bool AmarokScene::event(QEvent * ev)
+{
+    if (ev->type() == QEvent::Enter || ev->type() == QEvent::Leave)
+    {
+        m_underMouse = (ev->type() == QEvent::Enter);
+        if (m_layouter)
+            m_layouter->updateUnderMouse(*this, dynamicSizeMode());
+    }
+    return CoolbarScene::event(ev);
 }

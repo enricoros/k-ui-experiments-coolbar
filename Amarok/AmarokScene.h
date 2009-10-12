@@ -19,16 +19,14 @@
 class ButtonElement;
 class VisualizationElement;
 class FlameElement;
+class AmarokScene;
 
 /// Mandates behavior of a layouter
 class Layouter
 {
     public:
-        virtual void layout(const QRectF & bounds,
-                            CoolbarScene::SizeMode mode,
-                            ButtonElement * buttons[4],
-                            FlameElement *,
-                            VisualizationElement *) = 0;
+        virtual void updateUnderMouse(const AmarokScene &, CoolbarScene::SizeMode) {}
+        virtual void layout(const AmarokScene &, CoolbarScene::SizeMode) = 0;
         virtual QString layoutName() const = 0;
 };
 
@@ -52,10 +50,19 @@ class AmarokScene : public CoolbarScene
         void setAnalyzerVisible(bool visible);
         bool analyzerVisible() const;
 
+        inline ButtonElement * button(int i) const { return m_buttons[i]; }
+        inline FlameElement * flame() const { return m_flame; }
+        inline VisualizationElement * visualization() const { return m_visualization; }
+
+        inline bool isUnderMouse() const { return m_underMouse; }
+
+        inline QRectF rect() const { return CoolbarScene::sceneRect(); }
+
     Q_SIGNALS:
         void layouterChanged();
 
     protected:
+        /*virtual */bool event(QEvent * event);
         // ::CoolbarScene
         void updateElementsLayout(const QRectF & newBounds);
 
@@ -69,6 +76,8 @@ class AmarokScene : public CoolbarScene
         ButtonElement * m_buttons[4];
         FlameElement * m_flame;
         VisualizationElement * m_visualization;
+
+        bool m_underMouse;
 
     private Q_SLOTS:
         void slotNextVisualization();

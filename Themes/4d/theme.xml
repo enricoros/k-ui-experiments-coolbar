@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <theme>
-    <name>Proposed</name>
+    <name>Thomas</name>
 
     <element name="nextButton" pixmap="next.png" />
     <element name="pauseButton" pixmap="pause.png" />

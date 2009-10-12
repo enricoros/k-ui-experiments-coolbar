@@ -19,18 +19,14 @@
 #include "VisualizationElement.h"
 
 
-void ProposedLayouter::layout(
-        const QRectF & rect,
-        CoolbarScene::SizeMode mode,
-        ButtonElement * buttons[4],
-        FlameElement * flame,
-        VisualizationElement * visualization)
+void ProposedLayouter::layout(const AmarokScene &scene, CoolbarScene::SizeMode mode)
 {
+    const QRectF &rect = scene.rect();
     QSizeF s;
     int left, top;
 
     // update Visualization
-    visualization->show();
+    scene.visualization()->show();
     switch (mode) {
         default:
             s = QSizeF(4 * rect.width() / 10, rect.height() / 2);
@@ -41,14 +37,14 @@ void ProposedLayouter::layout(
                 left = rect.width() - (s.width() + 10);
                 top = rect.center().y() - s.height() / 3;
             }
-            Coolbar::animateObjectProperty(visualization, "size", 500, s);
-            Coolbar::animateObjectProperty(visualization, "pos", 300, QPointF(left, top));
-            Coolbar::animateObjectProperty(visualization, "colorness", 2000, 0.0);
+            Coolbar::animateObjectProperty(scene.visualization(), "size", 500, s);
+            Coolbar::animateObjectProperty(scene.visualization(), "pos", 300, QPointF(left, top));
+            Coolbar::animateObjectProperty(scene.visualization(), "colorness", 2000, 0.0);
             break;
         case CoolbarScene::IDeviceSize:
-            Coolbar::animateObjectProperty(visualization, "size", 500, rect.size());
-            Coolbar::animateObjectProperty(visualization, "pos", 300, QPointF(0, 0));
-            Coolbar::animateObjectProperty(visualization, "colorness", 2000, 1.0);
+            Coolbar::animateObjectProperty(scene.visualization(), "size", 500, rect.size());
+            Coolbar::animateObjectProperty(scene.visualization(), "pos", 300, QPointF(0, 0));
+            Coolbar::animateObjectProperty(scene.visualization(), "colorness", 2000, 1.0);
             break;
     }
 
@@ -57,9 +53,9 @@ void ProposedLayouter::layout(
         case CoolbarScene::DesktopSize:
             top = 0;
             left = rect.center().x() - 2 * (64 + 4);
-            for (int b = 0; b < 4; b++) {
-                Coolbar::animateObjectProperty(buttons[b], "pos", 300, QPointF(left, top));
-                Coolbar::animateObjectProperty(buttons[b], "size", 500, QSizeF(64, 64));
+            for (int b = 0; b < ButtonElement::ButtonCount; b++) {
+                Coolbar::animateObjectProperty(scene.button(b), "pos", 300, QPointF(left, top));
+                Coolbar::animateObjectProperty(scene.button(b), "size", 500, QSizeF(64, 64));
                 left += 64 + 4;
             }
             break;
@@ -69,22 +65,22 @@ void ProposedLayouter::layout(
             if (mode == CoolbarScene::NetbookSize)
                 left = 10;
             top = rect.center().y() - 32 / 2;
-            for (int b = 0; b < 4; b++) {
-                Coolbar::animateObjectProperty(buttons[b], "size", 500, QSizeF(32, 32));
-                Coolbar::animateObjectProperty(buttons[b], "pos", 300, QPointF(left, top));
+            for (int b = 0; b < ButtonElement::ButtonCount; b++) {
+                Coolbar::animateObjectProperty(scene.button(b), "size", 500, QSizeF(32, 32));
+                Coolbar::animateObjectProperty(scene.button(b), "pos", 300, QPointF(left, top));
                 left += 32 + 4;
             }
             break;
     }
 
     // update flames
-    flame->show();
+    scene.flame()->show();
     s = QSizeF(rect.width() / 2, 2 * rect.height() / 3);
     if (mode == CoolbarScene::DesktopSize)
         top = rect.height() - 2 * s.height() / 3;
     else
         top = (rect.height() - s.height()) / 2;
-    flame->setVisible(mode != CoolbarScene::IDeviceSize);
-    Coolbar::animateObjectProperty(flame, "size", 500, s);
-    Coolbar::animateObjectProperty(flame, "pos", 300, QPointF(0, top));
+    scene.flame()->setVisible(mode != CoolbarScene::IDeviceSize);
+    Coolbar::animateObjectProperty(scene.flame(), "size", 500, s);
+    Coolbar::animateObjectProperty(scene.flame(), "pos", 300, QPointF(0, top));
 }

@@ -7,6 +7,7 @@ HEADERS += \
     Amarok/DotAnalyzerElement.h \
     Amarok/FlameElement.h \
     Amarok/ProposedLayouter.h \
+    Amarok/ivDLayouter.h \
     Amarok/VisualizationElement.h
 
 SOURCES += \
@@ -18,4 +19,5 @@ SOURCES += \
     Amarok/DotAnalyzerElement.cpp \
     Amarok/FlameElement.cpp \
     Amarok/ProposedLayouter.cpp \
+    Amarok/ivDLayouter.cpp \
     Amarok/VisualizationElement.cpp

@@ -19,20 +19,16 @@
 #include "VisualizationElement.h"
 
 
-void ivDLayouter::layout(
-        const QRectF & rect,
-        CoolbarScene::SizeMode mode,
-        ButtonElement * buttons[4],
-        FlameElement * flame,
-        VisualizationElement * visualization)
+void ivDLayouter::layout(const AmarokScene &scene, CoolbarScene::SizeMode mode)
 {
+    const QRectF rect = scene.rect();
     qreal left;
     qreal top = (mode == CoolbarScene::IDeviceSize) ? 4 : 6;
     qreal h = (mode == CoolbarScene::DesktopSize) ? 10.0*rect.height()/16.0 : rect.height() - 2 * top;
     qreal w;
 
     // update Visualization
-    visualization->show();
+    scene.visualization()->show();
     if (rect.width() < 512)
         w = rect.width();
     else if (rect.width() < 1024)
@@ -42,15 +38,15 @@ void ivDLayouter::layout(
 
     left = rect.center().x() - w / 2;
     
-    Coolbar::animateObjectProperty(visualization, "size", 500, QSizeF(w,h));
-    Coolbar::animateObjectProperty(visualization, "pos", 300, QPointF(left, top));
+    Coolbar::animateObjectProperty(scene.visualization(), "size", 500, QSizeF(w,h));
+    Coolbar::animateObjectProperty(scene.visualization(), "pos", 300, QPointF(left, top));
 //     Coolbar::animateObjectProperty(visualization, "colorness", 2000, 0.0);
 
     // update buttons
     left = rect.center().x() - 2 * (h + top);
-    for (int b = 0; b < 4; b++) {
-        Coolbar::animateObjectProperty(buttons[b], "pos", 300, QPointF(left, top));
-        Coolbar::animateObjectProperty(buttons[b], "size", 500, QSizeF(h, h));
+    for (int b = 0; b < ButtonElement::ButtonCount; b++) {
+        Coolbar::animateObjectProperty(scene.button(b), "pos", 300, QPointF(left, top));
+        Coolbar::animateObjectProperty(scene.button(b), "size", 500, QSizeF(h, h));
         left += h + top;
     }
 
@@ -66,24 +62,14 @@ void ivDLayouter::layout(
 //     Coolbar::animateObjectProperty(flame, "pos", 300, QPointF(0, top));
 }
 
-void ivDLayouter::enterEvent(ButtonElement * buttons[4], VisualizationElement *visualization)
+void ivDLayouter::updateUnderMouse(const AmarokScene &scene, CoolbarScene::SizeMode)
 {
-    visualization->setZValue(0);
-    Coolbar::animateObjectProperty(visualization, "opacity", 500, 0.2);
-    for (int b = 0; b < 4; b++)
+    const bool hovered = scene.isUnderMouse();
+    scene.visualization()->setZValue(!hovered);
+    Coolbar::animateObjectProperty(scene.visualization(), "opacity", 500, 1.0-hovered*0.85);
+    for (int b = 0; b < ButtonElement::ButtonCount; b++)
     {
-        buttons[b]->setZValue(1);
-        Coolbar::animateObjectProperty(buttons[b], "opacity", 200, 1.0);
-    }
-}
-
-void ivDLayouter::leaveEvent(ButtonElement * buttons[4], VisualizationElement *visualization)
-{
-    Coolbar::animateObjectProperty(visualization, "opacity", 300, 1.0);
-    visualization->setZValue(1);
-    for (int b = 0; b < 4; b++)
-    {
-        buttons[b]->setZValue(0);
-        Coolbar::animateObjectProperty(buttons[b], "opacity", 500, 0.0);
+        scene.button(b)->setZValue(hovered);
+        Coolbar::animateObjectProperty(scene.button(b), "opacity", 500-300*hovered, hovered);
     }
 }

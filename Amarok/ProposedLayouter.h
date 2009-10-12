@@ -22,7 +22,7 @@ class ProposedLayouter : public Layouter
     public:
         // ::Layouter
         QString layoutName() const { return "Proposed"; }
-        void layout(const QRectF & bounds, CoolbarScene::SizeMode mode, ButtonElement * buttons[4], FlameElement *, VisualizationElement *);
+        void layout(const AmarokScene &, CoolbarScene::SizeMode);
 };
 
 #endif

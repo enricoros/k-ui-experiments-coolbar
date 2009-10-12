@@ -15,6 +15,7 @@
 #include "AmarokCoolbar.h"
 #include "Amarok22Layouter.h"
 #include "ProposedLayouter.h"
+#include "ivDLayouter.h"
 #include "Coolbar/CoolbarThemeV1.h"
 
 AmarokCoolbar::AmarokCoolbar(const QString & baseDir)
@@ -73,6 +74,7 @@ void AmarokCoolbar::setLayout(int index)
     switch (index) {
         case 0: m_scene->setLayouter(new ProposedLayouter); break;
         case 1: m_scene->setLayouter(new Amarok22Layouter); break;
+        case 2: m_scene->setLayouter(new ivDLayouter); break;
     }
 }
 
@@ -81,5 +83,6 @@ QList<QString> AmarokCoolbar::layoutNames() const
     QList<QString> names;
     names.append("Proposed");
     names.append("Amarok 2.2");
+    names.append("4D");
     return names;
 }

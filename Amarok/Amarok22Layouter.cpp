@@ -18,40 +18,35 @@
 #include "FlameElement.h"
 #include "VisualizationElement.h"
 
-void Amarok22Layouter::layout(
-        const QRectF & rect,
-        CoolbarScene::SizeMode mode,
-        ButtonElement * buttons[4],
-        FlameElement * flame,
-        VisualizationElement * visualization )
+void Amarok22Layouter::layout(const AmarokScene &scene, CoolbarScene::SizeMode mode)
 {
     //QSizeF s;
     int left, top;
 
     // hide Visualization
-    visualization->hide();
+    scene.visualization()->hide();
 
     // hide flames
-    flame->setVisible(false);
+    scene.flame()->setVisible(false);
 
     // update buttons
     switch (mode) {
         default:
-            top = rect.center().y() - 54/2;
+            top = scene.rect().center().y() - 54/2;
             left = 10;
-            for (int b = 0; b < 4; b++) {
-                Coolbar::animateObjectProperty(buttons[b], "pos", 300, QPointF(left, top));
-                Coolbar::animateObjectProperty(buttons[b], "size", 500, QSizeF(54, 54));
+            for (int b = 0; b < ButtonElement::ButtonCount; b++) {
+                Coolbar::animateObjectProperty(scene.button(b), "pos", 300, QPointF(left, top));
+                Coolbar::animateObjectProperty(scene.button(b), "size", 500, QSizeF(54, 54));
                 left += 42;
             }
             break;
 
         case CoolbarScene::IDeviceSize:
-            left = rect.center().x() - 2 * (32 + 4);
-            top = rect.center().y() - 32 / 2;
-            for (int b = 0; b < 4; b++) {
-                Coolbar::animateObjectProperty(buttons[b], "size", 500, QSizeF(32, 32));
-                Coolbar::animateObjectProperty(buttons[b], "pos", 300, QPointF(left, top));
+            left = scene.rect().center().x() - 2 * (32 + 4);
+            top = scene.rect().center().y() - 32 / 2;
+            for (int b = 0; b < ButtonElement::ButtonCount; b++) {
+                Coolbar::animateObjectProperty(scene.button(b), "size", 500, QSizeF(32, 32));
+                Coolbar::animateObjectProperty(scene.button(b), "pos", 300, QPointF(left, top));
                 left += 32 + 4;
             }
             break;

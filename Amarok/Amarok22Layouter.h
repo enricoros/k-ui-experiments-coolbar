@@ -22,7 +22,7 @@ class Amarok22Layouter : public Layouter
     public:
         // ::Layouter
         QString layoutName() const { return "Amarok 2.2"; }
-        void layout(const QRectF & bounds, CoolbarScene::SizeMode mode, ButtonElement * buttons[4], FlameElement *, VisualizationElement *);
+        void layout(const AmarokScene &, CoolbarScene::SizeMode);
 };
 
 #endif

@@ -53,10 +53,10 @@ void DotAnalyzerElement::paint(QPainter *painter, const QStyleOptionGraphicsItem
 
     // draw bars
     for (int i = 0; i < bars; i++) {
-        qreal alpha = m_data[i <= halfBars ? halfBars - i : i - halfBars];
+        qreal alpha = 0.85*m_data[i <= halfBars ? halfBars - i : i - halfBars];
         qreal left = width * (qreal)i / (qreal)bars;
         qreal cx = left + barWidth / 2;
-        qreal cy = barHeight / 2;
+        qreal cy = 0.9*barHeight;
         qreal w = 1.4 * alpha * barWidth;
         qreal h = 0.6 * alpha * barHeight;
         col.setAlphaF(qBound(0.0, 2 * alpha, 1.0));

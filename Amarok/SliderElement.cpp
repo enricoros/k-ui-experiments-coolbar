@@ -25,6 +25,7 @@ SliderElement::SliderElement(CoolbarScene * scene, QGraphicsItem * parent)
   : CoolbarElement(scene, parent)
   , m_value(0.35)
 {
+    connect (&m_hoverPropagationDelay, SIGNAL(timeout()), this, SLOT(delayedHoverPropagation()));
 }
 
 qreal SliderElement::value() const
@@ -40,16 +41,22 @@ void SliderElement::setValue(qreal value)
     }
 }
 
+void SliderElement::delayedHoverPropagation()
+{
+    m_hoverPropagationDelay.stop();
+    scene()->propagateEvent(this, isHovered() ? QEvent::Enter : QEvent::Leave);
+}
+
 void SliderElement::hoverEnterEvent(QGraphicsSceneHoverEvent *ev)
 {
     CoolbarElement::hoverEnterEvent(ev);
-    scene()->propagateEvent(this, QEvent::Enter);
+    m_hoverPropagationDelay.start(200);
 }
 
 void SliderElement::hoverLeaveEvent(QGraphicsSceneHoverEvent *ev)
 {
     CoolbarElement::hoverLeaveEvent(ev);
-    scene()->propagateEvent(this, QEvent::Leave);
+    m_hoverPropagationDelay.start(200);
 }
 
 void SliderElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)

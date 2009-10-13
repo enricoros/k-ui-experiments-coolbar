@@ -16,6 +16,7 @@
 #define __SliderElement_h__
 
 #include "Amarok/VisualizationElement.h"
+#include <QTimer>
 
 class SliderElement : public CoolbarElement
 {
@@ -40,8 +41,11 @@ class SliderElement : public CoolbarElement
     signals:
         void dragged();
 
+    private slots:
+        void delayedHoverPropagation();
     private:
         qreal m_value;
+        QTimer m_hoverPropagationDelay;
 };
 
 #endif

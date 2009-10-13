@@ -30,10 +30,11 @@ void ivDLayouter::layout(const AmarokScene &scene, CoolbarScene::SizeMode mode)
 
     // update Visualization
     ///NOTICE 512/768 shall be dependent on screen width as well
+    scene.visualization()->setZValue(-1);
     scene.visualization()->show();
-    scene.slider()->show();
+    scene.slider()->setVisible(scene.isUnderMouse() || mode == CoolbarScene::DesktopSize);
     if (rect.width() < 512)
-        sw = aw = rect.width();
+        sw = aw = rect.width() - 6;
     else if (rect.width() < 768)
         sw = aw = 0.618*rect.width();
     else
@@ -58,8 +59,16 @@ void ivDLayouter::layout(const AmarokScene &scene, CoolbarScene::SizeMode mode)
 
     // update slider
     left = rect.center().x() - sw / 2;
-    h = rect.bottom() - (4*top + h);
-    top = rect.bottom() - (top + h);
+    if (mode == CoolbarScene::DesktopSize)
+    {
+        h = rect.bottom() - (4*top + h);
+        top = rect.bottom() - (top + h);
+    }
+    else
+    {
+        h = rect.height()/3.0;
+        top = rect.top() + h;
+    }
     Coolbar::animateObjectProperty(scene.slider(), "size", 500, QSizeF(sw,h));
     Coolbar::animateObjectProperty(scene.slider(), "pos", 300, QPointF(left, top));
 
@@ -75,14 +84,51 @@ void ivDLayouter::layout(const AmarokScene &scene, CoolbarScene::SizeMode mode)
 //     Coolbar::animateObjectProperty(flame, "pos", 300, QPointF(0, top));
 }
 
-void ivDLayouter::event(QEvent::Type type, void * item, const AmarokScene &scene, CoolbarScene::SizeMode)
+void ivDLayouter::event(QEvent::Type type, void * item, const AmarokScene &scene, CoolbarScene::SizeMode mode)
 {
-    const bool hovered = scene.isUnderMouse();
-    scene.visualization()->setZValue(!hovered);
+    switch (type)
+    {
+        case QEvent::Enter:
+        case QEvent::Leave:
+            if (item == &scene)
+                sceneHovered(type == QEvent::Enter, scene, mode);
+            else if (item == scene.slider())
+                sliderHovered(type == QEvent::Enter, scene, mode);
+            break;
+        default:
+            break;
+    }
+}
+
+void ivDLayouter::sceneHovered(bool hovered, const AmarokScene &scene, CoolbarScene::SizeMode mode)
+{
+    if (mode != CoolbarScene::DesktopSize)
+        scene.slider()->setVisible(hovered);
+    qreal vOpacity;
+    if (mode == CoolbarScene::DesktopSize)
+    {
+        Coolbar::animateObjectProperty(scene.slider(), "opacity", 500, 1.0);
+    }
+    else
+    {
+        Coolbar::animateObjectProperty(scene.slider(), "opacity", 500, 0.15);
+    }
     Coolbar::animateObjectProperty(scene.visualization(), "opacity", 500, 1.0-hovered*0.85);
     for (int b = 0; b < ButtonElement::ButtonCount; b++)
     {
         scene.button(b)->setZValue(hovered);
         Coolbar::animateObjectProperty(scene.button(b), "opacity", 500-300*hovered, hovered);
     }
+}
+
+void ivDLayouter::sliderHovered(bool hovered, const AmarokScene &scene, CoolbarScene::SizeMode mode)
+{
+    if (mode == CoolbarScene::DesktopSize)
+        return;
+    qreal opacity = 1.0-!hovered*0.85;
+    scene.slider()->setZValue(2*hovered);
+    Coolbar::animateObjectProperty(scene.slider(), "opacity", 250, opacity);
+    opacity = 1.0-hovered*0.85;
+    for (int b = 0; b < ButtonElement::ButtonCount; b++)
+        Coolbar::animateObjectProperty(scene.button(b), "opacity", 250, opacity);
 }

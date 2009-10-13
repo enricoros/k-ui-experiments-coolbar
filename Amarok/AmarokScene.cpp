@@ -66,7 +66,7 @@ void AmarokScene::setLayouter(Layouter * layouter)
 
         // update screen
         updateElementsLayout(sceneRect());
-        m_layouter->updateUnderMouse(*this, dynamicSizeMode());
+        m_layouter->event(m_underMouse ? QEvent::Enter : QEvent::Leave, this, *this, dynamicSizeMode());
         update();
 
         // delete old
@@ -142,16 +142,29 @@ void AmarokScene::slotNextVisualization()
     }
     updateElementsLayout(sceneRect());
     if (m_layouter)
-        m_layouter->updateUnderMouse(*this, dynamicSizeMode());
+        m_layouter->event(m_underMouse ? QEvent::Enter : QEvent::Leave, this, *this, dynamicSizeMode());
 }
 
 bool AmarokScene::event(QEvent * ev)
 {
-    if (ev->type() == QEvent::Enter || ev->type() == QEvent::Leave)
+    switch (ev->type())
     {
-        m_underMouse = (ev->type() == QEvent::Enter);
-        if (m_layouter)
-            m_layouter->updateUnderMouse(*this, dynamicSizeMode());
+        case QEvent::Enter:
+        case QEvent::Leave:
+            m_underMouse = (ev->type() == QEvent::Enter);
+        case QEvent::MouseButtonPress:
+        case QEvent::MouseButtonRelease:
+            if (m_layouter)
+                m_layouter->event(ev->type(), this, *this, dynamicSizeMode());
+            break;
+        default:
+            break;
     }
     return CoolbarScene::event(ev);
+}
+
+void AmarokScene::propagateEvent(void *element, QEvent::Type type)
+{
+    if (m_layouter)
+        m_layouter->event(type, element, *this, dynamicSizeMode());
 }

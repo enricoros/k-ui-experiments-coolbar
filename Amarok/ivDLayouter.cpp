@@ -75,7 +75,7 @@ void ivDLayouter::layout(const AmarokScene &scene, CoolbarScene::SizeMode mode)
 //     Coolbar::animateObjectProperty(flame, "pos", 300, QPointF(0, top));
 }
 
-void ivDLayouter::updateUnderMouse(const AmarokScene &scene, CoolbarScene::SizeMode)
+void ivDLayouter::event(QEvent::Type type, void * item, const AmarokScene &scene, CoolbarScene::SizeMode)
 {
     const bool hovered = scene.isUnderMouse();
     scene.visualization()->setZValue(!hovered);

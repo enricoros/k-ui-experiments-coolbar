@@ -26,7 +26,7 @@ class AmarokScene;
 class Layouter
 {
     public:
-        virtual void updateUnderMouse(const AmarokScene &, CoolbarScene::SizeMode) {}
+        virtual void event(QEvent::Type, void * /*item*/, const AmarokScene &, CoolbarScene::SizeMode) {}
         virtual void layout(const AmarokScene &, CoolbarScene::SizeMode) = 0;
         virtual QString layoutName() const = 0;
 };
@@ -57,6 +57,8 @@ class AmarokScene : public CoolbarScene
         inline SliderElement * slider() const { return m_slider; }
 
         inline bool isUnderMouse() const { return m_underMouse; }
+
+        void propagateEvent(void *element, QEvent::Type type);
 
         inline QRectF rect() const { return CoolbarScene::sceneRect(); }
 

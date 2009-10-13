@@ -31,6 +31,8 @@ class SliderElement : public CoolbarElement
         // ::QGraphicsItem
         void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
+        void hoverEnterEvent( QGraphicsSceneHoverEvent *);
+        void hoverLeaveEvent( QGraphicsSceneHoverEvent *);
         void mouseMoveEvent(QGraphicsSceneMouseEvent *);
         void mousePressEvent(QGraphicsSceneMouseEvent *);
         void wheelEvent(QGraphicsSceneWheelEvent *);

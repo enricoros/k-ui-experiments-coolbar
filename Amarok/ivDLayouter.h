@@ -21,7 +21,7 @@ class ivDLayouter : public Layouter
 {
     public:
         // ::Layouter
-        void updateUnderMouse(const AmarokScene &, CoolbarScene::SizeMode);
+        void event(QEvent::Type, void * item, const AmarokScene &, CoolbarScene::SizeMode);
         inline QString layoutName() const { return "4D"; }
         void layout(const AmarokScene &, CoolbarScene::SizeMode);
 };

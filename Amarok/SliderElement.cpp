@@ -15,6 +15,7 @@
 #include "SliderElement.h"
 
 #include "Coolbar/CoolbarAnimation.h"
+#include "Coolbar/CoolbarScene.h"
 #include <QAbstractAnimation>
 #include <QGraphicsSceneMouseEvent>
 #include <QDebug>
@@ -37,6 +38,18 @@ void SliderElement::setValue(qreal value)
         m_value = value;
         update();
     }
+}
+
+void SliderElement::hoverEnterEvent(QGraphicsSceneHoverEvent *ev)
+{
+    CoolbarElement::hoverEnterEvent(ev);
+    scene()->propagateEvent(this, QEvent::Enter);
+}
+
+void SliderElement::hoverLeaveEvent(QGraphicsSceneHoverEvent *ev)
+{
+    CoolbarElement::hoverLeaveEvent(ev);
+    scene()->propagateEvent(this, QEvent::Leave);
 }
 
 void SliderElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)

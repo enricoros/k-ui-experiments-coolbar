@@ -15,6 +15,7 @@
 #ifndef __CoolbarScene_h__
 #define __CoolbarScene_h__
 
+#include <QEvent>
 #include <QGraphicsScene>
 #include <QPalette>
 #include <QSize>
@@ -43,6 +44,8 @@ class CoolbarScene : public QGraphicsScene
         enum SizeMode { DesktopSize, NetbookSize, IDeviceSize };
         SizeMode dynamicSizeMode() const;
         QSize dynamicSizeHint() const;
+
+        virtual void propagateEvent(void */*element*/, QEvent::Type) {} // = 0;?
 
     Q_SIGNALS:
         // emitted when the size hint changes

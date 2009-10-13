@@ -18,6 +18,7 @@
 #include "DotAnalyzerElement.h"
 #include "FlameElement.h"
 #include "SliderElement.h"
+#include "LabelElement.h"
 #include "Coolbar/CoolbarAnimation.h"
 #include "Coolbar/CoolbarTheme.h"
 
@@ -49,6 +50,13 @@ AmarokScene::AmarokScene(QObject * parent)
     slotNextVisualization();
 
     m_slider = new SliderElement(this);
+    m_tagInfo = new LabelElement(this);
+    m_tagInfo->setMaxPointSize( 14.0 );
+    m_tagInfo->setContent(QStringList() << "Why so serious?" << "The Dark Knight (2008)" << "Hans Zimmer" << "9:14");
+    m_currentTime = new LabelElement(this);
+    m_currentTime->setContent(QStringList() << "1:10");
+    m_timeLeft = new LabelElement(this);
+    m_timeLeft->setContent(QStringList() << "8:04");
 }
 
 AmarokScene::~AmarokScene()

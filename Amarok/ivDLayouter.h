@@ -3,7 +3,7 @@
  *   This file is part of the Coolbar project,                             *
  *       http://www.gitorious.org/qt4-gadgets/coolbar                      *
  *                                                                         *
- *   Copyright (C) 2009 by Thomas Lübking <thomas.luebking@web.de>         *
+ *   Copyright (C) 2009 by Thomas Luebking <thomas.luebking@web.de>        *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -27,6 +27,7 @@ class ivDLayouter : public Layouter
     private:
         void sceneHovered(bool hovered, const AmarokScene &scene, CoolbarScene::SizeMode mode);
         void sliderHovered(bool hovered, const AmarokScene &scene, CoolbarScene::SizeMode mode);
+        void sliderClicked(bool down, const AmarokScene &scene, CoolbarScene::SizeMode mode);
 };
 
 #endif

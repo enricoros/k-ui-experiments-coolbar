@@ -3,7 +3,7 @@
  *   This file is part of the Coolbar project,                             *
  *       http://www.gitorious.org/qt4-gadgets/coolbar                      *
  *                                                                         *
- *   Copyright (C) 2009 by Thomas Lübking <thomas.luebking@web.de>         *
+ *   Copyright (C) 2009 by Thomas Luebking <thomas.luebking@web.de>        *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -74,7 +74,14 @@ void SliderElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
     {
         QAbstractAnimation *ani = Coolbar::animateObjectProperty(this, "value", 250, event->pos().x()/rect().width());
         connect (this, SIGNAL(dragged()), ani, SLOT(stop()));
+        scene()->propagateEvent(this, QEvent::MouseButtonPress);
     }
+}
+
+void SliderElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton)
+        scene()->propagateEvent(this, QEvent::MouseButtonRelease);
 }
 
 void SliderElement::paint(QPainter *painter, const QStyleOptionGraphicsItem */*option*/, QWidget */*widget*/)

@@ -12,41 +12,39 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __SliderElement_h__
-#define __SliderElement_h__
+#ifndef __LabelElement_h__
+#define __LabelElement_h__
 
 #include "Amarok/VisualizationElement.h"
 #include <QTimer>
 
-class SliderElement : public CoolbarElement
+class LabelElement : public CoolbarElement
 {
     Q_OBJECT
-    Q_PROPERTY(qreal value READ value WRITE setValue)
+//     Q_PROPERTY(qreal value READ value WRITE setValue)
     public:
-        SliderElement(CoolbarScene *, QGraphicsItem * parent = 0);
+        LabelElement(CoolbarScene *, QGraphicsItem * parent = 0);
+        void setContent(const QStringList &content, bool upd = true);
+        void setMaxPixelSize(int s);
+        void setMaxPointSize(qreal s);
 
-        // properties
-        qreal value() const;
-        void setValue(qreal);
-
+    protected:
         // ::QGraphicsItem
-        void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
-
-        void hoverEnterEvent( QGraphicsSceneHoverEvent *);
-        void hoverLeaveEvent( QGraphicsSceneHoverEvent *);
-        void mouseMoveEvent(QGraphicsSceneMouseEvent *);
-        void mousePressEvent(QGraphicsSceneMouseEvent *);
         void mouseReleaseEvent(QGraphicsSceneMouseEvent *);
+        void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+        void resizeEvent(QGraphicsSceneResizeEvent *);
+        void timerEvent(QTimerEvent *);
         void wheelEvent(QGraphicsSceneWheelEvent *);
 
-    signals:
-        void dragged();
-
-    private slots:
-        void delayedHoverPropagation();
     private:
-        qreal m_value;
-        QTimer m_hoverPropagationDelay;
+        void rotateContent(bool fwd = true);
+        void updatePath();
+    private:
+        int m_time, m_index, m_animTimer, m_maxPixelSize;
+        qreal m_maxPointSize;
+        bool m_animated;
+        QStringList m_content;
+        QPainterPath m_path;
 };
 
 #endif

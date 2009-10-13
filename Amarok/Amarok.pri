@@ -9,6 +9,7 @@ HEADERS += \
     Amarok/ProposedLayouter.h \
     Amarok/ivDLayouter.h \
     Amarok/SliderElement.h \
+    Amarok/LabelElement.h \
     Amarok/VisualizationElement.h
 
 SOURCES += \
@@ -22,4 +23,5 @@ SOURCES += \
     Amarok/ProposedLayouter.cpp \
     Amarok/ivDLayouter.cpp \
     Amarok/SliderElement.cpp \
+    Amarok/LabelElement.cpp \
     Amarok/VisualizationElement.cpp

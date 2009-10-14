@@ -22,6 +22,7 @@ class FlameElement;
 class SliderElement;
 class LabelElement;
 class AmarokScene;
+class CoolbarElement;
 
 /// Mandates behavior of a layouter
 class Layouter
@@ -52,22 +53,27 @@ class AmarokScene : public CoolbarScene
         void setAnalyzerVisible(bool visible);
         bool analyzerVisible() const;
 
-        inline ButtonElement * button(int i) const { return m_buttons[i]; }
-        inline FlameElement * flame() const { return m_flame; }
-        inline VisualizationElement * visualization() const { return m_visualization; }
-        inline SliderElement * slider() const { return m_slider; }
-        inline LabelElement * tagInfo() const { return m_tagInfo; }
-        inline LabelElement * currentTime() const { return m_currentTime; }
-        inline LabelElement * timeLeft() const { return m_timeLeft; }
+        inline CoolbarElement * button(int i) const { return (CoolbarElement*) m_buttons[i]; }
+        inline CoolbarElement * flame() const { return (CoolbarElement*) m_flame; }
+        inline CoolbarElement * visualization() const { return (CoolbarElement*) m_visualization; }
+        inline CoolbarElement * slider() const { return (CoolbarElement*) m_slider; }
+        inline CoolbarElement * tagInfo() const { return (CoolbarElement*) m_tagInfo; }
+        inline CoolbarElement * currentTime() const { return (CoolbarElement*) m_currentTime; }
+        inline CoolbarElement * timeLeft() const { return (CoolbarElement*) m_timeLeft; }
 
         inline bool isUnderMouse() const { return m_underMouse; }
 
         void propagateEvent(void *element, QEvent::Type type);
 
+        void setTrackLength(int sec) { m_trackLength = sec; }
+
         inline QRectF rect() const { return CoolbarScene::sceneRect(); }
 
     Q_SIGNALS:
         void layouterChanged();
+
+    public slots:
+        void setCurrentTime(int sec);
 
     protected:
         /*virtual */bool event(QEvent * event);
@@ -78,7 +84,7 @@ class AmarokScene : public CoolbarScene
         // internal
         Layouter * m_layouter;
         bool m_animateLayouting;
-        int m_visualizationIndex;
+        int m_visualizationIndex, m_trackLength;
 
         // elements
         ButtonElement * m_buttons[4];
@@ -91,6 +97,9 @@ class AmarokScene : public CoolbarScene
 
     private Q_SLOTS:
         void slotNextVisualization();
+        void slotSliderDragged(qreal percent);
+        // dummy slot for autoprogress
+        void setCurrentTime();
 };
 
 #endif

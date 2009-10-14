@@ -14,10 +14,7 @@
 
 #include "ProposedLayouter.h"
 #include "Coolbar/CoolbarAnimation.h"
-#include "ButtonElement.h"
-#include "FlameElement.h"
-#include "VisualizationElement.h"
-
+#include "Coolbar/CoolbarElement.h"
 
 void ProposedLayouter::layout(const AmarokScene &scene, CoolbarScene::SizeMode mode)
 {
@@ -25,6 +22,11 @@ void ProposedLayouter::layout(const AmarokScene &scene, CoolbarScene::SizeMode m
     QSizeF s;
     int left, top;
 
+    scene.slider()->hide();
+    scene.tagInfo()->hide();
+    scene.currentTime()->hide();
+    scene.timeLeft()->hide();
+    
     // update Visualization
     scene.visualization()->show();
     switch (mode) {
@@ -53,7 +55,7 @@ void ProposedLayouter::layout(const AmarokScene &scene, CoolbarScene::SizeMode m
         case CoolbarScene::DesktopSize:
             top = 0;
             left = rect.center().x() - 2 * (64 + 4);
-            for (int b = 0; b < ButtonElement::ButtonCount; b++) {
+            for (int b = 0; b < 4; b++) {
                 Coolbar::animateObjectProperty(scene.button(b), "pos", 300, QPointF(left, top));
                 Coolbar::animateObjectProperty(scene.button(b), "size", 500, QSizeF(64, 64));
                 left += 64 + 4;
@@ -65,7 +67,7 @@ void ProposedLayouter::layout(const AmarokScene &scene, CoolbarScene::SizeMode m
             if (mode == CoolbarScene::NetbookSize)
                 left = 10;
             top = rect.center().y() - 32 / 2;
-            for (int b = 0; b < ButtonElement::ButtonCount; b++) {
+            for (int b = 0; b < 4; b++) {
                 Coolbar::animateObjectProperty(scene.button(b), "size", 500, QSizeF(32, 32));
                 Coolbar::animateObjectProperty(scene.button(b), "pos", 300, QPointF(left, top));
                 left += 32 + 4;

@@ -23,7 +23,7 @@
 
 SliderElement::SliderElement(CoolbarScene * scene, QGraphicsItem * parent)
   : CoolbarElement(scene, parent)
-  , m_value(0.35)
+  , m_value(0.0)
 {
     connect (&m_hoverPropagationDelay, SIGNAL(timeout()), this, SLOT(delayedHoverPropagation()));
 }
@@ -63,8 +63,12 @@ void SliderElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     if (event->buttons() & Qt::LeftButton)
     {
-        setValue(event->pos().x()/rect().width());
-        emit dragged();
+        if (event->pos().x() < rect().left() || event->pos().x() > rect().right())
+            return; // don't slide out
+        qreal value = event->pos().x()/rect().width();
+        setValue(value);
+        if (value != event->lastPos().x()/rect().width())
+            emit dragged(value);
     }
 }
 
@@ -72,8 +76,10 @@ void SliderElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton)
     {
+        emit dragged(qMin(qMax(.0, event->pos().x()), rect().width()) / rect().width());
         QAbstractAnimation *ani = Coolbar::animateObjectProperty(this, "value", 250, event->pos().x()/rect().width());
-        connect (this, SIGNAL(dragged()), ani, SLOT(stop()));
+        connect (this, SIGNAL(dragged(qreal)), ani, SLOT(stop()));
+        // emit dragged signal constrained to slider length
         scene()->propagateEvent(this, QEvent::MouseButtonPress);
     }
 }

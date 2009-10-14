@@ -14,12 +14,7 @@
 
 #include "ivDLayouter.h"
 #include "Coolbar/CoolbarAnimation.h"
-#include "ButtonElement.h"
-#include "FlameElement.h"
-#include "VisualizationElement.h"
-#include "SliderElement.h"
-#include "LabelElement.h"
-
+#include "Coolbar/CoolbarElement.h"
 
 void ivDLayouter::layout(const AmarokScene &scene, CoolbarScene::SizeMode mode)
 {
@@ -36,6 +31,11 @@ void ivDLayouter::layout(const AmarokScene &scene, CoolbarScene::SizeMode mode)
     scene.slider()->setVisible(scene.isUnderMouse() || mode == CoolbarScene::DesktopSize);
     scene.currentTime()->setOpacity(0);
     scene.timeLeft()->setOpacity(0);
+
+    scene.tagInfo()->show();
+    scene.currentTime()->show();
+    scene.timeLeft()->show();
+    
     if (rect.width() < 512)
         sw = aw = rect.width() - 6;
     else if (rect.width() < 768)
@@ -54,15 +54,18 @@ void ivDLayouter::layout(const AmarokScene &scene, CoolbarScene::SizeMode mode)
     Coolbar::animateObjectProperty(scene.tagInfo(), "size", 500, QSizeF(aw,h));
     Coolbar::animateObjectProperty(scene.tagInfo(), "pos", 300, QPointF(left, top));
 
-    Coolbar::animateObjectProperty(scene.currentTime(), "size", 500, QSizeF(aw/3.0,h));
-    Coolbar::animateObjectProperty(scene.currentTime(), "pos", 300, QPointF(left, top));
-    Coolbar::animateObjectProperty(scene.timeLeft(), "size", 500, QSizeF(aw/3.0,h));
-    Coolbar::animateObjectProperty(scene.timeLeft(), "pos", 300, QPointF(left+2*aw/3.0, top));
+    if (mode == CoolbarScene::DesktopSize)
+    {
+        Coolbar::animateObjectProperty(scene.currentTime(), "size", 500, QSizeF(aw/3.0,h));
+        Coolbar::animateObjectProperty(scene.currentTime(), "pos", 300, QPointF(left, top));
+        Coolbar::animateObjectProperty(scene.timeLeft(), "size", 500, QSizeF(aw/3.0,h));
+        Coolbar::animateObjectProperty(scene.timeLeft(), "pos", 300, QPointF(left+2*aw/3.0, top));
+    }
 //     Coolbar::animateObjectProperty(visualization, "colorness", 2000, 0.0);
 
     // update buttons
     left = rect.center().x() - 2 * (h + top);
-    for (int b = 0; b < ButtonElement::ButtonCount; b++) {
+    for (int b = 0; b < 4; b++) {
         Coolbar::animateObjectProperty(scene.button(b), "size", 500, QSizeF(h, h));
         Coolbar::animateObjectProperty(scene.button(b), "pos", 300, QPointF(left, top));
         left += h + top;
@@ -82,6 +85,13 @@ void ivDLayouter::layout(const AmarokScene &scene, CoolbarScene::SizeMode mode)
     }
     Coolbar::animateObjectProperty(scene.slider(), "size", 500, QSizeF(sw,h));
     Coolbar::animateObjectProperty(scene.slider(), "pos", 300, QPointF(left, top));
+    if (mode != CoolbarScene::DesktopSize)
+    {
+        Coolbar::animateObjectProperty(scene.currentTime(), "size", 500, QSizeF(sw/3.0,h-4));
+        Coolbar::animateObjectProperty(scene.currentTime(), "pos", 300, QPointF(left, top+2));
+        Coolbar::animateObjectProperty(scene.timeLeft(), "size", 500, QSizeF(sw/3.0,h-4));
+        Coolbar::animateObjectProperty(scene.timeLeft(), "pos", 300, QPointF(left+2*sw/3.0, top+2));
+    }
 
 //     // update flames
 //     flame->show();
@@ -131,7 +141,7 @@ void ivDLayouter::sceneHovered(bool hovered, const AmarokScene &scene, CoolbarSc
     }
     Coolbar::animateObjectProperty(scene.visualization(), "opacity", 500, 1.0-hovered*0.85);
     Coolbar::animateObjectProperty(scene.tagInfo(), "opacity", 300, !hovered);
-    for (int b = 0; b < ButtonElement::ButtonCount; b++)
+    for (int b = 0; b < 4; b++)
     {
         scene.button(b)->setZValue(hovered);
         Coolbar::animateObjectProperty(scene.button(b), "opacity", 500-300*hovered, hovered);
@@ -142,7 +152,7 @@ void ivDLayouter::sliderClicked(bool down, const AmarokScene &scene, CoolbarScen
 {
     Coolbar::animateObjectProperty(scene.currentTime(), "opacity", 150, down);
     Coolbar::animateObjectProperty(scene.timeLeft(), "opacity", 150, down);
-    for (int b = 0; b < ButtonElement::ButtonCount; b++)
+    for (int b = 0; b < 4; b++)
         Coolbar::animateObjectProperty(scene.button(b), "opacity", 150, !down);
 }
 
@@ -154,6 +164,6 @@ void ivDLayouter::sliderHovered(bool hovered, const AmarokScene &scene, CoolbarS
     scene.slider()->setZValue(2*hovered);
     Coolbar::animateObjectProperty(scene.slider(), "opacity", 250, opacity);
     opacity = 1.0-hovered*0.85;
-    for (int b = 0; b < ButtonElement::ButtonCount; b++)
+    for (int b = 0; b < 4; b++)
         Coolbar::animateObjectProperty(scene.button(b), "opacity", 250, opacity);
 }

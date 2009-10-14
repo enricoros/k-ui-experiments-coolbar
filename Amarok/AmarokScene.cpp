@@ -22,12 +22,17 @@
 #include "Coolbar/CoolbarAnimation.h"
 #include "Coolbar/CoolbarTheme.h"
 
+// dummy auto progress
+#include <QTimer>
+static int _currentTime = 0;
+
 
 AmarokScene::AmarokScene(QObject * parent)
   : CoolbarScene(parent)
   , m_layouter(0)
   , m_animateLayouting(true)
   , m_visualizationIndex(-1)
+  , m_trackLength(1)
   , m_visualization(0)
   , m_slider(0)
   , m_underMouse(false)
@@ -49,14 +54,20 @@ AmarokScene::AmarokScene(QObject * parent)
     // create the Visualization
     slotNextVisualization();
 
+    setTrackLength(9*60+14);
+    
     m_slider = new SliderElement(this);
+    connect (m_slider, SIGNAL(dragged(qreal)), this, SLOT(slotSliderDragged(qreal)));
     m_tagInfo = new LabelElement(this);
     m_tagInfo->setMaxPointSize( 14.0 );
     m_tagInfo->setContent(QStringList() << "Why so serious?" << "The Dark Knight (2008)" << "Hans Zimmer" << "9:14");
     m_currentTime = new LabelElement(this);
-    m_currentTime->setContent(QStringList() << "1:10");
     m_timeLeft = new LabelElement(this);
-    m_timeLeft->setContent(QStringList() << "8:04");
+
+    // dummy autoprogress
+    QTimer *t = new QTimer(this);
+    connect (t, SIGNAL(timeout()), this, SLOT(setCurrentTime()));
+    t->start(1000);
 }
 
 AmarokScene::~AmarokScene()
@@ -117,6 +128,67 @@ void AmarokScene::updateElementsLayout(const QRectF & bounds)
     if (m_layouter) {
         m_layouter->layout(*this, dynamicSizeMode());
     }
+}
+
+
+static QString timeStringFromSecs(int secs, int max)
+{
+    QString ret;
+    if (secs < 0 || secs > max)
+        return ret;
+    if (max > 3600)
+    {
+        if (const int h = secs / 3600)
+        {
+            if (max > 36000 && h < 10)
+                ret += "0";
+            ret += QString::number(h) + ":";
+            secs -= 3600*h;
+        }
+        else
+            ret += "00:";
+    }
+    if (max > 60)
+    {
+        if (const int m = secs / 60)
+        {
+            if (m < 10)
+                ret += "0";
+            ret += QString::number(m) + ":";
+            secs -= 60*m;
+        }
+        else
+            ret += "00:";
+    }
+    if (secs < 10)
+        ret += "0";
+    ret += QString::number(secs);
+    return ret;
+}
+
+// dummy...
+void AmarokScene::setCurrentTime()
+{
+    ++_currentTime;
+    _currentTime %= m_trackLength;
+    setCurrentTime(_currentTime);
+}
+
+void AmarokScene::setCurrentTime(int sec)
+{
+    // dummy, to keep slider and autoprogress in sync
+    _currentTime = sec;
+    // ------
+    m_slider->setValue((qreal)sec / m_trackLength);
+    m_currentTime->setContent(QStringList() << timeStringFromSecs(sec, m_trackLength));
+    m_timeLeft->setContent(QStringList() << timeStringFromSecs(m_trackLength - sec, m_trackLength));
+}
+
+void AmarokScene::slotSliderDragged(qreal percent)
+{
+    m_slider->blockSignals(true);
+    setCurrentTime(percent * m_trackLength);
+    m_slider->blockSignals(false);
 }
 
 void AmarokScene::slotNextVisualization()

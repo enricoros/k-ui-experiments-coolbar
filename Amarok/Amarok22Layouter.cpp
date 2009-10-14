@@ -14,9 +14,7 @@
 
 #include "Amarok22Layouter.h"
 #include "Coolbar/CoolbarAnimation.h"
-#include "ButtonElement.h"
-#include "FlameElement.h"
-#include "VisualizationElement.h"
+#include "Coolbar/CoolbarElement.h"
 
 void Amarok22Layouter::layout(const AmarokScene &scene, CoolbarScene::SizeMode mode)
 {
@@ -25,6 +23,10 @@ void Amarok22Layouter::layout(const AmarokScene &scene, CoolbarScene::SizeMode m
 
     // hide Visualization
     scene.visualization()->hide();
+    scene.slider()->hide();
+    scene.tagInfo()->hide();
+    scene.currentTime()->hide();
+    scene.timeLeft()->hide();
 
     // hide flames
     scene.flame()->setVisible(false);
@@ -34,7 +36,7 @@ void Amarok22Layouter::layout(const AmarokScene &scene, CoolbarScene::SizeMode m
         default:
             top = scene.rect().center().y() - 54/2;
             left = 10;
-            for (int b = 0; b < ButtonElement::ButtonCount; b++) {
+            for (int b = 0; b < 4; b++) {
                 Coolbar::animateObjectProperty(scene.button(b), "pos", 300, QPointF(left, top));
                 Coolbar::animateObjectProperty(scene.button(b), "size", 500, QSizeF(54, 54));
                 left += 42;
@@ -44,7 +46,7 @@ void Amarok22Layouter::layout(const AmarokScene &scene, CoolbarScene::SizeMode m
         case CoolbarScene::IDeviceSize:
             left = scene.rect().center().x() - 2 * (32 + 4);
             top = scene.rect().center().y() - 32 / 2;
-            for (int b = 0; b < ButtonElement::ButtonCount; b++) {
+            for (int b = 0; b < 4; b++) {
                 Coolbar::animateObjectProperty(scene.button(b), "size", 500, QSizeF(32, 32));
                 Coolbar::animateObjectProperty(scene.button(b), "pos", 300, QPointF(left, top));
                 left += 32 + 4;

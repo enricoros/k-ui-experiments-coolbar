@@ -40,7 +40,7 @@ class SliderElement : public CoolbarElement
         void wheelEvent(QGraphicsSceneWheelEvent *);
 
     signals:
-        void dragged();
+        void dragged(qreal);
 
     private slots:
         void delayedHoverPropagation();

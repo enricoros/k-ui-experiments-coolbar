@@ -87,10 +87,10 @@ void ivDLayouter::layout(const AmarokScene &scene, CoolbarScene::SizeMode mode)
     Coolbar::animateObjectProperty(scene.slider(), "pos", 300, QPointF(left, top));
     if (mode != CoolbarScene::DesktopSize)
     {
-        Coolbar::animateObjectProperty(scene.currentTime(), "size", 500, QSizeF(sw/3.0,h-4));
-        Coolbar::animateObjectProperty(scene.currentTime(), "pos", 300, QPointF(left, top+2));
-        Coolbar::animateObjectProperty(scene.timeLeft(), "size", 500, QSizeF(sw/3.0,h-4));
-        Coolbar::animateObjectProperty(scene.timeLeft(), "pos", 300, QPointF(left+2*sw/3.0, top+2));
+        Coolbar::animateObjectProperty(scene.currentTime(), "size", 500, QSizeF(sw/3.0,h));
+        Coolbar::animateObjectProperty(scene.currentTime(), "pos", 300, QPointF(left, top));
+        Coolbar::animateObjectProperty(scene.timeLeft(), "size", 500, QSizeF(sw/3.0,h));
+        Coolbar::animateObjectProperty(scene.timeLeft(), "pos", 300, QPointF(left+2*sw/3.0, top));
     }
 
 //     // update flames

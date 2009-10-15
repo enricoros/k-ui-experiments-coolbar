@@ -41,6 +41,7 @@ class SliderElement : public CoolbarElement
 
     signals:
         void dragged(qreal);
+        void valueChanged(qreal);
 
     private slots:
         void delayedHoverPropagation();

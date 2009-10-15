@@ -37,6 +37,7 @@ void SliderElement::setValue(qreal value)
 {
     if (value != m_value && value >= 0.0 && value <= 1.0) {
         m_value = value;
+//         emit valueChanged(value);
         update();
     }
 }
@@ -76,7 +77,7 @@ void SliderElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton)
     {
-        emit dragged(qMin(qMax(.0, event->pos().x()), rect().width()) / rect().width());
+//         emit valueChanged(qMin(qMax(.0, event->pos().x()), rect().width()) / rect().width());
         QAbstractAnimation *ani = Coolbar::animateObjectProperty(this, "value", 250, event->pos().x()/rect().width());
         connect (this, SIGNAL(dragged(qreal)), ani, SLOT(stop()));
         // emit dragged signal constrained to slider length
@@ -100,7 +101,7 @@ void SliderElement::paint(QPainter *painter, const QStyleOptionGraphicsItem */*o
     QRectF r = rect();
     qreal rnd = r.height()/4.0;
 
-    QColor textColor(255,255,255,196);
+    QColor textColor(255,255,255,128);
     painter->setPen(textColor);
     painter->drawRoundedRect(r, rnd, rnd);
 

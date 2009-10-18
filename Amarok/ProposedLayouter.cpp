@@ -22,7 +22,7 @@ void ProposedLayouter::layout(const AmarokScene &scene, CoolbarScene::SizeMode m
     QSizeF s;
     int left, top;
 
-    scene.slider()->hide();
+    scene.positionSlider()->hide();
     scene.tagInfo()->hide();
     scene.currentTime()->hide();
     scene.timeLeft()->hide();

@@ -34,6 +34,7 @@ LabelElement::LabelElement(CoolbarScene * scene, QGraphicsItem * parent)
 , m_maxPixelSize(0)
 , m_maxPointSize(0.0)
 , m_animated(true)
+, m_align(Qt::AlignCenter)
 {}
 
 void LabelElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
@@ -101,6 +102,12 @@ void LabelElement::rotateContent(bool fwd)
     }
     updatePath();
     update();
+}
+
+void LabelElement::setAlignment(Qt::Alignment a)
+{
+    m_align = a;
+    updatePath();
 }
 
 void LabelElement::setContent(const QStringList &content, bool upd)
@@ -184,7 +191,15 @@ void LabelElement::updatePath()
     QFontMetrics fm(fnt);
     sz = fm.size(0, text);
     m_path = QPainterPath();
-    m_path.addText((rect().width() - sz.width()) / 2.0, (rect().height() - fm.height()) / 2.0 + fm.ascent(), fnt, text);
+    qreal left = (m_align & Qt::AlignLeft) ? 0.0 : rect().width() - sz.width();
+    if (m_align & Qt::AlignHCenter)
+        left /= 2.0;
+    qreal top = (m_align & Qt::AlignTop) ? 0.0 : rect().height() - fm.height();
+    if (m_align & Qt::AlignVCenter)
+        top /= 2.0;
+    top += fm.ascent();
+
+    m_path.addText(left, top, fnt, text);
 }
 
 void LabelElement::wheelEvent(QGraphicsSceneWheelEvent * we)

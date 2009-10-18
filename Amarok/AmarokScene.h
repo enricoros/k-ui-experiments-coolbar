@@ -56,10 +56,12 @@ class AmarokScene : public CoolbarScene
         inline CoolbarElement * button(int i) const { return (CoolbarElement*) m_buttons[i]; }
         inline CoolbarElement * flame() const { return (CoolbarElement*) m_flame; }
         inline CoolbarElement * visualization() const { return (CoolbarElement*) m_visualization; }
-        inline CoolbarElement * slider() const { return (CoolbarElement*) m_slider; }
+        inline CoolbarElement * positionSlider() const { return (CoolbarElement*) m_positionSlider; }
         inline CoolbarElement * tagInfo() const { return (CoolbarElement*) m_tagInfo; }
         inline CoolbarElement * currentTime() const { return (CoolbarElement*) m_currentTime; }
         inline CoolbarElement * timeLeft() const { return (CoolbarElement*) m_timeLeft; }
+        inline CoolbarElement * volumeButton() const { return (CoolbarElement*) m_volumeButton; }
+        inline CoolbarElement * volumeSlider() const { return (CoolbarElement*) m_volumeSlider; }
 
         inline bool isUnderMouse() const { return m_underMouse; }
 
@@ -87,17 +89,17 @@ class AmarokScene : public CoolbarScene
         int m_visualizationIndex, m_trackLength;
 
         // elements
-        ButtonElement * m_buttons[4];
+        ButtonElement * m_buttons[4], *m_volumeButton;
         FlameElement * m_flame;
         VisualizationElement * m_visualization;
-        SliderElement * m_slider;
+        SliderElement * m_positionSlider, * m_volumeSlider;
         LabelElement *m_tagInfo, *m_currentTime, *m_timeLeft;
 
         bool m_underMouse;
 
     private Q_SLOTS:
         void slotNextVisualization();
-        void slotSliderDragged(qreal percent);
+        void slotPositionSliderDragged(qreal percent);
         // dummy slot for autoprogress
         void setCurrentTime();
 };

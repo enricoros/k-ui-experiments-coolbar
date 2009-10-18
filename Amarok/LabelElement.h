@@ -24,6 +24,8 @@ class LabelElement : public CoolbarElement
 //     Q_PROPERTY(qreal value READ value WRITE setValue)
     public:
         LabelElement(CoolbarScene *, QGraphicsItem * parent = 0);
+        void setAlignment(Qt::Alignment a);
+        inline Qt::Alignment alignment() { return m_align; }
         void setContent(const QStringList &content, bool upd = true);
         void setMaxPixelSize(int s);
         void setMaxPointSize(qreal s);
@@ -45,6 +47,7 @@ class LabelElement : public CoolbarElement
         bool m_animated;
         QStringList m_content;
         QPainterPath m_path;
+        Qt::Alignment m_align;
 };
 
 #endif

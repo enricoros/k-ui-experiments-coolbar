@@ -28,7 +28,7 @@ void ivDLayouter::layout(const AmarokScene &scene, CoolbarScene::SizeMode mode)
     ///NOTICE 512/768 shall be dependent on screen width as well
     scene.visualization()->setZValue(-1);
     scene.visualization()->show();
-    scene.slider()->setVisible(scene.isUnderMouse() || mode == CoolbarScene::DesktopSize);
+    scene.positionSlider()->setVisible(scene.isUnderMouse() || mode == CoolbarScene::DesktopSize);
     scene.currentTime()->setOpacity(0);
     scene.timeLeft()->setOpacity(0);
 
@@ -56,10 +56,12 @@ void ivDLayouter::layout(const AmarokScene &scene, CoolbarScene::SizeMode mode)
 
     if (mode == CoolbarScene::DesktopSize)
     {
-        Coolbar::animateObjectProperty(scene.currentTime(), "size", 500, QSizeF(aw/3.0,h));
+        if (aw != sw)
+            left = rect.center().x() - sw / 2;
+        Coolbar::animateObjectProperty(scene.currentTime(), "size", 500, QSizeF(sw/3.0,h));
         Coolbar::animateObjectProperty(scene.currentTime(), "pos", 300, QPointF(left, top));
-        Coolbar::animateObjectProperty(scene.timeLeft(), "size", 500, QSizeF(aw/3.0,h));
-        Coolbar::animateObjectProperty(scene.timeLeft(), "pos", 300, QPointF(left+2*aw/3.0, top));
+        Coolbar::animateObjectProperty(scene.timeLeft(), "size", 500, QSizeF(sw/3.0,h));
+        Coolbar::animateObjectProperty(scene.timeLeft(), "pos", 300, QPointF(left+2*sw/3.0, top));
     }
 //     Coolbar::animateObjectProperty(visualization, "colorness", 2000, 0.0);
 
@@ -78,13 +80,18 @@ void ivDLayouter::layout(const AmarokScene &scene, CoolbarScene::SizeMode mode)
         h = rect.bottom() - (4*top + h);
         top = rect.bottom() - (top + h);
     }
-    else
+    else if (mode == CoolbarScene::NetbookSize)
     {
         h = rect.height()/3.0;
         top = rect.top() + h;
     }
-    Coolbar::animateObjectProperty(scene.slider(), "size", 500, QSizeF(sw,h));
-    Coolbar::animateObjectProperty(scene.slider(), "pos", 300, QPointF(left, top));
+    else
+    {
+        h = rect.height()/2.0;
+        top = rect.top() + h/2.0;
+    }
+    Coolbar::animateObjectProperty(scene.positionSlider(), "size", 500, QSizeF(sw,h));
+    Coolbar::animateObjectProperty(scene.positionSlider(), "pos", 300, QPointF(left, top));
     if (mode != CoolbarScene::DesktopSize)
     {
         Coolbar::animateObjectProperty(scene.currentTime(), "size", 500, QSizeF(sw/3.0,h));
@@ -113,12 +120,12 @@ void ivDLayouter::event(QEvent::Type type, void * item, const AmarokScene &scene
         case QEvent::Leave:
             if (item == &scene)
                 sceneHovered(type == QEvent::Enter, scene, mode);
-            else if (item == scene.slider())
+            else if (item == scene.positionSlider())
                 sliderHovered(type == QEvent::Enter, scene, mode);
             break;
         case QEvent::MouseButtonPress:
         case QEvent::MouseButtonRelease:
-            if (item == scene.slider())
+            if (item == scene.positionSlider())
                 sliderClicked(type == QEvent::MouseButtonPress, scene, mode);
             break;
         default:
@@ -129,15 +136,15 @@ void ivDLayouter::event(QEvent::Type type, void * item, const AmarokScene &scene
 void ivDLayouter::sceneHovered(bool hovered, const AmarokScene &scene, CoolbarScene::SizeMode mode)
 {
     if (mode != CoolbarScene::DesktopSize)
-        scene.slider()->setVisible(hovered);
+        scene.positionSlider()->setVisible(hovered);
 //     qreal vOpacity;
     if (mode == CoolbarScene::DesktopSize)
     {
-        Coolbar::animateObjectProperty(scene.slider(), "opacity", 500, 1.0);
+        Coolbar::animateObjectProperty(scene.positionSlider(), "opacity", 500, 1.0);
     }
     else
     {
-        Coolbar::animateObjectProperty(scene.slider(), "opacity", 500, 0.15);
+        Coolbar::animateObjectProperty(scene.positionSlider(), "opacity", 500, 0.15);
     }
     Coolbar::animateObjectProperty(scene.visualization(), "opacity", 500, 1.0-hovered*0.85);
     Coolbar::animateObjectProperty(scene.tagInfo(), "opacity", 300, !hovered);
@@ -152,8 +159,11 @@ void ivDLayouter::sliderClicked(bool down, const AmarokScene &scene, CoolbarScen
 {
     Coolbar::animateObjectProperty(scene.currentTime(), "opacity", 150, down);
     Coolbar::animateObjectProperty(scene.timeLeft(), "opacity", 150, down);
-    for (int b = 0; b < 4; b++)
-        Coolbar::animateObjectProperty(scene.button(b), "opacity", 150, !down);
+    if (mode == CoolbarScene::DesktopSize)
+    {
+        for (int b = 0; b < 4; b++)
+            Coolbar::animateObjectProperty(scene.button(b), "opacity", 150, !down);
+    }
 }
 
 void ivDLayouter::sliderHovered(bool hovered, const AmarokScene &scene, CoolbarScene::SizeMode mode)
@@ -161,8 +171,8 @@ void ivDLayouter::sliderHovered(bool hovered, const AmarokScene &scene, CoolbarS
     if (mode == CoolbarScene::DesktopSize)
         return;
     qreal opacity = 1.0-!hovered*0.85;
-    scene.slider()->setZValue(2*hovered);
-    Coolbar::animateObjectProperty(scene.slider(), "opacity", 250, opacity);
+    scene.positionSlider()->setZValue(2*hovered);
+    Coolbar::animateObjectProperty(scene.positionSlider(), "opacity", 250, opacity);
     opacity = 1.0-hovered*0.85;
     for (int b = 0; b < 4; b++)
         Coolbar::animateObjectProperty(scene.button(b), "opacity", 250, opacity);

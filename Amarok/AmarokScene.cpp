@@ -26,7 +26,7 @@
 #include <QTimer>
 static int _currentTime = 0;
 
-
+#include <QtDebug>
 AmarokScene::AmarokScene(QObject * parent)
   : CoolbarScene(parent)
   , m_layouter(0)
@@ -34,7 +34,7 @@ AmarokScene::AmarokScene(QObject * parent)
   , m_visualizationIndex(-1)
   , m_trackLength(1)
   , m_visualization(0)
-  , m_slider(0)
+  , m_positionSlider(0)
   , m_underMouse(false)
 {
     // create flames
@@ -56,13 +56,18 @@ AmarokScene::AmarokScene(QObject * parent)
 
     setTrackLength(9*60+14);
     
-    m_slider = new SliderElement(this);
-    connect (m_slider, SIGNAL(dragged(qreal)), this, SLOT(slotSliderDragged(qreal)));
+    m_positionSlider = new SliderElement(this);
+    connect (m_positionSlider, SIGNAL(dragged(qreal)), this, SLOT(slotPositionSliderDragged(qreal)));
     m_tagInfo = new LabelElement(this);
+    m_tagInfo->setAlignment(Qt::AlignHCenter|Qt::AlignTop);
     m_tagInfo->setMaxPointSize( 14.0 );
     m_tagInfo->setContent(QStringList() << "Why so serious?" << "The Dark Knight (2008)" << "Hans Zimmer" << "9:14");
     m_currentTime = new LabelElement(this);
+    m_currentTime->setAlignment(Qt::AlignLeft|Qt::AlignBottom);
+    m_currentTime->setMaxPointSize( 24.0 );
     m_timeLeft = new LabelElement(this);
+    m_timeLeft->setAlignment(Qt::AlignRight|Qt::AlignBottom);
+    m_timeLeft->setMaxPointSize( 24.0 );
 
     // dummy autoprogress
     QTimer *t = new QTimer(this);
@@ -179,16 +184,16 @@ void AmarokScene::setCurrentTime(int sec)
     // dummy, to keep slider and autoprogress in sync
     _currentTime = sec;
     // ------
-    m_slider->setValue((qreal)sec / m_trackLength);
+    m_positionSlider->setValue((qreal)sec / m_trackLength);
     m_currentTime->setContent(QStringList() << timeStringFromSecs(sec, m_trackLength));
     m_timeLeft->setContent(QStringList() << timeStringFromSecs(m_trackLength - sec, m_trackLength));
 }
 
-void AmarokScene::slotSliderDragged(qreal percent)
+void AmarokScene::slotPositionSliderDragged(qreal percent)
 {
-    m_slider->blockSignals(true);
+    m_positionSlider->blockSignals(true);
     setCurrentTime(percent * m_trackLength);
-    m_slider->blockSignals(false);
+    m_positionSlider->blockSignals(false);
 }
 
 void AmarokScene::slotNextVisualization()

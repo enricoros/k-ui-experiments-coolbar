@@ -23,7 +23,7 @@ void Amarok22Layouter::layout(const AmarokScene &scene, CoolbarScene::SizeMode m
 
     // hide Visualization
     scene.visualization()->hide();
-    scene.slider()->hide();
+    scene.positionSlider()->hide();
     scene.tagInfo()->hide();
     scene.currentTime()->hide();
     scene.timeLeft()->hide();

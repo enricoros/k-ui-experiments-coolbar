@@ -99,7 +99,7 @@ class AmarokScene : public CoolbarScene
 
     private Q_SLOTS:
         void slotNextVisualization();
-        void slotPositionSliderDragged(qreal percent);
+        void slotPositionSliderChanged(qreal percent);
         // dummy slot for autoprogress
         void setCurrentTime();
 };

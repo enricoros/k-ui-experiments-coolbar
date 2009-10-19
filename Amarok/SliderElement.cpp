@@ -37,7 +37,7 @@ void SliderElement::setValue(qreal value)
 {
     if (value != m_value && value >= 0.0 && value <= 1.0) {
         m_value = value;
-//         emit valueChanged(value);
+        emit valueChanged(value);
         update();
     }
 }

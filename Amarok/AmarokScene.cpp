@@ -57,7 +57,7 @@ AmarokScene::AmarokScene(QObject * parent)
     setTrackLength(9*60+14);
     
     m_positionSlider = new SliderElement(this);
-    connect (m_positionSlider, SIGNAL(dragged(qreal)), this, SLOT(slotPositionSliderDragged(qreal)));
+    connect (m_positionSlider, SIGNAL(valueChanged(qreal)), this, SLOT(slotPositionSliderChanged(qreal)));
     m_tagInfo = new LabelElement(this);
     m_tagInfo->setAlignment(Qt::AlignHCenter|Qt::AlignTop);
     m_tagInfo->setMaxPointSize( 14.0 );
@@ -184,16 +184,16 @@ void AmarokScene::setCurrentTime(int sec)
     // dummy, to keep slider and autoprogress in sync
     _currentTime = sec;
     // ------
+    m_positionSlider->blockSignals(true);
     m_positionSlider->setValue((qreal)sec / m_trackLength);
+    m_positionSlider->blockSignals(false);
     m_currentTime->setContent(QStringList() << timeStringFromSecs(sec, m_trackLength));
     m_timeLeft->setContent(QStringList() << timeStringFromSecs(m_trackLength - sec, m_trackLength));
 }
 
-void AmarokScene::slotPositionSliderDragged(qreal percent)
+void AmarokScene::slotPositionSliderChanged(qreal percent)
 {
-    m_positionSlider->blockSignals(true);
-    setCurrentTime(percent * m_trackLength);
-    m_positionSlider->blockSignals(false);
+    setCurrentTime(qRound(percent * m_trackLength));
 }
 
 void AmarokScene::slotNextVisualization()

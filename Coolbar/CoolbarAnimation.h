@@ -15,12 +15,12 @@
 #ifndef __CoolbarAnimation_h__
 #define __CoolbarAnimation_h__
 
-class QAbstractAnimation;
+class QPropertyAnimation;
 #include <QVariant>
 
 namespace Coolbar {
 
-    QAbstractAnimation * animateObjectProperty(QObject * object, const char * propName, int duration, const QVariant & endValue, const QVariant & startValue = QVariant());
+    QPropertyAnimation * animateObjectProperty(QObject * object, const char * propName, int duration, const QVariant & endValue, const QVariant & startValue = QVariant());
     bool canAnimate();
 
 };

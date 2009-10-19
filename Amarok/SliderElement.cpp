@@ -16,7 +16,7 @@
 
 #include "Coolbar/CoolbarAnimation.h"
 #include "Coolbar/CoolbarScene.h"
-#include <QAbstractAnimation>
+#include <QPropertyAnimation>
 #include <QGraphicsSceneMouseEvent>
 #include <QDebug>
 #include <QPainter>
@@ -78,7 +78,7 @@ void SliderElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
     if (event->button() == Qt::LeftButton)
     {
 //         emit valueChanged(qMin(qMax(.0, event->pos().x()), rect().width()) / rect().width());
-        QAbstractAnimation *ani = Coolbar::animateObjectProperty(this, "value", 250, event->pos().x()/rect().width());
+        QPropertyAnimation *ani = animate("value", 250, event->pos().x()/rect().width());
         connect (this, SIGNAL(dragged(qreal)), ani, SLOT(stop()));
         // emit dragged signal constrained to slider length
         scene()->propagateEvent(this, QEvent::MouseButtonPress);
@@ -130,6 +130,6 @@ void SliderElement::paint(QPainter *painter, const QStyleOptionGraphicsItem */*o
 void SliderElement::wheelEvent(QGraphicsSceneWheelEvent *event)
 {
     const qreal delta = event->delta() < 0 ? 0.05 : - 0.05;
-    Coolbar::animateObjectProperty(this, "value", 150, qMin(qMax(0.0, m_value + delta), 1.0));
+    animate("value", 150, qMin(qMax(0.0, m_value + delta), 1.0));
 }
 

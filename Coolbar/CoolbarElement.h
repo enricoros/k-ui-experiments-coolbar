@@ -19,12 +19,15 @@
 class CoolbarScene;
 class CoolbarTheme;
 
+class QPropertyAnimation;
+
 class CoolbarElement : public QGraphicsWidget
 {
     Q_OBJECT
     public:
         CoolbarElement(CoolbarScene *, QGraphicsItem * parent = 0);
         virtual ~CoolbarElement();
+        QPropertyAnimation * animate(const char * property, int duration, const QVariant & endValue, const QVariant & startValue = QVariant());
 
     Q_SIGNALS:
         void clicked();
@@ -49,6 +52,8 @@ class CoolbarElement : public QGraphicsWidget
         CoolbarElement();
         CoolbarScene * m_scene;
         bool m_hovered;
+        typedef QMap<QString, QWeakPointer<QPropertyAnimation> > AnimationMap;
+        AnimationMap m_animations;
 };
 
 #endif

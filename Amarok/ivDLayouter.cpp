@@ -59,9 +59,9 @@ void ivDLayouter::layout(const AmarokScene &scene, CoolbarScene::SizeMode mode)
         if (aw != sw)
             left = rect.center().x() - sw / 2;
         scene.currentTime()->animate("size", 500, QSizeF(sw/3.0,h));
-        scene.currentTime()->animate("pos", 300, QPointF(left+3, top));
+        scene.currentTime()->animate("pos", 300, QPointF(left, top));
         scene.timeLeft()->animate("size", 500, QSizeF(sw/3.0,h));
-        scene.timeLeft()->animate("pos", 300, QPointF(left+2*sw/3.0-3, top));
+        scene.timeLeft()->animate("pos", 300, QPointF(left+2*sw/3.0, top));
     }
 //     Coolbar::animateObjectProperty(visualization, "colorness", 2000, 0.0);
 
@@ -95,9 +95,9 @@ void ivDLayouter::layout(const AmarokScene &scene, CoolbarScene::SizeMode mode)
     if (mode != CoolbarScene::DesktopSize)
     {
         scene.currentTime()->animate("size", 500, QSizeF(sw/3.0,h));
-        scene.currentTime()->animate("pos", 300, QPointF(left, top));
+        scene.currentTime()->animate("pos", 300, QPointF(left+4, top));
         scene.timeLeft()->animate("size", 500, QSizeF(sw/3.0,h));
-        scene.timeLeft()->animate("pos", 300, QPointF(left+2*sw/3.0, top));
+        scene.timeLeft()->animate("pos", 300, QPointF(left+2*sw/3.0-4, top));
     }
 
 //     // update flames

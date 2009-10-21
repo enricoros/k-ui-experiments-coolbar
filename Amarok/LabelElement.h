@@ -32,6 +32,7 @@ class LabelElement : public CoolbarElement
 
     protected:
         // ::QGraphicsItem
+        void changeEvent(QEvent *);
         void mouseReleaseEvent(QGraphicsSceneMouseEvent *);
         void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
         void resizeEvent(QGraphicsSceneResizeEvent *);
@@ -41,13 +42,15 @@ class LabelElement : public CoolbarElement
     private:
         void rotateContent(bool fwd = true);
         void updatePath();
+        void updateBuffer();
     private:
         int m_time, m_index, m_animTimer, m_maxPixelSize;
-        qreal m_maxPointSize;
+        qreal m_maxPointSize, m_opacity;
         bool m_animated;
         QStringList m_content;
         QPainterPath m_path;
         Qt::Alignment m_align;
+        QPixmap * m_buffer;
 };
 
 #endif

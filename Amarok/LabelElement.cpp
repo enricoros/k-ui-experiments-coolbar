@@ -33,33 +33,34 @@ LabelElement::LabelElement(CoolbarScene * scene, QGraphicsItem * parent)
 , m_animTimer(0)
 , m_maxPixelSize(0)
 , m_maxPointSize(0.0)
+, m_opacity(1.0)
 , m_animated(true)
 , m_align(Qt::AlignCenter)
+, m_buffer(0)
 {}
 
 void LabelElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
-    if (m_content.isEmpty())
+    if (!m_buffer || m_content.isEmpty())
         return;
-    QColor textColor = Qt::white;
-    QColor outline(70,70,70);
-    if (m_animTimer)
-    {
-        int level = -1;
-        if (m_time < FT/50)
-            level = m_time;
-        else if (m_time > (DT-FT)/50)
-            level = DT/50 - m_time;
-        if (level > -1)
-        {
-            int alpha = (255*level) / (FT/50);
-            textColor.setAlpha( alpha );
-            outline.setAlpha(alpha);
-        }
-    }
-    painter->setBrush(textColor);
-    painter->setPen(outline);
-    painter->drawPath(m_path);
+    qreal left = (m_align & Qt::AlignLeft) ? 0.0 : rect().width() - m_buffer->width();
+    if (m_align & Qt::AlignHCenter)
+        left /= 2.0;
+    qreal top = (m_align & Qt::AlignTop) ? 0.0 : rect().height() - m_buffer->height();
+    if (m_align & Qt::AlignVCenter)
+        top /= 2.0;
+    painter->setOpacity(m_opacity * opacity());
+    painter->drawPixmap(QPointF(left, top), *m_buffer);
+    painter->setOpacity(opacity());
+}
+
+void LabelElement::changeEvent(QEvent *ev)
+{
+    if (ev->type() == QEvent::PaletteChange)
+        updateBuffer();
+    else if (ev->type() == QEvent::FontChange || ev->type() == QEvent::LayoutDirectionChange)
+        updatePath();
+    CoolbarElement::changeEvent(ev);
 }
 
 void LabelElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *me)
@@ -126,6 +127,7 @@ void LabelElement::setContent(const QStringList &content, bool upd)
     {
         killTimer(m_animTimer);
         m_animTimer = 0;
+        m_opacity = 1.0;
     }
     updatePath();
     if (upd && !m_animTimer)
@@ -154,14 +156,45 @@ void LabelElement::timerEvent( QTimerEvent * te )
 {
     if (!isVisible() || te->timerId() != m_animTimer)
         return;
-    if (m_time < FT/50 || m_time > (DT-FT)/50)
-        update();
+
+    int level = -1.0;
+    if (m_time < FT/50)
+        level = m_time;
+    else if (m_time > (DT-FT)/50)
+        level = DT/50 - m_time;
+    if (level > -1)
+    {
+        m_opacity = level; m_opacity /= (FT/50);
+    }
+    else
+        m_opacity = 1.0;
+
     ++m_time;
     if (m_time > DT/50)
     {
         m_time = 0;
         rotateContent();
     }
+}
+
+void LabelElement::updateBuffer()
+{
+    QRect r = m_path.boundingRect().toAlignedRect();
+    if (!m_buffer || m_buffer->size() != r.size())
+    {
+        delete m_buffer;
+        m_buffer = new QPixmap(r.size());
+    }
+    m_buffer->fill(Qt::transparent);
+    QPainter p(m_buffer);
+    p.setRenderHint(QPainter::Antialiasing);
+    p.translate(-r.topLeft());
+    QColor textColor = Qt::white;
+    QColor outline(70,70,70);
+    p.setBrush(textColor);
+    p.setPen(outline);
+    p.drawPath(m_path);
+    p.end();
 }
 
 void LabelElement::updatePath()
@@ -191,15 +224,8 @@ void LabelElement::updatePath()
     QFontMetrics fm(fnt);
     sz = fm.size(0, text);
     m_path = QPainterPath();
-    qreal left = (m_align & Qt::AlignLeft) ? 0.0 : rect().width() - sz.width();
-    if (m_align & Qt::AlignHCenter)
-        left /= 2.0;
-    qreal top = (m_align & Qt::AlignTop) ? 0.0 : rect().height() - fm.height();
-    if (m_align & Qt::AlignVCenter)
-        top /= 2.0;
-    top += fm.ascent();
-
-    m_path.addText(left, top, fnt, text);
+    m_path.addText(0, 0, fnt, text);
+    updateBuffer();
 }
 
 void LabelElement::wheelEvent(QGraphicsSceneWheelEvent * we)
